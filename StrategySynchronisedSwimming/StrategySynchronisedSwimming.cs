@@ -172,16 +172,16 @@ namespace URWPGSim2D.Strategy
             float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼使用Dribble函数游到指定位置
-            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 10, 6, 150, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 30, 10, 60, 14, 5, 18, msPerCycle, true);
 
-            Helpers.Dribble(ref decisions[9], fish10, fish1Location2, (float)2.0769, 30, 20, 0, 14, 12, 5, msPerCycle, true);
+            Helpers.Dribble(ref decisions[9], fish10, fish1Location2, (float)2.0769, 30, 30, 30, 14, 12, 5, msPerCycle, true);
             #endregion;
             #region 判断全部鱼在指定位置,完成后flag=1
             if (isDirectionRight(fish2Direction, AD1) == 0 && getVectorDistance(A1, fish2Location) < 45) { decisions[1].VCode = 0; zeroflag[1] = 1; decisions[1].TCode = 7; }
@@ -204,12 +204,11 @@ namespace URWPGSim2D.Strategy
 
 
             if (timeflag != 1 && zeroflag[1] == 1 && zeroflag[2] == 1 && zeroflag[3] == 1 && zeroflag[4] == 1 && zeroflag[5] == 1 && zeroflag[6] == 1 && zeroflag[7] == 1 && zeroflag[8] == 1) 
-                timeflag = 1;
+                timeflag ++;
            
-            if (timeflag==1)
+            if (timeflag>=1)
             {
-                remainRecord = mission.CommonPara.RemainingCycles;
-                timeflag = 2;
+                timeflag ++;
             }
             /*if(timeflag==1||timeflag==2)
             {
@@ -218,13 +217,10 @@ namespace URWPGSim2D.Strategy
                 log.WriteLine(mission.CommonPara.RemainingCycles);
                 log.Close();
             }*/
-            if(timeflag==2)
+            if (timeflag >= 30)
             {
-                if(remainRecord-mission.CommonPara.RemainingCycles>=30)
-                {
-                    timeflag = 0;
-                    flag = 1;
-                }
+                timeflag = 0;
+                flag = 1;
             }
             #endregion
         }
@@ -437,13 +433,18 @@ namespace URWPGSim2D.Strategy
                 Zero(ref mission, teamId, ref decisions);
             if(flag==1)
                 FlyCharacter(ref mission, teamId, ref decisions);
-           /* 
+            /*
+            xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
+            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
             xna.Vector3 A1 = new xna.Vector3(-12, 0, -696);
             float AD1 = (float)-2.1991;
             RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
-            Helpers.fishMoving(A1, AD1, ref decisions[1], ref fish2, ref timeflag);
+            //Helpers.fishMoving(A1, AD1, ref decisions[1], ref fish2, ref timeflag);
+            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 10, 60, 14, 5, 18, mission.CommonPara.MsPerCycle, true);
+            Helpers.Dribble(ref decisions[9], mission.TeamsRef[teamId].Fishes[9], fish1Location2, (float)2.0769, 30, 30, 30, 14, 12, 5, mission.CommonPara.MsPerCycle, true);
+            if (isDirectionRight(mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad, AD1) == 0 && getVectorDistance(A1, fish2Location) < 45) { decisions[1].VCode = 0; zeroflag[1] = 1; decisions[1].TCode = 7; }
+            if (getVectorDistance(A1, fish2Location) > 60) zeroflag[1] = 0;
             */
-
             return decisions;
         }
     }
