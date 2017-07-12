@@ -55,7 +55,7 @@ namespace URWPGSim2D.Strategy
         Decision[] preDecisions = null;     
         private int flag = 0;//主函数标志值
         private int timeflag = 0;
-        private int remainRecord = 0;
+        //private int remainRecord = 0;
         private int[] zeroflag = new int[10];
         private int[] flyflag = new int[10];
         
@@ -172,26 +172,26 @@ namespace URWPGSim2D.Strategy
             float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼使用Dribble函数游到指定位置
-            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 30, 10, 60, 14, 5, 10, msPerCycle, true);
-            if (isDirectionRight(AD1, fish2Direction) == 0) decisions[1].TCode = 0; else if (isDirectionRight(AD1, fish2Direction) == -1) decisions[1].TCode = 6; else decisions[1].TCode = 8;
+            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 30, 15, 120, 14, 9, 10, msPerCycle, true);
 
             Helpers.Dribble(ref decisions[9], fish10, fish1Location2, (float)2.0769, 30, 30, 30, 14, 12, 5, msPerCycle, true);
             #endregion;
             #region 判断全部鱼在指定位置,完成后flag=1
-            if (getVectorDistance(A2, fish3Location) < 100) { decisions[2].VCode = 2; zeroflag[2] = 1; if (isDirectionRight(AD2, fish3Direction) == 0) { decisions[2].TCode = 0; decisions[2].VCode = 0; } else if (isDirectionRight(AD2, fish3Direction) == 1) decisions[2].TCode = 8; else decisions[2].TCode = 6; }
-            if (getVectorDistance(A3, fish4Location) < 100) { decisions[3].VCode = 2; zeroflag[3] = 1; if (isDirectionRight(AD3, fish4Direction) == 0) { decisions[3].TCode = 0; decisions[3].VCode = 0; } else if (isDirectionRight(AD3, fish4Direction) == 1) decisions[3].TCode = 8; else decisions[3].TCode = 6; }
-            if (getVectorDistance(A4, fish5Location) < 100) { decisions[4].VCode = 2; zeroflag[4] = 1; if (isDirectionRight(AD4, fish5Direction) == 0) { decisions[4].TCode = 0; decisions[4].VCode = 0; } else if (isDirectionRight(AD4, fish5Direction) == 1) decisions[4].TCode = 8; else decisions[4].TCode = 6; }
-            if (getVectorDistance(A5, fish6Location) < 100) { decisions[5].VCode = 2; zeroflag[5] = 1; if (isDirectionRight(AD5, fish6Direction) == 0) { decisions[5].TCode = 0; decisions[5].VCode = 0; } else if (isDirectionRight(AD5, fish6Direction) == 1) decisions[5].TCode = 8; else decisions[5].TCode = 6; }
-            if (getVectorDistance(A6, fish7Location) < 100) { decisions[6].VCode = 2; zeroflag[6] = 1; if (isDirectionRight(AD6, fish7Direction) == 0) { decisions[6].TCode = 0; decisions[6].VCode = 0; } else if (isDirectionRight(AD6, fish7Direction) == 1) decisions[6].TCode = 8; else decisions[6].TCode = 6; }
-            if (getVectorDistance(A7, fish8Location) < 100) { decisions[7].VCode = 2; zeroflag[7] = 1; if (isDirectionRight(AD7, fish8Direction) == 0) { decisions[7].TCode = 0; decisions[7].VCode = 0; } else if (isDirectionRight(AD7, fish8Direction) == 1) decisions[7].TCode = 8; else decisions[7].TCode = 6; }
-            if (getVectorDistance(A8, fish9Location) < 100) { decisions[8].VCode = 2; zeroflag[8] = 1; if (isDirectionRight(AD8, fish9Direction) == 0) { decisions[8].TCode = 0; decisions[8].VCode = 0; } else if (isDirectionRight(AD8, fish9Direction) == 1) decisions[8].TCode = 8; else decisions[8].TCode = 6; }
+            if (getVectorDistance(A1, fish2Location) < 100) { decisions[1].VCode = 1; zeroflag[1] = 1; if (isDirectionRight(AD1, fish2Direction) == 0) { decisions[1].TCode = 0; decisions[1].VCode = 0; zeroflag[1] = 2; } else if (isDirectionRight(AD1, fish2Direction) == 1) decisions[1].TCode = 8; else decisions[1].TCode = 6; }
+            if (getVectorDistance(A2, fish3Location) < 100) { decisions[2].VCode = 1; zeroflag[2] = 1; if (isDirectionRight(AD2, fish3Direction) == 0) { decisions[2].TCode = 0; decisions[2].VCode = 0; zeroflag[2] = 2; } else if (isDirectionRight(AD2, fish3Direction) == 1) decisions[2].TCode = 8; else decisions[2].TCode = 6; }
+            if (getVectorDistance(A3, fish4Location) < 100) { decisions[3].VCode = 1; zeroflag[3] = 1; if (isDirectionRight(AD3, fish4Direction) == 0) { decisions[3].TCode = 0; decisions[3].VCode = 0; zeroflag[3] = 2; } else if (isDirectionRight(AD3, fish4Direction) == 1) decisions[3].TCode = 8; else decisions[3].TCode = 6; }
+            if (getVectorDistance(A4, fish5Location) < 100) { decisions[4].VCode = 1; zeroflag[4] = 1; if (isDirectionRight(AD4, fish5Direction) == 0) { decisions[4].TCode = 0; decisions[4].VCode = 0; zeroflag[4] = 2; } else if (isDirectionRight(AD4, fish5Direction) == 1) decisions[4].TCode = 8; else decisions[4].TCode = 6; }
+            if (getVectorDistance(A5, fish6Location) < 100) { decisions[5].VCode = 1; zeroflag[5] = 1; if (isDirectionRight(AD5, fish6Direction) == 0) { decisions[5].TCode = 0; decisions[5].VCode = 0; zeroflag[5] = 2; } else if (isDirectionRight(AD5, fish6Direction) == 1) decisions[5].TCode = 8; else decisions[5].TCode = 6; }
+            if (getVectorDistance(A6, fish7Location) < 100) { decisions[6].VCode = 1; zeroflag[6] = 1; if (isDirectionRight(AD6, fish7Direction) == 0) { decisions[6].TCode = 0; decisions[6].VCode = 0; zeroflag[6] = 2; } else if (isDirectionRight(AD6, fish7Direction) == 1) decisions[6].TCode = 8; else decisions[6].TCode = 6; }
+            if (getVectorDistance(A7, fish8Location) < 100) { decisions[7].VCode = 1; zeroflag[7] = 1; if (isDirectionRight(AD7, fish8Direction) == 0) { decisions[7].TCode = 0; decisions[7].VCode = 0; zeroflag[7] = 2; } else if (isDirectionRight(AD7, fish8Direction) == 1) decisions[7].TCode = 8; else decisions[7].TCode = 6; }
+            if (getVectorDistance(A8, fish9Location) < 100) { decisions[8].VCode = 1; zeroflag[8] = 1; if (isDirectionRight(AD8, fish9Direction) == 0) { decisions[8].TCode = 0; decisions[8].VCode = 0; zeroflag[8] = 2; } else if (isDirectionRight(AD8, fish9Direction) == 1) decisions[8].TCode = 8; else decisions[8].TCode = 6; }
 
             if (getVectorDistance(A1, fish2Location) > 120) zeroflag[1] = 0;
             if (getVectorDistance(A2, fish3Location) > 120) zeroflag[2] = 0;
@@ -204,20 +204,20 @@ namespace URWPGSim2D.Strategy
 
 
 
-            if (timeflag != 1 && zeroflag[1] == 1 && zeroflag[2] == 1 && zeroflag[3] == 1 && zeroflag[4] == 1 && zeroflag[5] == 1 && zeroflag[6] == 1 && zeroflag[7] == 1 && zeroflag[8] == 1) 
+            if (timeflag != 1 && zeroflag[1] == 2 && zeroflag[2] == 2 && zeroflag[3] == 2 && zeroflag[4] == 2 && zeroflag[5] == 2 && zeroflag[6] == 2 && zeroflag[7] == 2 && zeroflag[8] == 2)  
                 timeflag ++;
            
             if (timeflag>=1)
             {
                 timeflag ++;
             }
-            /*if(timeflag==1||timeflag==2)
+            if (zeroflag[1] == 1 || zeroflag[2] == 1 || zeroflag[3] == 1 || zeroflag[4] == 1 || zeroflag[5] == 1 || zeroflag[6] == 1 || zeroflag[7] == 1 || zeroflag[8] == 1) 
             {
                 StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
-                log.WriteLine(remainRecord);
-                log.WriteLine(mission.CommonPara.RemainingCycles);
+                for (int i = 1; i < 10; i++)
+                    log.WriteLine(mission.TeamsRef[teamId].Fishes[i].BodyDirectionRad);
                 log.Close();
-            }*/
+            }
             if (timeflag >= 30)
             {
                 timeflag = 0;
