@@ -172,35 +172,36 @@ namespace URWPGSim2D.Strategy
             float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼使用Dribble函数游到指定位置
-            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 30, 10, 60, 14, 5, 18, msPerCycle, true);
-            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 30, 10, 60, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 30, 10, 60, 14, 5, 10, msPerCycle, true);
+            if (isDirectionRight(AD1, fish2Direction) == 0) decisions[1].TCode = 0; else if (isDirectionRight(AD1, fish2Direction) == -1) decisions[1].TCode = 6; else decisions[1].TCode = 8;
 
             Helpers.Dribble(ref decisions[9], fish10, fish1Location2, (float)2.0769, 30, 30, 30, 14, 12, 5, msPerCycle, true);
             #endregion;
             #region 判断全部鱼在指定位置,完成后flag=1
-            if (isDirectionRight(fish2Direction, AD1) == 0 && getVectorDistance(A1, fish2Location) < 45) { decisions[1].VCode = 0; zeroflag[1] = 1; decisions[1].TCode = 7; }
-            if (isDirectionRight(fish3Direction, AD2) == 0 && getVectorDistance(A2, fish3Location) < 45) { decisions[2].VCode = 0; zeroflag[2] = 1; decisions[2].TCode = 7; }
-            if (isDirectionRight(fish4Direction, AD3) == 0 && getVectorDistance(A3, fish4Location) < 45) { decisions[3].VCode = 0; zeroflag[3] = 1; decisions[3].TCode = 7; }
-            if (isDirectionRight(fish5Direction, AD4) == 0 && getVectorDistance(A4, fish5Location) < 45) { decisions[4].VCode = 0; zeroflag[4] = 1; decisions[4].TCode = 7; }
-            if (isDirectionRight(fish6Direction, AD5) == 0 && getVectorDistance(A5, fish6Location) < 45) { decisions[5].VCode = 0; zeroflag[5] = 1; decisions[5].TCode = 7; }
-            if (isDirectionRight(fish7Direction, AD6) == 0 && getVectorDistance(A6, fish7Location) < 45) { decisions[6].VCode = 0; zeroflag[6] = 1; decisions[6].TCode = 7; }
-            if (isDirectionRight(fish8Direction, AD7) == 0 && getVectorDistance(A7, fish8Location) < 45) { decisions[7].VCode = 0; zeroflag[7] = 1; decisions[7].TCode = 7; }
-            if (isDirectionRight(fish9Direction, AD8) == 0 && getVectorDistance(A8, fish9Location) < 45) { decisions[8].VCode = 0; zeroflag[8] = 1; decisions[8].TCode = 7; }
+            if (getVectorDistance(A2, fish3Location) < 100) { decisions[2].VCode = 2; zeroflag[2] = 1; if (isDirectionRight(AD2, fish3Direction) == 0) { decisions[2].TCode = 0; decisions[2].VCode = 0; } else if (isDirectionRight(AD2, fish3Direction) == 1) decisions[2].TCode = 8; else decisions[2].TCode = 6; }
+            if (getVectorDistance(A3, fish4Location) < 100) { decisions[3].VCode = 2; zeroflag[3] = 1; if (isDirectionRight(AD3, fish4Direction) == 0) { decisions[3].TCode = 0; decisions[3].VCode = 0; } else if (isDirectionRight(AD3, fish4Direction) == 1) decisions[3].TCode = 8; else decisions[3].TCode = 6; }
+            if (getVectorDistance(A4, fish5Location) < 100) { decisions[4].VCode = 2; zeroflag[4] = 1; if (isDirectionRight(AD4, fish5Direction) == 0) { decisions[4].TCode = 0; decisions[4].VCode = 0; } else if (isDirectionRight(AD4, fish5Direction) == 1) decisions[4].TCode = 8; else decisions[4].TCode = 6; }
+            if (getVectorDistance(A5, fish6Location) < 100) { decisions[5].VCode = 2; zeroflag[5] = 1; if (isDirectionRight(AD5, fish6Direction) == 0) { decisions[5].TCode = 0; decisions[5].VCode = 0; } else if (isDirectionRight(AD5, fish6Direction) == 1) decisions[5].TCode = 8; else decisions[5].TCode = 6; }
+            if (getVectorDistance(A6, fish7Location) < 100) { decisions[6].VCode = 2; zeroflag[6] = 1; if (isDirectionRight(AD6, fish7Direction) == 0) { decisions[6].TCode = 0; decisions[6].VCode = 0; } else if (isDirectionRight(AD6, fish7Direction) == 1) decisions[6].TCode = 8; else decisions[6].TCode = 6; }
+            if (getVectorDistance(A7, fish8Location) < 100) { decisions[7].VCode = 2; zeroflag[7] = 1; if (isDirectionRight(AD7, fish8Direction) == 0) { decisions[7].TCode = 0; decisions[7].VCode = 0; } else if (isDirectionRight(AD7, fish8Direction) == 1) decisions[7].TCode = 8; else decisions[7].TCode = 6; }
+            if (getVectorDistance(A8, fish9Location) < 100) { decisions[8].VCode = 2; zeroflag[8] = 1; if (isDirectionRight(AD8, fish9Direction) == 0) { decisions[8].TCode = 0; decisions[8].VCode = 0; } else if (isDirectionRight(AD8, fish9Direction) == 1) decisions[8].TCode = 8; else decisions[8].TCode = 6; }
 
-            if (getVectorDistance(A1, fish2Location) > 60) zeroflag[1] = 0;
-            if (getVectorDistance(A2, fish3Location) > 60) zeroflag[2] = 0;
-            if (getVectorDistance(A3, fish4Location) > 60) zeroflag[3] = 0;
-            if (getVectorDistance(A4, fish5Location) > 60) zeroflag[4] = 0;
-            if (getVectorDistance(A5, fish6Location) > 60) zeroflag[5] = 0;
-            if (getVectorDistance(A6, fish7Location) > 60) zeroflag[6] = 0;
-            if (getVectorDistance(A7, fish8Location) > 60) zeroflag[7] = 0;
-            if (getVectorDistance(A8, fish9Location) > 60) zeroflag[8] = 0;
+            if (getVectorDistance(A1, fish2Location) > 120) zeroflag[1] = 0;
+            if (getVectorDistance(A2, fish3Location) > 120) zeroflag[2] = 0;
+            if (getVectorDistance(A3, fish4Location) > 120) zeroflag[3] = 0;
+            if (getVectorDistance(A4, fish5Location) > 120) zeroflag[4] = 0;
+            if (getVectorDistance(A5, fish6Location) > 120) zeroflag[5] = 0;
+            if (getVectorDistance(A6, fish7Location) > 120) zeroflag[6] = 0;
+            if (getVectorDistance(A7, fish8Location) > 120) zeroflag[7] = 0;
+            if (getVectorDistance(A8, fish9Location) > 120) zeroflag[8] = 0;
+
 
 
             if (timeflag != 1 && zeroflag[1] == 1 && zeroflag[2] == 1 && zeroflag[3] == 1 && zeroflag[4] == 1 && zeroflag[5] == 1 && zeroflag[6] == 1 && zeroflag[7] == 1 && zeroflag[8] == 1) 
