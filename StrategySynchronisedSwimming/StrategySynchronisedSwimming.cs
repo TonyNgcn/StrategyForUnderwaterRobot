@@ -172,14 +172,14 @@ namespace URWPGSim2D.Strategy
             float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼使用Dribble函数游到指定位置
-            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 10, 6, 45, 14, 2, 18, msPerCycle, true);
-            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 10, 6, 45, 14, 2, 18, msPerCycle, true);
+            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[2] == 0) Helpers.Dribble(ref decisions[2], fish3, A2, AD2, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[3] == 0) Helpers.Dribble(ref decisions[3], fish4, A3, AD3, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[4] == 0) Helpers.Dribble(ref decisions[4], fish5, A4, AD4, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[5] == 0) Helpers.Dribble(ref decisions[5], fish6, A5, AD5, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[6] == 0) Helpers.Dribble(ref decisions[6], fish7, A6, AD6, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[7] == 0) Helpers.Dribble(ref decisions[7], fish8, A7, AD7, 10, 6, 150, 14, 5, 18, msPerCycle, true);
+            if (zeroflag[8] == 0) Helpers.Dribble(ref decisions[8], fish9, A8, AD8, 10, 6, 150, 14, 5, 18, msPerCycle, true);
 
             Helpers.Dribble(ref decisions[9], fish10, fish1Location2, (float)2.0769, 30, 20, 0, 14, 12, 5, msPerCycle, true);
             #endregion;
