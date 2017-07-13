@@ -56,9 +56,12 @@ namespace URWPGSim2D.Strategy
         private int flag = 0;//主函数标志值
         private int timeflag = 0;
         //private int remainRecord = 0;
-        private int[] zeroflag = new int[10];
-        private int[] flyflag = new int[10];
-        
+        //private int[] zeroflag = new int[10];
+        //private int[] flyflag = new int[10];
+        private static int[] hillflag = new int[11];
+
+
+
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -66,7 +69,7 @@ namespace URWPGSim2D.Strategy
         /// <param name="teamId">当前队伍在服务端运行着的仿真使命中所处的编号 
         /// 用于作为索引访问Mission对象的TeamsRef队伍列表中代表当前队伍的元素</param>
         /// <returns>当前队伍所有仿真机器鱼的决策数据构成的Decision数组对象</returns>
-       #region 旧代码
+        #region 旧代码
         /* #region 心形函数
 
       public void Heart(ref Mission mission, int teamId, ref Decision[] decision)
@@ -326,7 +329,114 @@ namespace URWPGSim2D.Strategy
         }
         #endregion
           */
-    #endregion
+        #endregion
+
+        #region 山字
+        public static void hillCharacter(ref Mission mission, int teamId, ref Decision[] decisions)
+         {
+            #region 声明变量
+            int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
+            #region 一堆鱼
+            RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
+            RoboFish fish3 = mission.TeamsRef[teamId].Fishes[2];
+            RoboFish fish4 = mission.TeamsRef[teamId].Fishes[3];
+            RoboFish fish5 = mission.TeamsRef[teamId].Fishes[4];
+            RoboFish fish6 = mission.TeamsRef[teamId].Fishes[5];
+            RoboFish fish7 = mission.TeamsRef[teamId].Fishes[6];
+            RoboFish fish8 = mission.TeamsRef[teamId].Fishes[7];
+            RoboFish fish9 = mission.TeamsRef[teamId].Fishes[8];
+            RoboFish fish10 = mission.TeamsRef[teamId].Fishes[9];
+            #endregion
+            #endregion
+            #region 构成山字的目标点
+            xna.Vector3 hill21 = new xna.Vector3(-1404, 0, 516);
+            xna.Vector3 hill3 = new xna.Vector3(-726, 0, 570);
+            xna.Vector3 hill4 = new xna.Vector3(108, 0, -702);
+            xna.Vector3 hill5 = new xna.Vector3(108, 0, -156);
+            xna.Vector3 hill6 = new xna.Vector3(108, 0, 534);
+            xna.Vector3 hill7 = new xna.Vector3(-390, 0, 996);
+            xna.Vector3 hill8 = new xna.Vector3(216, 0, 996);
+            xna.Vector3 hill9 = new xna.Vector3(834, 0, 996);
+            xna.Vector3 hill10 = new xna.Vector3(948, 0, 564);
+            xna.Vector3 hill22 = new xna.Vector3(204, 0, -1122);
+            xna.Vector3 hill23 = new xna.Vector3(1644, 0, 648);
+            #endregion
+            #region 构成山字的目标角度
+            float HD21 = (float)-1.0472;
+            float HD3 = (float)-1.5708;
+            float HD4 = (float)-1.5708;
+            float HD5 = (float)-1.5708;
+            float HD6 = (float)-1.5708;
+            float HD7 = 0;
+            float HD8 = 0;
+            float HD9 = 0;
+            float HD10 = (float)-1.5708;
+            float HD22 = 0;
+            float HD23 = (float)0.7854;
+            #endregion
+            #region 获取鱼的位置
+            xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
+            xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
+            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
+            xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
+            xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
+            xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
+            xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
+            xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
+            xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
+            xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
+            xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
+            #endregion
+            #region 获取鱼的角度
+            float fish1Direction = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
+            float fish2Direction = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
+            float fish3Direction = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
+            float fish4Direction = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
+            float fish5Direction = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
+            float fish6Direction = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
+            float fish7Direction = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
+            float fish8Direction = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
+            float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
+            float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
+            #endregion
+            #region 一堆鱼使用Dribble函数游到指定位置
+            if (hillflag[2] == 0) Helpers.Dribble(ref decisions[1], fish2, hill21, HD21, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[2] == 3) Helpers.Dribble(ref decisions[1], fish2, hill22, HD22, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[2] == 5) Helpers.Dribble(ref decisions[1], fish2, hill23, HD23, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[3] == 0) Helpers.Dribble(ref decisions[2], fish3, hill3, HD3, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[4] == 0) Helpers.Dribble(ref decisions[3], fish4, hill4, HD4, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[5] == 0) Helpers.Dribble(ref decisions[4], fish5, hill5, HD5, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[6] == 0) Helpers.Dribble(ref decisions[5], fish6, hill6, HD6, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[7] == 0) Helpers.Dribble(ref decisions[6], fish7, hill7, HD7, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[8] == 0) Helpers.Dribble(ref decisions[7], fish8, hill8, HD8, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[9] == 0) Helpers.Dribble(ref decisions[8], fish9, hill9, HD9, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[10] == 0) Helpers.Dribble(ref decisions[9], fish10, hill10, HD10, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            #endregion;
+            #region 判断是否到达目标点
+            if (getVectorDistance(hill21, fish2Location) < 100) { decisions[1].VCode = 1; hillflag[2] = 1; if (isDirectionRight(HD21, fish2Direction) == 0) { decisions[1].TCode = 0; decisions[1].VCode = 0; hillflag[2] = 2; } else if (isDirectionRight(HD21, fish2Direction) == 1) decisions[1].TCode = 8; else decisions[1].TCode = 6; }
+            if (getVectorDistance(hill3, fish3Location) < 100) { decisions[2].VCode = 1; hillflag[3] = 1; if (isDirectionRight(HD3, fish3Direction) == 0) { decisions[2].TCode = 0; decisions[2].VCode = 0; hillflag[3] = 2; } else if (isDirectionRight(HD3, fish3Direction) == 1) decisions[2].TCode = 8; else decisions[2].TCode = 6; }
+            if (getVectorDistance(hill4, fish4Location) < 100) { decisions[3].VCode = 1; hillflag[4] = 1; if (isDirectionRight(HD4, fish4Direction) == 0) { decisions[3].TCode = 0; decisions[3].VCode = 0; hillflag[4] = 2; } else if (isDirectionRight(HD4, fish4Direction) == 1) decisions[3].TCode = 8; else decisions[3].TCode = 6; }
+            if (getVectorDistance(hill5, fish5Location) < 100) { decisions[4].VCode = 1; hillflag[5] = 1; if (isDirectionRight(HD5, fish5Direction) == 0) { decisions[4].TCode = 0; decisions[4].VCode = 0; hillflag[5] = 2; } else if (isDirectionRight(HD5, fish5Direction) == 1) decisions[4].TCode = 8; else decisions[4].TCode = 6; }
+            if (getVectorDistance(hill6, fish6Location) < 100) { decisions[5].VCode = 1; hillflag[6] = 1; if (isDirectionRight(HD6, fish6Direction) == 0) { decisions[5].TCode = 0; decisions[5].VCode = 0; hillflag[6] = 2; } else if (isDirectionRight(HD6, fish6Direction) == 1) decisions[5].TCode = 8; else decisions[5].TCode = 6; }
+            if (getVectorDistance(hill7, fish7Location) < 100) { decisions[6].VCode = 1; hillflag[7] = 1; if (isDirectionRight(HD7, fish7Direction) == 0) { decisions[6].TCode = 0; decisions[6].VCode = 0; hillflag[7] = 2; } else if (isDirectionRight(HD7, fish7Direction) == 1) decisions[6].TCode = 8; else decisions[6].TCode = 6; }
+            if (getVectorDistance(hill8, fish8Location) < 100) { decisions[7].VCode = 1; hillflag[8] = 1; if (isDirectionRight(HD8, fish8Direction) == 0) { decisions[7].TCode = 0; decisions[7].VCode = 0; hillflag[8] = 2; } else if (isDirectionRight(HD8, fish8Direction) == 1) decisions[7].TCode = 8; else decisions[7].TCode = 6; }
+            if (getVectorDistance(hill9, fish9Location) < 100) { decisions[8].VCode = 1; hillflag[9] = 1; if (isDirectionRight(HD9, fish9Direction) == 0) { decisions[8].TCode = 0; decisions[8].VCode = 0; hillflag[9] = 2; } else if (isDirectionRight(HD9, fish9Direction) == 1) decisions[8].TCode = 8; else decisions[8].TCode = 6; }
+            if (getVectorDistance(hill10, fish10Location) < 100) { decisions[9].VCode = 1; hillflag[10] = 1; if (isDirectionRight(HD10, fish10Direction) == 0) { decisions[9].TCode = 0; decisions[9].VCode = 0; hillflag[10] = 2; } else if (isDirectionRight(HD10, fish10Direction) == 1) decisions[9].TCode = 8; else decisions[9].TCode = 6; }
+
+            if (getVectorDistance(hill21, fish2Location) > 120) hillflag[2] = 0;
+            if (getVectorDistance(hill3, fish3Location) > 120) hillflag[3] = 0;
+            if (getVectorDistance(hill4, fish4Location) > 120) hillflag[4] = 0;
+            if (getVectorDistance(hill5, fish5Location) > 120) hillflag[5] = 0;
+            if (getVectorDistance(hill6, fish6Location) > 120) hillflag[6] = 0;
+            if (getVectorDistance(hill7, fish7Location) > 120) hillflag[7] = 0;
+            if (getVectorDistance(hill8, fish8Location) > 120) hillflag[8] = 0;
+            if (getVectorDistance(hill9, fish9Location) > 120) hillflag[9] = 0;
+            if (getVectorDistance(hill10, fish10Location) > 120) hillflag[10] = 0;
+
+            #endregion
+
+        }
+        #endregion
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -390,9 +500,10 @@ namespace URWPGSim2D.Strategy
 
             #endregion
 
-            /*
+            
             if (flag==0)
-                Zero(ref mission, teamId, ref decisions);
+                hillCharacter(ref mission, teamId, ref decisions);
+            /*
             if(flag==1)
                 FlyCharacter(ref mission, teamId, ref decisions);
 
