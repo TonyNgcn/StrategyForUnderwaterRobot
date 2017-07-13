@@ -66,6 +66,7 @@ namespace URWPGSim2D.Strategy
         /// <param name="teamId">当前队伍在服务端运行着的仿真使命中所处的编号 
         /// 用于作为索引访问Mission对象的TeamsRef队伍列表中代表当前队伍的元素</param>
         /// <returns>当前队伍所有仿真机器鱼的决策数据构成的Decision数组对象</returns>
+       #region 旧代码
         /* #region 心形函数
 
       public void Heart(ref Mission mission, int teamId, ref Decision[] decision)
@@ -108,7 +109,7 @@ namespace URWPGSim2D.Strategy
              #endregion;
          }
          #endregion
-          */
+
         #region 0形函数
         public void Zero(ref Mission mission,int teamId,ref Decision[] decisions)
          {
@@ -211,13 +212,14 @@ namespace URWPGSim2D.Strategy
             {
                 timeflag ++;
             }
-            if (zeroflag[1] == 1 || zeroflag[2] == 1 || zeroflag[3] == 1 || zeroflag[4] == 1 || zeroflag[5] == 1 || zeroflag[6] == 1 || zeroflag[7] == 1 || zeroflag[8] == 1) 
-            {
-                StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
-                for (int i = 1; i < 10; i++)
-                    log.WriteLine(mission.TeamsRef[teamId].Fishes[i].BodyDirectionRad);
-                log.Close();
-            }
+           // if (zeroflag[1] == 1 || zeroflag[2] == 1 || zeroflag[3] == 1 || zeroflag[4] == 1 || zeroflag[5] == 1 || zeroflag[6] == 1 || zeroflag[7] == 1 || zeroflag[8] == 1) 
+            //{
+              //  StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
+                //for (int i = 1; i < 10; i++)
+                  //  log.WriteLine(i+'='+mission.TeamsRef[teamId].Fishes[i].BodyDirectionRad);
+                //log.Close();
+            //}
+
             if (timeflag >= 30)
             {
                 timeflag = 0;
@@ -323,7 +325,8 @@ namespace URWPGSim2D.Strategy
             #endregion
         }
         #endregion
-
+          */
+    #endregion
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -384,57 +387,15 @@ namespace URWPGSim2D.Strategy
             //}
             //====================我是华丽的分割线====================//
             #endregion
-            //请从这里开始编写代码
-            /*
-             #region 获取鱼的位置
-             xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
-             xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
-             xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
-             xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
-             xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
-             xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
-             xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
-             xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
-             xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
-             xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
-             #endregion
 
-             #region 获取鱼的角度
-             float fish1Rad = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
-             float fish2Rad = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
-             float fish3Rad = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
-             float fish4Rad = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
-             float fish5Rad = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
-             float fish6Rad = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
-             float fish7Rad = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
-             float fish8Rad = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
-             float fish9Rad = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
-             float fish10Rad = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
-             #endregion
-
-             #region 获取鱼的速度
-             float fish1Speed = mission.TeamsRef[teamId].Fishes[0].VelocityMmPs;
-             float fish2Speed = mission.TeamsRef[teamId].Fishes[1].VelocityMmPs;
-             float fish3Speed = mission.TeamsRef[teamId].Fishes[2].VelocityMmPs;
-             float fish4Speed = mission.TeamsRef[teamId].Fishes[3].VelocityMmPs;
-             float fish5Speed = mission.TeamsRef[teamId].Fishes[4].VelocityMmPs;
-             float fish6Speed = mission.TeamsRef[teamId].Fishes[5].VelocityMmPs;
-             float fish7Speed = mission.TeamsRef[teamId].Fishes[6].VelocityMmPs;
-             float fish8Speed = mission.TeamsRef[teamId].Fishes[7].VelocityMmPs;
-             float fish9Speed = mission.TeamsRef[teamId].Fishes[8].VelocityMmPs;
-             float fish10Speed = mission.TeamsRef[teamId].Fishes[9].VelocityMmPs;
-             #endregion
-
-
-
-
-        */
             #endregion
-            if(flag==0)
+
+            /*
+            if (flag==0)
                 Zero(ref mission, teamId, ref decisions);
             if(flag==1)
                 FlyCharacter(ref mission, teamId, ref decisions);
-            /*
+
             xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
             xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
             xna.Vector3 A1 = new xna.Vector3(-12, 0, -696);
