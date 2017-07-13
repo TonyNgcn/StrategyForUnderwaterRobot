@@ -40,21 +40,22 @@ namespace URWPGSim2D.Strategy
         }
         public static int isDirectionRight(float a, float b)
         {
-            while (a > Math.PI) a -= (float)(2 * Math.PI);
-            while (b > Math.PI) b -= (float)(2 * Math.PI);
-            while (a < -Math.PI) a += (float)(2 * Math.PI);
-            while (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.12) return 1;//a在b右边
-            else if (a - b < -0.12) return -1; //a在b左边
+            if (a > Math.PI) a -= (float)(2 * Math.PI);
+            if (b > Math.PI) b -= (float)(2 * Math.PI);
+            if (a < -Math.PI) a += (float)(2 * Math.PI);
+            if (b < -Math.PI) b += (float)(2 * Math.PI);
+            if (a - b > 0.2) return 1;//a在b右边
+            else if (a - b < -0.2) return -1; //a在b左边
             else return 0;
         }
         public static float getVectorDistance(xna.Vector3 a, xna.Vector3 b)
         {
-            return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2) + Math.Pow((a.Z - b.Z), 2)));
+            return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
         }
         Decision[] preDecisions = null;     
         private int flag = 0;//主函数标志值
         private int timeflag = 0;
+        private static int[] timeForPoseToPose = new int[11];
         //private int remainRecord = 0;
         //private int[] zeroflag = new int[10];
         //private int[] flyflag = new int[10];
@@ -400,38 +401,38 @@ namespace URWPGSim2D.Strategy
             float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼使用Dribble函数游到指定位置
-            if (hillflag[2] == 0) Helpers.Dribble(ref decisions[1], fish2, hill21, HD21, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[2] == 3) Helpers.Dribble(ref decisions[1], fish2, hill22, HD22, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[2] == 5) Helpers.Dribble(ref decisions[1], fish2, hill23, HD23, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[3] == 0) Helpers.Dribble(ref decisions[2], fish3, hill3, HD3, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[4] == 0) Helpers.Dribble(ref decisions[3], fish4, hill4, HD4, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[5] == 0) Helpers.Dribble(ref decisions[4], fish5, hill5, HD5, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[6] == 0) Helpers.Dribble(ref decisions[5], fish6, hill6, HD6, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[7] == 0) Helpers.Dribble(ref decisions[6], fish7, hill7, HD7, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[8] == 0) Helpers.Dribble(ref decisions[7], fish8, hill8, HD8, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[9] == 0) Helpers.Dribble(ref decisions[8], fish9, hill9, HD9, 30, 15, 120, 14, 9, 10, msPerCycle, true);
-            if (hillflag[10] == 0) Helpers.Dribble(ref decisions[9], fish10, hill10, HD10, 30, 15, 120, 14, 9, 10, msPerCycle, true);
+            if (hillflag[2] == 0) Helpers.PoseToPose(ref decisions[1], fish2, hill21, HD21, 40, 200, msPerCycle, ref timeForPoseToPose[2]);
+            if (hillflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, hill3, HD3, 40, 200, msPerCycle, ref timeForPoseToPose[3]);
+            if (hillflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, hill4, HD4, 40, 200, msPerCycle, ref timeForPoseToPose[4]);
+            if (hillflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, hill5, HD5, 40, 200, msPerCycle, ref timeForPoseToPose[5]);
+            if (hillflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, hill6, HD6, 40, 200, msPerCycle, ref timeForPoseToPose[6]);
+            if (hillflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, hill7, HD7, 40, 200, msPerCycle, ref timeForPoseToPose[7]);
+            if (hillflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, hill8, HD8, 40, 200, msPerCycle, ref timeForPoseToPose[8]);
+            if (hillflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, hill9, HD9, 40, 200, msPerCycle, ref timeForPoseToPose[9]);
+            if (hillflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, hill10, HD10, 40, 200, msPerCycle, ref timeForPoseToPose[10]);
+
             #endregion;
             #region 判断是否到达目标点
-            if (getVectorDistance(hill21, fish2Location) < 100) { decisions[1].VCode = 1; hillflag[2] = 1; if (isDirectionRight(HD21, fish2Direction) == 0) { decisions[1].TCode = 0; decisions[1].VCode = 0; hillflag[2] = 2; } else if (isDirectionRight(HD21, fish2Direction) == 1) decisions[1].TCode = 8; else decisions[1].TCode = 6; }
-            if (getVectorDistance(hill3, fish3Location) < 100) { decisions[2].VCode = 1; hillflag[3] = 1; if (isDirectionRight(HD3, fish3Direction) == 0) { decisions[2].TCode = 0; decisions[2].VCode = 0; hillflag[3] = 2; } else if (isDirectionRight(HD3, fish3Direction) == 1) decisions[2].TCode = 8; else decisions[2].TCode = 6; }
-            if (getVectorDistance(hill4, fish4Location) < 100) { decisions[3].VCode = 1; hillflag[4] = 1; if (isDirectionRight(HD4, fish4Direction) == 0) { decisions[3].TCode = 0; decisions[3].VCode = 0; hillflag[4] = 2; } else if (isDirectionRight(HD4, fish4Direction) == 1) decisions[3].TCode = 8; else decisions[3].TCode = 6; }
-            if (getVectorDistance(hill5, fish5Location) < 100) { decisions[4].VCode = 1; hillflag[5] = 1; if (isDirectionRight(HD5, fish5Direction) == 0) { decisions[4].TCode = 0; decisions[4].VCode = 0; hillflag[5] = 2; } else if (isDirectionRight(HD5, fish5Direction) == 1) decisions[4].TCode = 8; else decisions[4].TCode = 6; }
-            if (getVectorDistance(hill6, fish6Location) < 100) { decisions[5].VCode = 1; hillflag[6] = 1; if (isDirectionRight(HD6, fish6Direction) == 0) { decisions[5].TCode = 0; decisions[5].VCode = 0; hillflag[6] = 2; } else if (isDirectionRight(HD6, fish6Direction) == 1) decisions[5].TCode = 8; else decisions[5].TCode = 6; }
-            if (getVectorDistance(hill7, fish7Location) < 100) { decisions[6].VCode = 1; hillflag[7] = 1; if (isDirectionRight(HD7, fish7Direction) == 0) { decisions[6].TCode = 0; decisions[6].VCode = 0; hillflag[7] = 2; } else if (isDirectionRight(HD7, fish7Direction) == 1) decisions[6].TCode = 8; else decisions[6].TCode = 6; }
-            if (getVectorDistance(hill8, fish8Location) < 100) { decisions[7].VCode = 1; hillflag[8] = 1; if (isDirectionRight(HD8, fish8Direction) == 0) { decisions[7].TCode = 0; decisions[7].VCode = 0; hillflag[8] = 2; } else if (isDirectionRight(HD8, fish8Direction) == 1) decisions[7].TCode = 8; else decisions[7].TCode = 6; }
-            if (getVectorDistance(hill9, fish9Location) < 100) { decisions[8].VCode = 1; hillflag[9] = 1; if (isDirectionRight(HD9, fish9Direction) == 0) { decisions[8].TCode = 0; decisions[8].VCode = 0; hillflag[9] = 2; } else if (isDirectionRight(HD9, fish9Direction) == 1) decisions[8].TCode = 8; else decisions[8].TCode = 6; }
-            if (getVectorDistance(hill10, fish10Location) < 100) { decisions[9].VCode = 1; hillflag[10] = 1; if (isDirectionRight(HD10, fish10Direction) == 0) { decisions[9].TCode = 0; decisions[9].VCode = 0; hillflag[10] = 2; } else if (isDirectionRight(HD10, fish10Direction) == 1) decisions[9].TCode = 8; else decisions[9].TCode = 6; }
+            //if (getVectorDistance(hill21, fish2Location) < 100) { decisions[1].VCode = 1; hillflag[2] = 1; if (isDirectionRight(HD21, fish2Direction) == 0) { decisions[1].TCode = 0; decisions[1].VCode = 0; hillflag[2] = 2; } else if (isDirectionRight(HD21, fish2Direction) == 1) decisions[1].TCode = 8; else decisions[1].TCode = 6; }
+            //if (getVectorDistance(hill3, fish3Location) < 100) { decisions[2].VCode = 1; hillflag[3] = 1; if (isDirectionRight(HD3, fish3Direction) == 0) { decisions[2].TCode = 0; decisions[2].VCode = 0; hillflag[3] = 2; } else if (isDirectionRight(HD3, fish3Direction) == 1) decisions[2].TCode = 8; else decisions[2].TCode = 6; }
+            //if (getVectorDistance(hill4, fish4Location) < 100) { decisions[3].VCode = 1; hillflag[4] = 1; if (isDirectionRight(HD4, fish4Direction) == 0) { decisions[3].TCode = 0; decisions[3].VCode = 0; hillflag[4] = 2; } else if (isDirectionRight(HD4, fish4Direction) == 1) decisions[3].TCode = 8; else decisions[3].TCode = 6; }
+            //if (getVectorDistance(hill5, fish5Location) < 100) { decisions[4].VCode = 1; hillflag[5] = 1; if (isDirectionRight(HD5, fish5Direction) == 0) { decisions[4].TCode = 0; decisions[4].VCode = 0; hillflag[5] = 2; } else if (isDirectionRight(HD5, fish5Direction) == 1) decisions[4].TCode = 8; else decisions[4].TCode = 6; }
+            //if (getVectorDistance(hill6, fish6Location) < 100) { decisions[5].VCode = 1; hillflag[6] = 1; if (isDirectionRight(HD6, fish6Direction) == 0) { decisions[5].TCode = 0; decisions[5].VCode = 0; hillflag[6] = 2; } else if (isDirectionRight(HD6, fish6Direction) == 1) decisions[5].TCode = 8; else decisions[5].TCode = 6; }
+            //if (getVectorDistance(hill7, fish7Location) < 100) { decisions[6].VCode = 1; hillflag[7] = 1; if (isDirectionRight(HD7, fish7Direction) == 0) { decisions[6].TCode = 0; decisions[6].VCode = 0; hillflag[7] = 2; } else if (isDirectionRight(HD7, fish7Direction) == 1) decisions[6].TCode = 8; else decisions[6].TCode = 6; }
+            //if (getVectorDistance(hill8, fish8Location) < 100) { decisions[7].VCode = 1; hillflag[8] = 1; if (isDirectionRight(HD8, fish8Direction) == 0) { decisions[7].TCode = 0; decisions[7].VCode = 0; hillflag[8] = 2; } else if (isDirectionRight(HD8, fish8Direction) == 1) decisions[7].TCode = 8; else decisions[7].TCode = 6; }
+            //if (getVectorDistance(hill9, fish9Location) < 100) { decisions[8].VCode = 1; hillflag[9] = 1; if (isDirectionRight(HD9, fish9Direction) == 0) { decisions[8].TCode = 0; decisions[8].VCode = 0; hillflag[9] = 2; } else if (isDirectionRight(HD9, fish9Direction) == 1) decisions[8].TCode = 8; else decisions[8].TCode = 6; }
+            //if (getVectorDistance(hill10, fish10Location) < 100) { decisions[9].VCode = 1; hillflag[10] = 1; if (isDirectionRight(HD10, fish10Direction) == 0) { decisions[9].TCode = 0; decisions[9].VCode = 0; hillflag[10] = 2; } else if (isDirectionRight(HD10, fish10Direction) == 1) decisions[9].TCode = 8; else decisions[9].TCode = 6; }
 
-            if (getVectorDistance(hill21, fish2Location) > 120) hillflag[2] = 0;
-            if (getVectorDistance(hill3, fish3Location) > 120) hillflag[3] = 0;
-            if (getVectorDistance(hill4, fish4Location) > 120) hillflag[4] = 0;
-            if (getVectorDistance(hill5, fish5Location) > 120) hillflag[5] = 0;
-            if (getVectorDistance(hill6, fish6Location) > 120) hillflag[6] = 0;
-            if (getVectorDistance(hill7, fish7Location) > 120) hillflag[7] = 0;
-            if (getVectorDistance(hill8, fish8Location) > 120) hillflag[8] = 0;
-            if (getVectorDistance(hill9, fish9Location) > 120) hillflag[9] = 0;
-            if (getVectorDistance(hill10, fish10Location) > 120) hillflag[10] = 0;
+            if (getVectorDistance(hill21, fish2Location) < 40) hillflag[2] = 1;
+            if (getVectorDistance(hill3, fish3Location) < 40) hillflag[3] = 1;
+            if (getVectorDistance(hill4, fish4Location) < 40) hillflag[4] = 1;
+            if (getVectorDistance(hill5, fish5Location) < 40) hillflag[5] = 1;
+            if (getVectorDistance(hill6, fish6Location) < 40) hillflag[6] = 1;
+            if (getVectorDistance(hill7, fish7Location) < 40) hillflag[7] = 1;
+            if (getVectorDistance(hill8, fish8Location) < 40) hillflag[8] = 1;
+            if (getVectorDistance(hill9, fish9Location) < 40) hillflag[9] = 1;
+            if (getVectorDistance(hill10, fish10Location) < 40) hillflag[10] = 1;
+
 
             #endregion
 

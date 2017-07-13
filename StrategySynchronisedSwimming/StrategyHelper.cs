@@ -320,7 +320,7 @@ namespace URWPGSim2D.StrategyHelper
         {
             return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2) + Math.Pow((a.Z - b.Z), 2)));
         }
-
+        //public static void 
         public static void fishMoving(xna.Vector3 dest, float destRad, ref Decision decision, ref RoboFish fish, ref int flagMoving)
         { 
             xna.Vector3 location = fish.PositionMm;
