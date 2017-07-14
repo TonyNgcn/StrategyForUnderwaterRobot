@@ -48,6 +48,24 @@ namespace URWPGSim2D.Strategy
             else if (a - b < -0.1) return -1; //a在b左边
             else return 0;
         }
+        public static bool allEqual(int[] group, int value, int start, int end)
+        {
+            for (int i = start; i <= end; i++)
+            {
+                if (group[i] != value)
+                {
+                    //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
+                    //log.Write(group[i]);
+                    //log.Write("!=");
+                    //log.Write(value);
+                    //log.Write(' ');
+                    //log.WriteLine("end");
+                    //log.Close();
+                    return false;
+                }
+            }
+            return true;
+        }
         public static void stopFish(ref Decision decision)
         {
             decision.VCode = 0;
@@ -57,14 +75,14 @@ namespace URWPGSim2D.Strategy
         {
             return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
         }
-        Decision[] preDecisions = null;     
+        Decision[] preDecisions = null;
         private int flag = 0;//主函数标志值
         private int timeflag = 0;
-        private static int[] timeForPoseToPose = new int[11];
+        private static int[] timeForPoseToPose = new int[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         //private int remainRecord = 0;
         //private int[] zeroflag = new int[10];
         //private int[] flyflag = new int[10];
-        private static int[] hillflag = new int[11];
+        private static int[] hillflag = new int[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
 
@@ -221,13 +239,13 @@ namespace URWPGSim2D.Strategy
             {
                 timeflag ++;
             }
-           // if (zeroflag[1] == 1 || zeroflag[2] == 1 || zeroflag[3] == 1 || zeroflag[4] == 1 || zeroflag[5] == 1 || zeroflag[6] == 1 || zeroflag[7] == 1 || zeroflag[8] == 1) 
-            //{
-              //  StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
-                //for (int i = 1; i < 10; i++)
-                  //  log.WriteLine(i+'='+mission.TeamsRef[teamId].Fishes[i].BodyDirectionRad);
-                //log.Close();
-            //}
+            if (zeroflag[1] == 1 || zeroflag[2] == 1 || zeroflag[3] == 1 || zeroflag[4] == 1 || zeroflag[5] == 1 || zeroflag[6] == 1 || zeroflag[7] == 1 || zeroflag[8] == 1) 
+            {
+                StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
+                for (int i = 1; i < 10; i++)
+                    log.WriteLine(i+'='+mission.TeamsRef[teamId].Fishes[i].BodyDirectionRad);
+                log.Close();
+            }
 
             if (timeflag >= 30)
             {
@@ -340,6 +358,11 @@ namespace URWPGSim2D.Strategy
         #region 山字
         public static void hillCharacter(ref Mission mission, int teamId, ref Decision[] decisions)
          {
+            //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
+            //log.Write(allEqual(hillflag, 1, 2, 10));
+            //log.Write(' ');
+            //log.WriteLine("end");
+            //log.Close();
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
             #region 一堆鱼
@@ -418,7 +441,7 @@ namespace URWPGSim2D.Strategy
 
             #endregion;
             #region 判断是否到达目标点
-            if (getVectorDistance(hill21, fish2Location) < 100 && isDirectionRight(HD21, fish2Direction) == 0) { hillflag[2] = 1; stopFish(ref decisions[1]); }
+            if (hillflag[0] == 0 && getVectorDistance(hill21, fish2Location) < 100 && isDirectionRight(HD21, fish2Direction) == 0)  { hillflag[2] = 1; stopFish(ref decisions[1]); }
             if (getVectorDistance(hill3, fish3Location) < 100 && isDirectionRight(HD3, fish3Direction) == 0) { hillflag[3] = 1; stopFish(ref decisions[2]); }
             if (getVectorDistance(hill4, fish4Location) < 100 && isDirectionRight(HD4, fish4Direction) == 0) { hillflag[4] = 1; stopFish(ref decisions[3]); }
             if (getVectorDistance(hill5, fish5Location) < 100 && isDirectionRight(HD5, fish5Direction) == 0) { hillflag[5] = 1; stopFish(ref decisions[4]); }
@@ -429,15 +452,38 @@ namespace URWPGSim2D.Strategy
             if (getVectorDistance(hill10, fish10Location) < 100 && isDirectionRight(HD10, fish10Direction) == 0) { hillflag[10] = 1; stopFish(ref decisions[9]); }
             #endregion
             #region 如果达到目标点后被破坏需要修正
-            if (getVectorDistance(hill21, fish2Location) > 200) hillflag[2] = 0;
-            if (getVectorDistance(hill3, fish3Location) > 200) hillflag[3] = 0;
-            if (getVectorDistance(hill4, fish4Location) > 200) hillflag[4] = 0;
-            if (getVectorDistance(hill5, fish5Location) > 200) hillflag[5] = 0;
-            if (getVectorDistance(hill6, fish6Location) > 200) hillflag[6] = 0;
-            if (getVectorDistance(hill7, fish7Location) > 200) hillflag[7] = 0;
-            if (getVectorDistance(hill8, fish8Location) > 200) hillflag[8] = 0;
-            if (getVectorDistance(hill9, fish9Location) > 200) hillflag[9] = 0;
-            if (getVectorDistance(hill10, fish10Location) > 200) hillflag[10] = 0;
+            if (hillflag[0] == 0 && getVectorDistance(hill21, fish2Location) > 150)  hillflag[2] = 0;
+            if (getVectorDistance(hill3, fish3Location) > 150) hillflag[3] = 0;
+            if (getVectorDistance(hill4, fish4Location) > 150) hillflag[4] = 0;
+            if (getVectorDistance(hill5, fish5Location) > 150) hillflag[5] = 0;
+            if (getVectorDistance(hill6, fish6Location) > 150) hillflag[6] = 0;
+            if (getVectorDistance(hill7, fish7Location) > 150) hillflag[7] = 0;
+            if (getVectorDistance(hill8, fish8Location) > 150) hillflag[8] = 0;
+            if (getVectorDistance(hill9, fish9Location) > 150) hillflag[9] = 0;
+            if (getVectorDistance(hill10, fish10Location) > 150) hillflag[10] = 0;
+            #endregion
+            #region 山字第二阶段
+            if (hillflag[0] == 0 && allEqual(hillflag, 1, 2, 10))
+            {
+                hillflag[0] = 1;
+                timeForPoseToPose[2] = 0;
+            }
+            if (hillflag[0] == 1) Helpers.PoseToPose(ref decisions[1], fish2, hill22, HD22, 40f, 200f, msPerCycle, ref timeForPoseToPose[2]);
+            if (getVectorDistance(hill22, fish2Location) < 100)  { hillflag[0] = 2; stopFish(ref decisions[1]); }
+            if (hillflag[0] == 2 && getVectorDistance(hill22, fish2Location) > 200) hillflag[0] = 1;
+            if (hillflag[0] == 2 && allEqual(hillflag, 1, 3, 10))
+            {
+                hillflag[1] = 1;
+                hillflag[0] = 3;
+                timeForPoseToPose[2] = 0;
+            }
+            #endregion
+            #region 山字第三阶段
+            if (hillflag[1] == 1) Helpers.PoseToPose(ref decisions[1], fish2, hill23, HD23, 40f, 200f, msPerCycle, ref timeForPoseToPose[2]);
+            if (getVectorDistance(hill23, fish2Location) < 100)  { hillflag[1] = 2; stopFish(ref decisions[1]); }
+            if (hillflag[1] == 2 && getVectorDistance(hill23, fish2Location) > 200) hillflag[1] = 1;
+            if (hillflag[1] == 2 && allEqual(hillflag, 1, 3, 10))
+                hillflag[1] = 3;
             #endregion
 
         }
