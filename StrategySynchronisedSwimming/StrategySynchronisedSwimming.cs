@@ -69,8 +69,8 @@ namespace URWPGSim2D.Strategy
             return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
         }
         Decision[] preDecisions = null;
-        private int flag = 1;//主函数标志值
-        //private int timeflag = 0;
+        private static int flag = 0;//主函数标志值
+        private static int timeflag = 0;
         private static int[] timeForPoseToPose = new int[11];
         //private int remainRecord = 0;
         //private int[] zeroflag = new int[10];
@@ -474,7 +474,18 @@ namespace URWPGSim2D.Strategy
             if (hillflag[1] == 2 && allEqual(hillflag, 1, 3, 10))
                 hillflag[1] = 3;
             #endregion
-
+            #region 定住5s，进入下一函数
+            if (hillflag[1] == 3)
+            {
+                timeflag++;
+                if (timeflag >= 50)
+                {
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    flag++;
+                }
+            }
+            #endregion
         }
         #endregion
         #region 数字1
