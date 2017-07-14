@@ -44,8 +44,8 @@ namespace URWPGSim2D.Strategy
             if (b > Math.PI) b -= (float)(2 * Math.PI);
             if (a < -Math.PI) a += (float)(2 * Math.PI);
             if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.1) return 1;//a在b右边
-            else if (a - b < -0.1) return -1; //a在b左边
+            if (a - b > 0.08) return 1;//a在b右边
+            else if (a - b < -0.08) return -1; //a在b左边
             else return 0;
         }
         public static bool allEqual(int[] group, int value, int start, int end)
@@ -495,7 +495,7 @@ namespace URWPGSim2D.Strategy
             #endregion
             #endregion
             #region 构成数字1的目标点
-            xna.Vector3 one2 = new xna.Vector3(1134, 0, -300);
+            xna.Vector3 one2 = new xna.Vector3(1614, 0, -420);
             xna.Vector3 one3 = new xna.Vector3(-138, 0, -726);
             xna.Vector3 one4 = new xna.Vector3(108, 0, -702);
             xna.Vector3 one5 = new xna.Vector3(108, 0, -156);
@@ -503,18 +503,18 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 one7 = new xna.Vector3(-390, 0, 990);
             xna.Vector3 one8 = new xna.Vector3(216, 0, 996);
             xna.Vector3 one9 = new xna.Vector3(810, 0, 984);
-            xna.Vector3 one10 = new xna.Vector3(1482, 0, -456);
+            xna.Vector3 one10 = new xna.Vector3(1182, 0, -432);
             #endregion
             #region 构成数字1的目标角度
-            float OD2 = (float)2.0944;
+            float OD2 = (float)-2.0944;
             float OD3 = (float)-1.0472;
             float OD4 = (float)-1.5708;
             float OD5 = (float)-1.5708;
             float OD6 = (float)-1.5708;
-            float OD7 = 0;
-            float OD8 = 0;
-            float OD9 = 0;
-            float OD10 = (float)-2.0944;
+            float OD7 = (float)0;
+            float OD8 = (float)0;
+            float OD9 = (float)0;
+            float OD10 = (float)-1.0472;
             #endregion
             #region 获取鱼的位置
             xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
