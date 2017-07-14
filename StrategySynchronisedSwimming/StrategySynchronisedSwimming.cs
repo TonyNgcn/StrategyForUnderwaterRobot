@@ -68,6 +68,7 @@ namespace URWPGSim2D.Strategy
         {
             return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
         }
+        public static bool complete = false;
         Decision[] preDecisions = null;
         private static int flag = 0;//主函数标志值
         private static int timeflag = 0;
@@ -77,6 +78,7 @@ namespace URWPGSim2D.Strategy
         //private int[] flyflag = new int[10];
         private static int[] hillflag = new int[11];
         private static int[] oneflag = new int[11];
+        private static int[] playflag = new int[11];
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -483,6 +485,7 @@ namespace URWPGSim2D.Strategy
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
                     flag++;
+                    timeflag = 0;
                 }
             }
             #endregion
@@ -585,9 +588,139 @@ namespace URWPGSim2D.Strategy
             if (getVectorDistance(one9, fish9Location) > 150) oneflag[9] = 0;
             if (getVectorDistance(one10, fish10Location) > 150) oneflag[10] = 0;
             #endregion
+            #region 定住5s，进入下一函数
+            if (allEqual(oneflag,1,2,10))
+            {
+                complete = true;
+            }
+            if(complete)
+            {
+                timeflag++;
+                if (timeflag >= 50)
+                {
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    flag++;
+                    complete = false;
+                    timeflag = 0;
+                }
+            }
+            #endregion
+
         }
         #endregion
-
+        #region 与黄鱼互动
+        public static void playWithYellowFish(ref Mission mission, int teamId, ref Decision[] decisions)
+        {
+            #region 声明变量
+            int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
+            #region 一堆鱼
+            RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
+            RoboFish fish3 = mission.TeamsRef[teamId].Fishes[2];
+            RoboFish fish4 = mission.TeamsRef[teamId].Fishes[3];
+            RoboFish fish5 = mission.TeamsRef[teamId].Fishes[4];
+            RoboFish fish6 = mission.TeamsRef[teamId].Fishes[5];
+            RoboFish fish7 = mission.TeamsRef[teamId].Fishes[6];
+            RoboFish fish8 = mission.TeamsRef[teamId].Fishes[7];
+            RoboFish fish9 = mission.TeamsRef[teamId].Fishes[8];
+            RoboFish fish10 = mission.TeamsRef[teamId].Fishes[9];
+            #endregion
+            #endregion
+            #region 构成与黄鱼互动的目标点
+            xna.Vector3 play3 = new xna.Vector3(-1500, 0, -900);
+            xna.Vector3 play4 = new xna.Vector3(-1500, 0, -300);
+            xna.Vector3 play5 = new xna.Vector3(-1500, 0, 300);
+            xna.Vector3 play6 = new xna.Vector3(-1500, 0, 900);
+            xna.Vector3 play7 = new xna.Vector3(1500, 0, -900);
+            xna.Vector3 play8 = new xna.Vector3(1500, 0, -300);
+            xna.Vector3 play9 = new xna.Vector3(1500, 0, 300);
+            xna.Vector3 play10 = new xna.Vector3(1500, 0, 900);
+            #endregion
+            #region 构成与黄鱼互动的目标角度
+            float PD3 = (float)-0.5236;
+            float PD4 = (float)-0.5236;
+            float PD5 = (float)-0.5236;
+            float PD6 = (float)-0.5236;
+            float PD7 = (float)2.618;
+            float PD8 = (float)2.618;
+            float PD9 = (float)2.618;
+            float PD10 = (float)2.618;
+            #endregion
+            #region 获取鱼的位置
+            xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
+            //xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
+            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
+            xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
+            xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
+            xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
+            xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
+            xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
+            xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
+            xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
+            xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
+            #endregion
+            #region 获取鱼的角度
+            float fish1Direction = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
+            float fish2Direction = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
+            float fish3Direction = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
+            float fish4Direction = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
+            float fish5Direction = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
+            float fish6Direction = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
+            float fish7Direction = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
+            float fish8Direction = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
+            float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
+            float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
+            #endregion
+            #region 一堆鱼使用PoseToPose函数游到指定位置
+            if (playflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, play3, PD3, 40f, 200f, msPerCycle, ref timeForPoseToPose[3]);
+            if (playflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, play4, PD4, 40f, 200f, msPerCycle, ref timeForPoseToPose[4]);
+            if (playflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, play5, PD5, 40f, 200f, msPerCycle, ref timeForPoseToPose[5]);
+            if (playflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, play6, PD6, 40f, 200f, msPerCycle, ref timeForPoseToPose[6]);
+            if (playflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, play7, PD7, 40f, 200f, msPerCycle, ref timeForPoseToPose[7]);
+            if (playflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, play8, PD8, 40f, 200f, msPerCycle, ref timeForPoseToPose[8]);
+            if (playflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, play9, PD9, 40f, 200f, msPerCycle, ref timeForPoseToPose[9]);
+            if (playflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, play10, PD10, 40f, 200f, msPerCycle, ref timeForPoseToPose[10]);
+            #endregion;
+            #region 判断是否到达目标点
+            if (getVectorDistance(play3, fish3Location) < 100 && isDirectionRight(PD3, fish3Direction) == 0) { playflag[3] = 1; stopFish(ref decisions[2]); }
+            if (getVectorDistance(play4, fish4Location) < 100 && isDirectionRight(PD4, fish4Direction) == 0) { playflag[4] = 1; stopFish(ref decisions[3]); }
+            if (getVectorDistance(play5, fish5Location) < 100 && isDirectionRight(PD5, fish5Direction) == 0) { playflag[5] = 1; stopFish(ref decisions[4]); }
+            if (getVectorDistance(play6, fish6Location) < 100 && isDirectionRight(PD6, fish6Direction) == 0) { playflag[6] = 1; stopFish(ref decisions[5]); }
+            if (getVectorDistance(play7, fish7Location) < 100 && isDirectionRight(PD7, fish7Direction) == 0) { playflag[7] = 1; stopFish(ref decisions[6]); }
+            if (getVectorDistance(play8, fish8Location) < 100 && isDirectionRight(PD8, fish8Direction) == 0) { playflag[8] = 1; stopFish(ref decisions[7]); }
+            if (getVectorDistance(play9, fish9Location) < 100 && isDirectionRight(PD9, fish9Direction) == 0) { playflag[9] = 1; stopFish(ref decisions[8]); }
+            if (getVectorDistance(play10, fish10Location) < 100 && isDirectionRight(PD10, fish10Direction) == 0) { playflag[10] = 1; stopFish(ref decisions[9]); }
+            #endregion
+            #region 如果达到目标点后被破坏需要修正
+            if (getVectorDistance(play3, fish3Location) > 150) playflag[3] = 0;
+            if (getVectorDistance(play4, fish4Location) > 150) playflag[4] = 0;
+            if (getVectorDistance(play5, fish5Location) > 150) playflag[5] = 0;
+            if (getVectorDistance(play6, fish6Location) > 150) playflag[6] = 0;
+            if (getVectorDistance(play7, fish7Location) > 150) playflag[7] = 0;
+            if (getVectorDistance(play8, fish8Location) > 150) playflag[8] = 0;
+            if (getVectorDistance(play9, fish9Location) > 150) playflag[9] = 0;
+            if (getVectorDistance(play10, fish10Location) > 150) playflag[10] = 0;
+            #endregion
+            #region 定住2s，进入下一函数
+            if (allEqual(playflag, 1, 2, 10))
+            {
+                complete = true;
+            }
+            if (complete)
+            {
+                timeflag++;
+                if (timeflag >= 20)
+                {
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    timeflag = 0;
+                    flag++;
+                    complete = false;
+                }
+            }
+            #endregion
+        }
+        #endregion
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -657,6 +790,9 @@ namespace URWPGSim2D.Strategy
 
             if (flag == 1) 
                 numberOne(ref mission, teamId, ref decisions);
+
+            if (flag == 2)
+                playWithYellowFish(ref mission, teamId, ref decisions);
             /*
             xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
             xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
