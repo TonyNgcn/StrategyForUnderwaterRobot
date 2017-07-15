@@ -7,6 +7,7 @@ using xna = Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework;
 using URWPGSim2D.Common;
 using URWPGSim2D.StrategyLoader;
+using URWPGSim2D.StrategyHelper;
 
 namespace URWPGSim2D.Strategy
 {
@@ -25,29 +26,222 @@ namespace URWPGSim2D.Strategy
         }
         #endregion
 
-        /// <summary>
-        /// 决策类当前对象对应的仿真使命参与队伍的决策数组引用 第一次调用GetDecision时分配空间
-        /// </summary>
-        /// 
+ 
 
         private Decision[] decisions = null;
 
-        /// <summary>
-        /// 获取队伍名称 在此处设置参赛队伍的名称
-        /// </summary>
-        /// <returns>队伍名称字符串</returns>
         public string GetTeamName()
         {
             return "抢球博弈 Test Team";
         }
 
-        /// <summary>
-        /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
-        /// </summary>
-        /// <param name="mission">服务端当前运行着的仿真使命Mission对象</param>
-        /// <param name="teamId">当前队伍在服务端运行着的仿真使命中所处的编号 
-        /// 用于作为索引访问Mission对象的TeamsRef队伍列表中代表当前队伍的元素</param>
-        /// <returns>当前队伍所有仿真机器鱼的决策数据构成的Decision数组对象</returns>
+
+        #region 自定义数据的声明
+
+        private xna.Vector3 v3 = new xna.Vector3(-1300, 0, 1000);
+        private xna.Vector3 v4 = new xna.Vector3(-1300, 0, -1000);
+
+        private xna.Vector3 LeftCourt_BottomCorner = new xna.Vector3(-1500, 0, 1000);  //左场地最下角
+        private xna.Vector3 LeftCourt_TopCorner = new xna.Vector3(-1500, 0, -1000); //左场地最上角
+
+        private xna.Vector3 LeftCourt_DownMidpoint = new xna.Vector3(-1500, 0, 50); //最左边场地的中点
+        private xna.Vector3 LeftCourt_UpMidpoint = new xna.Vector3(-1500, 0, -50);
+
+        private xna.Vector3 p1 = new xna.Vector3(-1100, 0, 50); //鱼1需要到达的点
+        private xna.Vector3 p2 = new xna.Vector3(-1300, 0, -50);  //鱼2需要到达的点
+        private xna.Vector3 p = new xna.Vector3(-1300, 0, 0); //鱼1需要到达的点
+
+        private xna.Vector3 LeftGoal_RightTopCorner = new xna.Vector3(-800, 0, -700); //左球门右上角
+        private xna.Vector3 LeftGoal_RightBottomCorner = new xna.Vector3(-800, 0, 700); //左球门右下角
+
+        private xna.Vector3 LeftGoal_LeftTopCorner = new xna.Vector3(-1500, 0, -440); //右球门右上角
+        private xna.Vector3 LeftGoal_LeftBottomCorner = new xna.Vector3(-1500, 0, 440); //右球门右下角
+
+
+        private xna.Vector3 ball0;   //球1的坐标
+        private xna.Vector3 ball1;   //球2的坐标
+        private xna.Vector3 ball2;   //球3的坐标
+        private xna.Vector3 ball3;   //球4的坐标
+        private xna.Vector3 ball4;   //球5的坐标
+        private xna.Vector3 ball5;   //球6的坐标
+        private xna.Vector3 ball6;   //球7的坐标
+        private xna.Vector3 ball7;   //球8的坐标
+        private xna.Vector3 ball8;   //球9的坐标
+
+        private RoboFish My_fish1;
+        private RoboFish My_fish2;
+        private RoboFish Enemy_fish1;
+        private RoboFish Enemy_fish2;
+
+
+        private int MyScore;
+
+        private xna.Vector3 fish1_head;  //鱼头1的坐标
+        private xna.Vector3 fish1_body;  //鱼体1的坐标
+
+        private xna.Vector3 fish2_head;  //鱼头2的坐标
+        private xna.Vector3 fish2_body;  //鱼体2的坐标
+
+        private xna.Vector3 fish1_Position; //鱼1的头部刚体中心
+        private xna.Vector3 fish2_Position; //鱼2的头部刚体中心
+
+        private float fish1_velocity;  //鱼1当前的速度
+        private float fish2_velocity;  //鱼2当前的速度
+
+        private float fish1_BodyDirectionRad;//鱼1的方向
+        private float fish2_BodyDirectionRad; //鱼2的方向
+
+
+        private float R;   //一个范围的半径
+
+        private int CycleTime = 100;  //仿真周期
+
+        private int time = 0;
+        private int time1 = 0;  //PoseToPose的times
+        private int time2 = 0;
+        private int time3 = 0;
+        private int time4 = 0;
+        private int time5 = 0;
+        private int time6 = 0;
+        private int time7 = 0;
+        private int time8 = 0;
+
+        public double distance(xna.Vector3 temp1, xna.Vector3 temp2)   //点与点的最短距离
+        {
+            return Math.Sqrt(Math.Pow(temp1.X - temp2.X, 2.0) + Math.Pow(temp1.Z - temp2.Z, 2.0));
+        }
+        #endregion
+
+
+        private static int flag = 3;
+
+        public void JinQiu(Mission mission, int teamId) //鱼1鱼2按照一定动作推进球门
+        {
+
+            My_fish1 = mission.TeamsRef[teamId].Fishes[0];
+            My_fish2 = mission.TeamsRef[teamId].Fishes[1];
+
+            MyScore = mission.TeamsRef[teamId].Para.Score;
+
+            fish1_head = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0];
+            fish1_body = new xna.Vector3((mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].Z) / 2);
+            fish1_Position = mission.TeamsRef[teamId].Fishes[0].PositionMm;
+
+            fish2_head = mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0];
+            fish2_body = new xna.Vector3((mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].Z) / 2);
+            fish2_Position = mission.TeamsRef[teamId].Fishes[1].PositionMm;
+
+            fish1_velocity = mission.TeamsRef[teamId].Fishes[0].AngularVelocityRadPs;
+            fish2_velocity = mission.TeamsRef[teamId].Fishes[1].AngularVelocityRadPs;
+
+            fish1_BodyDirectionRad = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
+            fish2_BodyDirectionRad = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
+
+            R = mission.EnvRef.Balls[0].RadiusMm;  //球的半径
+
+            ball0 = mission.EnvRef.Balls[0].PositionMm;  //下面都是球的中心坐标点
+            ball1 = mission.EnvRef.Balls[1].PositionMm;
+            ball2 = mission.EnvRef.Balls[2].PositionMm;
+            ball3 = mission.EnvRef.Balls[3].PositionMm;
+            ball4 = mission.EnvRef.Balls[4].PositionMm;
+            ball5 = mission.EnvRef.Balls[5].PositionMm;
+            ball6 = mission.EnvRef.Balls[6].PositionMm;
+            ball7 = mission.EnvRef.Balls[7].PositionMm;
+            ball8 = mission.EnvRef.Balls[8].PositionMm;
+
+
+            #region  左球门进球算法
+
+            switch (flag)
+            {
+                //case 0: //调整位置
+                //    Helpers.Dribble(ref decisions[0], My_fish1, v3, (float)(Math.PI * 3 / 4.0), 10, 5, 200, 12, 8, 15, 100, true);
+                //    Helpers.Dribble(ref decisions[1], My_fish2, v4, (float)(Math.PI * 3 / -4.0), 10, 5, 200, 12, 8, 15, 100, true);
+                //    if (distance(fish1_head, v3) < R && distance(fish2_head, v4) < R)
+                //        flag++;
+                //    break;
+
+                //case 1: //鱼头铲在最边角中
+                //    Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_BottomCorner, (float)(Math.PI * 3 / 4.0), 10, 5, 200, 12, 8, 15, 100, true);
+                //    Helpers.Dribble(ref decisions[1], My_fish2, LeftCourt_TopCorner, (float)(Math.PI * 3 / -4.0), 10, 5, 200, 12, 8, 15, 100, true);
+                //    if (distance(fish1_head, LeftCourt_BottomCorner) < R && distance(fish2_head, LeftCourt_TopCorner) < R)
+                //        flag++;
+                //    break;
+
+                //case 2: //每条鱼将两个球贴壁铲到球门附近
+                //    decisions[0].TCode = 8;
+                //    decisions[0].VCode = 11;
+                //    decisions[1].TCode = 6;
+                //    decisions[1].VCode = 11;
+                //    if (fish1_head.Z <= 40)
+                //    {
+                //        decisions[0].VCode = 0;
+                //        decisions[0].TCode = 6;
+                //    }
+                //    if (fish2_head.Z >= -40)
+                //    {
+                //        decisions[1].VCode = 0;
+                //        decisions[1].TCode = 8;
+                //    }
+                //    if (fish1_head.Z <= 40 && fish2_head.Z >= -40)
+                //        flag++;
+                //    break;
+
+                case 3: //调整位置
+                    Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_DownMidpoint, (float)(Math.PI), 10, 5, 200, 10, 8, 15, 100, true);
+                    Helpers.Dribble(ref decisions[1], My_fish2, LeftCourt_UpMidpoint, (float)(Math.PI), 10, 5, 200, 10, 8, 15, 100, true);
+                    if ((float)(Math.PI) + fish1_BodyDirectionRad < (float)(Math.PI / 5.0) && ((float)(Math.PI) - fish2_BodyDirectionRad) < (float)(Math.PI / 5.0))
+                        flag++;
+                    break;
+
+                case 4: //鱼2位置不变，鱼1将球横推进球门
+                    Helpers.Dribble(ref decisions[0], My_fish1, p, (float)(Math.PI / -4), 10, 5, 200, 2, 1, 15, 100, true);
+                    Helpers.Dribble(ref decisions[1], My_fish2, p, (float)(Math.PI / 4), 10, 5, 200, 2, 1, 15, 100, true);
+                    if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
+                        decisions[0].VCode = 0;
+                    if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
+                        decisions[1].VCode = 0;
+                    if (decisions[1].VCode == 0 && decisions[0].VCode == 0)
+                        flag++;
+                    break;
+
+                case 5:
+                    //decisions[0].VCode = 1;
+                    //decisions[0].TCode = 14;
+                    //decisions[1].VCode = 1;
+                    //decisions[1].TCode = 0;
+                    //if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
+                    //    decisions[0].VCode = 0;
+                    //if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
+                    //    decisions[1].VCode = 0;
+                    //if (fish1_velocity == 0 && fish2_velocity == 0)
+                    //    flag++;
+                    //break;
+                    Helpers.Dribble(ref decisions[0], My_fish1, p, (float)(Math.PI *3/ -4), 10, 5, 200, 2, 1, 15, 100, true);
+                    Helpers.Dribble(ref decisions[1], My_fish2, p, (float)(Math.PI *3/ 4), 10, 5, 200, 2, 1, 15, 100, true);
+                    if (fish1_BodyDirectionRad < (float)(Math.PI * -3 / 4) && fish1_BodyDirectionRad > (float)(-Math.PI))
+                        decisions[0].VCode = 0;
+                    if (fish2_BodyDirectionRad > (float)(Math.PI * 3 / 4) && fish2_BodyDirectionRad < (float)(Math.PI))
+                        decisions[1].VCode = 0;
+                    if (decisions[1].VCode == 0 && decisions[0].VCode == 0)
+                        flag++;
+                    break;
+
+                case 6: //鱼2位置不变，鱼1将球横推进球门
+                    Helpers.Dribble(ref decisions[0], My_fish1, p1, (float)(Math.PI / -4), 10, 5, 200, 2, 1, 15, 100, true);
+                    Helpers.Dribble(ref decisions[1], My_fish2, p1, (float)(Math.PI / 4), 10, 5, 200, 2, 1, 15, 100, true);
+                    if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
+                        decisions[0].VCode = 0;
+                    if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
+                        decisions[1].VCode = 0;
+                   
+                    break;
+
+            }
+
+            #endregion
+        }
+
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -56,62 +250,14 @@ namespace URWPGSim2D.Strategy
                 decisions = new Decision[mission.CommonPara.FishCntPerTeam];
             }
 
-            #region 决策计算过程 需要各参赛队伍实现的部分
-            #region 策略编写帮助信息
-            //====================我是华丽的分割线====================//
-            //======================策略编写指南======================//
-            //1.策略编写工作直接目标是给当前队伍决策数组decisions各元素填充决策值
-            //2.决策数据类型包括两个int成员，VCode为速度档位值，TCode为转弯档位值
-            //3.VCode取值范围0-14共15个整数值，每个整数对应一个速度值，速度值整体但非严格递增
-            //有个别档位值对应的速度值低于比它小的档位值对应的速度值，速度值数据来源于实验
-            //4.TCode取值范围0-14共15个整数值，每个整数对应一个角速度值
-            //整数7对应直游，角速度值为0，整数6-0，8-14分别对应左转和右转，偏离7越远，角度速度值越大
-            //5.任意两个速度/转弯档位之间切换，都需要若干个仿真周期，才能达到稳态速度/角速度值
-            //目前运动学计算过程决定稳态速度/角速度值接近但小于目标档位对应的速度/角速度值
-            //6.决策类Strategy的实例在加载完毕后一直存在于内存中，可以自定义私有成员变量保存必要信息
-            //但需要注意的是，保存的信息在中途更换策略时将会丢失
-            //====================我是华丽的分割线====================//
-            //=======策略中可以使用的比赛环境信息和过程信息说明=======//
-            //场地坐标系: 以毫米为单位，矩形场地中心为原点，向右为正X，向下为正Z
-            //            负X轴顺时针转回负X轴角度范围为(-PI,PI)的坐标系，也称为世界坐标系
-            //mission.CommonPara: 当前仿真使命公共参数
-            //mission.CommonPara.FishCntPerTeam: 每支队伍仿真机器鱼数量
-            //mission.CommonPara.MsPerCycle: 仿真周期毫秒数
-            //mission.CommonPara.RemainingCycles: 当前剩余仿真周期数
-            //mission.CommonPara.TeamCount: 当前仿真使命参与队伍数量
-            //mission.CommonPara.TotalSeconds: 当前仿真使命运行时间秒数
-            //mission.EnvRef.Balls: 
-            //当前仿真使命涉及到的仿真水球列表，列表元素的成员意义参见URWPGSim2D.Common.Ball类定义中的注释
-            //mission.EnvRef.FieldInfo: 
-            //当前仿真使命涉及到的仿真场地，各成员意义参见URWPGSim2D.Common.Field类定义中的注释
-            //mission.EnvRef.ObstaclesRect: 
-            //当前仿真使命涉及到的方形障碍物列表，列表元素的成员意义参见URWPGSim2D.Common.RectangularObstacle类定义中的注释
-            //mission.EnvRef.ObstaclesRound:
-            //当前仿真使命涉及到的圆形障碍物列表，列表元素的成员意义参见URWPGSim2D.Common.RoundedObstacle类定义中的注释
-            //mission.TeamsRef[teamId]:
-            //决策类当前对象对应的仿真使命参与队伍（当前队伍）
-            //mission.TeamsRef[teamId].Para:
-            //当前队伍公共参数，各成员意义参见URWPGSim2D.Common.TeamCommonPara类定义中的注释
-            //mission.TeamsRef[teamId].Fishes:
-            //当前队伍仿真机器鱼列表，列表元素的成员意义参见URWPGSim2D.Common.RoboFish类定义中的注释
-            //mission.TeamsRef[teamId].Fishes[i].PositionMm和PolygonVertices[0],BodyDirectionRad,VelocityMmPs,
-            //                                   AngularVelocityRadPs,Tactic:
-            //当前队伍第i条仿真机器鱼鱼体矩形中心和鱼头顶点在场地坐标系中的位置（用到X坐标和Z坐标），鱼体方向，速度值，
-            //                                   角速度值，决策值
-            //====================我是华丽的分割线====================//
-            //========================典型循环========================//
-            //for (int i = 0; i < mission.CommonPara.FishCntPerTeam; i++)
-            //{
-            //  decisions[i].VCode = 0; // 静止
-            //  decisions[i].TCode = 7; // 直游
-            //}
-            //====================我是华丽的分割线====================//
-            #endregion
-            //请从这里开始编写代码
+            mission.CommonPara.MsPerCycle = 100;
 
-            #endregion
+            if (mission.TeamsRef[teamId].Para.MyHalfCourt == HalfCourt.LEFT)  //在左半场
+            {
+                JinQiu(mission, teamId);  //鱼1鱼2按照一定动作推进球门
+            }
+           
 
-        
             return decisions;
         }
     }
