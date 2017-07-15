@@ -685,19 +685,6 @@ namespace URWPGSim2D.Strategy
             float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
             float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
-            #region 2号鱼绕外围转
-            xna.Vector3 circle2 = new xna.Vector3(972, 0, -1074);
-            float CD2 = -2.3562f;
-            if (circleflag[1] == 0 && completeCircle == 0)  Helpers.PoseToPose(ref decisions[1], fish2, circle2, CD2, 40f, 200f, msPerCycle, ref timeForPoseToPose[2]);
-            if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) < 200 && isDirectionRight(CD2, fish2Direction) == 0) { circleflag[2] = 1; stopFish(ref decisions[1], 2); }
-            if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) > 200) circleflag[2] = 0;
-            if (completeCircle != 0) 
-            {
-                decisions[1].TCode = 6;
-                decisions[1].VCode = 2;
-            }
-            #endregion
-            #region 动态圆旋转
             if (completeCircle == 0) //未到达指定点
             {
                 #region 一堆鱼使用PoseToPose函数游到指定位置
@@ -742,7 +729,9 @@ namespace URWPGSim2D.Strategy
                 }
                 #endregion
             }
-            if (completeCircle == 1)
+            #region 动态圆旋转5s
+
+            if(completeCircle == 1)
             {
                 #region 一堆鱼使用PoseToPose函数游到指定位置
                 if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
