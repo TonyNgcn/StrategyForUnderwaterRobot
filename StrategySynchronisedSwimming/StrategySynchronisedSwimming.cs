@@ -85,6 +85,7 @@ namespace URWPGSim2D.Strategy
         private static int flag = 3;//主函数标志值
         private static int timeflag = 0;
         private static int[] timeForPoseToPose = new int[11];
+        private static bool complete = false;
         //private int remainRecord = 0;
         //private int[] zeroflag = new int[10];
         //private int[] flyflag = new int[10];
