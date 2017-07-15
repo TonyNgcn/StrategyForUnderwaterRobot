@@ -693,8 +693,8 @@ namespace URWPGSim2D.Strategy
             if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) > 200) circleflag[2] = 0;
             if (completeCircle != 0) 
             {
-                decisions[1].TCode = 5;
-                decisions[1].VCode = 4;
+                decisions[1].TCode = 6;
+                decisions[1].VCode = 1;
             }
             #endregion
             #region 动态圆旋转
