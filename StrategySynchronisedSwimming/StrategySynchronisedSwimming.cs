@@ -694,7 +694,7 @@ namespace URWPGSim2D.Strategy
             if (completeCircle != 0) 
             {
                 decisions[1].TCode = 6;
-                decisions[1].VCode = 2;
+                decisions[1].VCode = 4;
             }
             #endregion
             #region 动态圆旋转
