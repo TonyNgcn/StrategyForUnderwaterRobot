@@ -55,8 +55,8 @@ namespace URWPGSim2D.Strategy
             if (b > Math.PI) b -= (float)(2 * Math.PI);
             if (a < -Math.PI) a += (float)(2 * Math.PI);
             if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.05) return 1;//a在b右边
-            else if (a - b < -0.05) return -1; //a在b左边
+            if (a - b > 0.03) return 1;//a在b右边
+            else if (a - b < -0.03) return -1; //a在b左边
             else return 0;
         }
         public static bool allEqual(int[] group, int value, int start, int end)
@@ -658,7 +658,7 @@ namespace URWPGSim2D.Strategy
             float CD7 = (float)-2.3562;
             float CD8 = (float)2.9671;
             float CD9 = (float)2.3562;
-            float CD10 = (float)1.3963;
+            float CD10 = (float)1.6581;
             #endregion
             #region 获取鱼的位置
             xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
@@ -708,7 +708,7 @@ namespace URWPGSim2D.Strategy
                 if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle7, CD7, 25f, 200f, msPerCycle, ref timeForPoseToPose[7]);
                 if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle8, CD8, 25f, 200f, msPerCycle, ref timeForPoseToPose[8]);
                 if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle9, CD9, 25f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle10, CD10, 25f, 200f, msPerCycle, ref timeForPoseToPose[10]);
+                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle10, CD10, 30f, 200f, msPerCycle, ref timeForPoseToPose[10]);
                 #endregion;
                 #region 判断是否到达目标点
                 if (getVectorDistance(circle3, fish3Location) < 200 && isDirectionRight(CD3, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
