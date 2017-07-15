@@ -38,35 +38,35 @@ namespace URWPGSim2D.Strategy
 
         #region 自定义数据的声明
 
-        private xna.Vector3 v3 = new xna.Vector3(-1300, 0, 1000);
-        private xna.Vector3 v4 = new xna.Vector3(-1300, 0, -1000);
+        private Vector3 v3 = new Vector3(-1300, 0, 1000);
+        private Vector3 v4 = new Vector3(-1300, 0, -1000);
 
-        private xna.Vector3 LeftCourt_BottomCorner = new xna.Vector3(-1500, 0, 1000);  //左场地最下角
-        private xna.Vector3 LeftCourt_TopCorner = new xna.Vector3(-1500, 0, -1000); //左场地最上角
+        private Vector3 LeftCourt_BottomCorner = new Vector3(-1500, 0, 1000);  //左场地最下角
+        private Vector3 LeftCourt_TopCorner = new Vector3(-1500, 0, -1000); //左场地最上角
 
-        private xna.Vector3 LeftCourt_DownMidpoint = new xna.Vector3(-1500, 0, 50); //最左边场地的中点
-        private xna.Vector3 LeftCourt_UpMidpoint = new xna.Vector3(-1500, 0, -50);
+        private Vector3 LeftCourt_DownMidpoint = new Vector3(-1500, 0, 50); //最左边场地的中点
+        private Vector3 LeftCourt_UpMidpoint = new Vector3(-1500, 0, -50);
 
-        private xna.Vector3 p1 = new xna.Vector3(-1100, 0, 50); //鱼1需要到达的点
-        private xna.Vector3 p2 = new xna.Vector3(-1300, 0, -50);  //鱼2需要到达的点
-        private xna.Vector3 p = new xna.Vector3(-1300, 0, 0); //鱼1需要到达的点
+        private Vector3 p1 = new Vector3(-1100, 0, 50); //鱼1需要到达的点
+        private Vector3 p2 = new Vector3(-1300, 0, -50);  //鱼2需要到达的点
+        private Vector3 p = new Vector3(-1300, 0, 0); //鱼1需要到达的点
 
-        private xna.Vector3 LeftGoal_RightTopCorner = new xna.Vector3(-800, 0, -700); //左球门右上角
-        private xna.Vector3 LeftGoal_RightBottomCorner = new xna.Vector3(-800, 0, 700); //左球门右下角
+        private Vector3 LeftGoal_RightTopCorner = new Vector3(-800, 0, -700); //左球门右上角
+        private Vector3 LeftGoal_RightBottomCorner = new Vector3(-800, 0, 700); //左球门右下角
 
-        private xna.Vector3 LeftGoal_LeftTopCorner = new xna.Vector3(-1500, 0, -440); //右球门右上角
-        private xna.Vector3 LeftGoal_LeftBottomCorner = new xna.Vector3(-1500, 0, 440); //右球门右下角
+        private Vector3 LeftGoal_LeftTopCorner = new Vector3(-1500, 0, -440); //右球门右上角
+        private Vector3 LeftGoal_LeftBottomCorner = new Vector3(-1500, 0, 440); //右球门右下角
 
 
-        private xna.Vector3 ball0;   //球1的坐标
-        private xna.Vector3 ball1;   //球2的坐标
-        private xna.Vector3 ball2;   //球3的坐标
-        private xna.Vector3 ball3;   //球4的坐标
-        private xna.Vector3 ball4;   //球5的坐标
-        private xna.Vector3 ball5;   //球6的坐标
-        private xna.Vector3 ball6;   //球7的坐标
-        private xna.Vector3 ball7;   //球8的坐标
-        private xna.Vector3 ball8;   //球9的坐标
+        private Vector3 ball0;   //球1的坐标
+        private Vector3 ball1;   //球2的坐标
+        private Vector3 ball2;   //球3的坐标
+        private Vector3 ball3;   //球4的坐标
+        private Vector3 ball4;   //球5的坐标
+        private Vector3 ball5;   //球6的坐标
+        private Vector3 ball6;   //球7的坐标
+        private Vector3 ball7;   //球8的坐标
+        private Vector3 ball8;   //球9的坐标
 
         private RoboFish My_fish1;
         private RoboFish My_fish2;
@@ -76,14 +76,14 @@ namespace URWPGSim2D.Strategy
 
         private int MyScore;
 
-        private xna.Vector3 fish1_head;  //鱼头1的坐标
-        private xna.Vector3 fish1_body;  //鱼体1的坐标
+        private Vector3 fish1_head;  //鱼头1的坐标
+        private Vector3 fish1_body;  //鱼体1的坐标
 
-        private xna.Vector3 fish2_head;  //鱼头2的坐标
-        private xna.Vector3 fish2_body;  //鱼体2的坐标
+        private Vector3 fish2_head;  //鱼头2的坐标
+        private Vector3 fish2_body;  //鱼体2的坐标
 
-        private xna.Vector3 fish1_Position; //鱼1的头部刚体中心
-        private xna.Vector3 fish2_Position; //鱼2的头部刚体中心
+        private Vector3 fish1_Position; //鱼1的头部刚体中心
+        private Vector3 fish2_Position; //鱼2的头部刚体中心
 
         private float fish1_velocity;  //鱼1当前的速度
         private float fish2_velocity;  //鱼2当前的速度
@@ -106,7 +106,7 @@ namespace URWPGSim2D.Strategy
         private int time7 = 0;
         private int time8 = 0;
 
-        public double distance(xna.Vector3 temp1, xna.Vector3 temp2)   //点与点的最短距离
+        public double distance(Vector3 temp1, Vector3 temp2)   //点与点的最短距离
         {
             return Math.Sqrt(Math.Pow(temp1.X - temp2.X, 2.0) + Math.Pow(temp1.Z - temp2.Z, 2.0));
         }
@@ -124,11 +124,11 @@ namespace URWPGSim2D.Strategy
             MyScore = mission.TeamsRef[teamId].Para.Score;
 
             fish1_head = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0];
-            fish1_body = new xna.Vector3((mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].Z) / 2);
+            fish1_body = new Vector3((mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].Z) / 2);
             fish1_Position = mission.TeamsRef[teamId].Fishes[0].PositionMm;
 
             fish2_head = mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0];
-            fish2_body = new xna.Vector3((mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].Z) / 2);
+            fish2_body = new Vector3((mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].Z) / 2);
             fish2_Position = mission.TeamsRef[teamId].Fishes[1].PositionMm;
 
             fish1_velocity = mission.TeamsRef[teamId].Fishes[0].AngularVelocityRadPs;
@@ -149,97 +149,98 @@ namespace URWPGSim2D.Strategy
             ball7 = mission.EnvRef.Balls[7].PositionMm;
             ball8 = mission.EnvRef.Balls[8].PositionMm;
 
-
+            Vector3 point1 = new Vector3(-1500, 0, 532);
+            Vector3 point2 = new Vector3(-1500, 0, -532);
+            Helpers.PoseToPose(decisions[0],My_fish1,point11,(float)(-Math.PI/2),10f,100f,100,ti)
             #region  左球门进球算法
 
-            switch (flag)
-            {
-                //case 0: //调整位置
-                //    Helpers.Dribble(ref decisions[0], My_fish1, v3, (float)(Math.PI * 3 / 4.0), 10, 5, 200, 12, 8, 15, 100, true);
-                //    Helpers.Dribble(ref decisions[1], My_fish2, v4, (float)(Math.PI * 3 / -4.0), 10, 5, 200, 12, 8, 15, 100, true);
-                //    if (distance(fish1_head, v3) < R && distance(fish2_head, v4) < R)
-                //        flag++;
-                //    break;
+            //switch (flag)
+            //{
+            //    //case 0: //调整位置
+            //    //    Helpers.Dribble(ref decisions[0], My_fish1, v3, (float)(Math.PI * 3 / 4.0), 10, 5, 200, 12, 8, 15, 100, true);
+            //    //    Helpers.Dribble(ref decisions[1], My_fish2, v4, (float)(Math.PI * 3 / -4.0), 10, 5, 200, 12, 8, 15, 100, true);
+            //    //    if (distance(fish1_head, v3) < R && distance(fish2_head, v4) < R)
+            //    //        flag++;
+            //    //    break;
 
-                //case 1: //鱼头铲在最边角中
-                //    Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_BottomCorner, (float)(Math.PI * 3 / 4.0), 10, 5, 200, 12, 8, 15, 100, true);
-                //    Helpers.Dribble(ref decisions[1], My_fish2, LeftCourt_TopCorner, (float)(Math.PI * 3 / -4.0), 10, 5, 200, 12, 8, 15, 100, true);
-                //    if (distance(fish1_head, LeftCourt_BottomCorner) < R && distance(fish2_head, LeftCourt_TopCorner) < R)
-                //        flag++;
-                //    break;
+            //    //case 1: //鱼头铲在最边角中
+            //    //    Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_BottomCorner, (float)(Math.PI * 3 / 4.0), 10, 5, 200, 12, 8, 15, 100, true);
+            //    //    Helpers.Dribble(ref decisions[1], My_fish2, LeftCourt_TopCorner, (float)(Math.PI * 3 / -4.0), 10, 5, 200, 12, 8, 15, 100, true);
+            //    //    if (distance(fish1_head, LeftCourt_BottomCorner) < R && distance(fish2_head, LeftCourt_TopCorner) < R)
+            //    //        flag++;
+            //    //    break;
 
-                //case 2: //每条鱼将两个球贴壁铲到球门附近
-                //    decisions[0].TCode = 8;
-                //    decisions[0].VCode = 11;
-                //    decisions[1].TCode = 6;
-                //    decisions[1].VCode = 11;
-                //    if (fish1_head.Z <= 40)
-                //    {
-                //        decisions[0].VCode = 0;
-                //        decisions[0].TCode = 6;
-                //    }
-                //    if (fish2_head.Z >= -40)
-                //    {
-                //        decisions[1].VCode = 0;
-                //        decisions[1].TCode = 8;
-                //    }
-                //    if (fish1_head.Z <= 40 && fish2_head.Z >= -40)
-                //        flag++;
-                //    break;
+            //    //case 2: //每条鱼将两个球贴壁铲到球门附近
+            //    //    decisions[0].TCode = 8;
+            //    //    decisions[0].VCode = 11;
+            //    //    decisions[1].TCode = 6;
+            //    //    decisions[1].VCode = 11;
+            //    //    if (fish1_head.Z <= 40)
+            //    //    {
+            //    //        decisions[0].VCode = 0;
+            //    //        decisions[0].TCode = 6;
+            //    //    }
+            //    //    if (fish2_head.Z >= -40)
+            //    //    {
+            //    //        decisions[1].VCode = 0;
+            //    //        decisions[1].TCode = 8;
+            //    //    }
+            //    //    if (fish1_head.Z <= 40 && fish2_head.Z >= -40)
+            //    //        flag++;
+            //    //    break;
 
-                case 3: //调整位置
-                    Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_DownMidpoint, (float)(Math.PI), 10, 5, 200, 10, 8, 15, 100, true);
-                    Helpers.Dribble(ref decisions[1], My_fish2, LeftCourt_UpMidpoint, (float)(Math.PI), 10, 5, 200, 10, 8, 15, 100, true);
-                    if ((float)(Math.PI) + fish1_BodyDirectionRad < (float)(Math.PI / 5.0) && ((float)(Math.PI) - fish2_BodyDirectionRad) < (float)(Math.PI / 5.0))
-                        flag++;
-                    break;
+            //    case 3: //调整位置
+            //        Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_DownMidpoint, (float)(Math.PI), 10, 5, 200, 10, 8, 15, 100, true);
+            //        Helpers.Dribble(ref decisions[1], My_fish2, LeftCourt_UpMidpoint, (float)(Math.PI), 10, 5, 200, 10, 8, 15, 100, true);
+            //        if ((float)(Math.PI) + fish1_BodyDirectionRad < (float)(Math.PI / 5.0) && ((float)(Math.PI) - fish2_BodyDirectionRad) < (float)(Math.PI / 5.0))
+            //            flag++;
+            //        break;
 
-                case 4: //鱼2位置不变，鱼1将球横推进球门
-                    Helpers.Dribble(ref decisions[0], My_fish1, p, (float)(Math.PI / -4), 10, 5, 200, 2, 1, 15, 100, true);
-                    Helpers.Dribble(ref decisions[1], My_fish2, p, (float)(Math.PI / 4), 10, 5, 200, 2, 1, 15, 100, true);
-                    if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
-                        decisions[0].VCode = 0;
-                    if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
-                        decisions[1].VCode = 0;
-                    if (decisions[1].VCode == 0 && decisions[0].VCode == 0)
-                        flag++;
-                    break;
+            //    case 4: //鱼2位置不变，鱼1将球横推进球门
+            //        Helpers.Dribble(ref decisions[0], My_fish1, p, (float)(Math.PI / -4), 10, 5, 200, 2, 1, 15, 100, true);
+            //        Helpers.Dribble(ref decisions[1], My_fish2, p, (float)(Math.PI / 4), 10, 5, 200, 2, 1, 15, 100, true);
+            //        if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
+            //            decisions[0].VCode = 0;
+            //        if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
+            //            decisions[1].VCode = 0;
+            //        if (decisions[1].VCode == 0 && decisions[0].VCode == 0)
+            //            flag++;
+            //        break;
 
-                case 5:
-                    //decisions[0].VCode = 1;
-                    //decisions[0].TCode = 14;
-                    //decisions[1].VCode = 1;
-                    //decisions[1].TCode = 0;
-                    //if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
-                    //    decisions[0].VCode = 0;
-                    //if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
-                    //    decisions[1].VCode = 0;
-                    //if (fish1_velocity == 0 && fish2_velocity == 0)
-                    //    flag++;
-                    //break;
-                    Helpers.Dribble(ref decisions[0], My_fish1, p, (float)(Math.PI *3/ -4), 10, 5, 200, 2, 1, 15, 100, true);
-                    Helpers.Dribble(ref decisions[1], My_fish2, p, (float)(Math.PI *3/ 4), 10, 5, 200, 2, 1, 15, 100, true);
-                    if (fish1_BodyDirectionRad < (float)(Math.PI * -3 / 4) && fish1_BodyDirectionRad > (float)(-Math.PI))
-                        decisions[0].VCode = 0;
-                    if (fish2_BodyDirectionRad > (float)(Math.PI * 3 / 4) && fish2_BodyDirectionRad < (float)(Math.PI))
-                        decisions[1].VCode = 0;
-                    if (decisions[1].VCode == 0 && decisions[0].VCode == 0)
-                        flag++;
-                    break;
+            //    case 5:
+            //        decisions[0].VCode = 1;
+            //        decisions[0].TCode = 14;
+            //        decisions[1].VCode = 1;
+            //        decisions[1].TCode = 0;
+            //        if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
+            //            decisions[0].VCode = 0;
+            //        if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
+            //            decisions[1].VCode = 0;
+            //        if (fish1_velocity == 0 && fish2_velocity == 0)
+            //            flag++;
+            //        break;
+            //        Helpers.Dribble(ref decisions[0], My_fish1, p, (float)(Math.PI * 3 / -4), 10, 5, 200, 2, 1, 15, 100, true);
+            //        Helpers.Dribble(ref decisions[1], My_fish2, p, (float)(Math.PI * 3 / 4), 10, 5, 200, 2, 1, 15, 100, true);
+            //        if (fish1_BodyDirectionRad < (float)(Math.PI * -3 / 4) && fish1_BodyDirectionRad > (float)(-Math.PI))
+            //            decisions[0].VCode = 0;
+            //        if (fish2_BodyDirectionRad > (float)(Math.PI * 3 / 4) && fish2_BodyDirectionRad < (float)(Math.PI))
+            //            decisions[1].VCode = 0;
+            //        if (decisions[1].VCode == 0 && decisions[0].VCode == 0)
+            //            flag++;
+            //        break;
 
-                case 6: //鱼2位置不变，鱼1将球横推进球门
-                    Helpers.Dribble(ref decisions[0], My_fish1, p1, (float)(Math.PI / -4), 10, 5, 200, 2, 1, 15, 100, true);
-                    Helpers.Dribble(ref decisions[1], My_fish2, p1, (float)(Math.PI / 4), 10, 5, 200, 2, 1, 15, 100, true);
-                    if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
-                        decisions[0].VCode = 0;
-                    if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
-                        decisions[1].VCode = 0;
-                   
-                    break;
-
-            }
-
+            //    case 6: //鱼2位置不变，鱼1将球横推进球门
+            //        Helpers.Dribble(ref decisions[0], My_fish1, p1, (float)(Math.PI / -4), 10, 5, 200, 2, 1, 15, 100, true);
+            //        Helpers.Dribble(ref decisions[1], My_fish2, p1, (float)(Math.PI / 4), 10, 5, 200, 2, 1, 15, 100, true);
+            //        if (fish1_BodyDirectionRad < 0 && fish1_BodyDirectionRad > (Math.PI / -4))
+            //            decisions[0].VCode = 0;
+            //        if (fish2_BodyDirectionRad > 0 && fish2_BodyDirectionRad < (Math.PI / 4))
+            //            decisions[1].VCode = 0;
+            //        break;
+            //}
             #endregion
+
+
         }
 
         public Decision[] GetDecision(Mission mission, int teamId)
