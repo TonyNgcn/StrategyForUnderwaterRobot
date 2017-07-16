@@ -112,7 +112,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 5;//主函数标志值
+        private static int flag = 0;//主函数标志值
         private static int timeflag = 0;
         private static int[] timeForPoseToPose = new int[11];
         private static bool complete = false;
