@@ -107,8 +107,28 @@ namespace URWPGSim2D.Strategy
                         decisions.VCode = 1;
                     }
                     else
+                    {
+                        flag[noOfFish] = 2;
                         stopFish(ref decisions, noOfFish);
-
+                    }
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                        flag[noOfFish] = 0;
+                    break;
+                case 2:
+                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    {
+                        decisions.TCode = 0;
+                        decisions.VCode = 1;
+                    }
+                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
+                    {
+                        decisions.TCode = 14;
+                        decisions.VCode = 1;
+                    }
+                    else
+                    {
+                        stopFish(ref decisions, noOfFish);
+                    }
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
                         flag[noOfFish] = 0;
                     break;
@@ -122,7 +142,7 @@ namespace URWPGSim2D.Strategy
 
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 2;//主函数标志值
+        private static int flag = 0;//主函数标志值
         private static int timeflag = 0;
         private static int[] timeForPoseToPose = new int[11];
         private static bool complete = false;
@@ -201,7 +221,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, hill10, HD10, 10, ref timeForPoseToPose, hillflag);
             #endregion
             #region 山字第二阶段
-            if (hillflag[0] == 0 && allEqual(hillflag, 1, 2, 10))
+            if (hillflag[0] == 0 && allEqual(hillflag, 2, 2, 10))
             {
                 hillflag[0] = 1;
                 timeForPoseToPose[2] = 0;
@@ -209,7 +229,7 @@ namespace URWPGSim2D.Strategy
             if (hillflag[0] == 1) 
                 fishToPoint(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
 
-            if (hillflag[0] == 1 && allEqual(hillflag, 1, 2, 10))
+            if (hillflag[0] == 1 && hillflag[2] == 1) 
             {
                 hillflag[1] = 1;
                 hillflag[0] = 3;
@@ -219,7 +239,7 @@ namespace URWPGSim2D.Strategy
             #region 山字第三阶段
             if (isDirectionRight(fish2.BodyDirectionRad, HD23) == 0)
             {
-                if (hillflag[1] == 1 && allEqual(hillflag, 1, 2, 10))
+                if (hillflag[1] == 1 && allEqual(hillflag, 2, 2, 10))
                 {
                     for (int i = 1; i < 11; i++) {
                         hillflag[i] = 3;
@@ -296,7 +316,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
             #endregion
             #region 定住5s，进入下一函数
-            if (allEqual(oneflag,1,2,10))
+            if (allEqual(oneflag, 2, 2, 10)) 
             {
                 complete = true;
             }
@@ -379,7 +399,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle10, CD10, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 1;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -403,7 +423,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle9, CD9, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 2;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -427,7 +447,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle8, CD8, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 3;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -451,7 +471,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle7, CD7, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 4;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -475,7 +495,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle6, CD6, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 5;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -499,7 +519,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle5, CD5, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 6;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -523,7 +543,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle4, CD4, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 7;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -547,7 +567,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[9], fish10, circle3, CD3, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (allEqual(circleflag, 1, 3, 10))
+                if (allEqual(circleflag, 2, 3, 10))
                 {
                     completeCircle = 8;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -573,6 +593,36 @@ namespace URWPGSim2D.Strategy
                 }
             }
             #endregion
+            //if (completeCircle == 0) //未到达指定点
+            //{
+            //    fishToPoint(ref decisions[2], fish3, circle3, CD3, 3, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[3], fish4, circle4, CD4, 4, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[4], fish5, circle5, CD5, 5, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[5], fish6, circle6, CD6, 6, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[6], fish7, circle7, CD7, 7, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[7], fish8, circle8, CD8, 8, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[8], fish9, circle9, CD9, 9, ref timeForPoseToPose, circleflag);
+            //    fishToPoint(ref decisions[9], fish10, circle10, CD10, 10, ref timeForPoseToPose, circleflag);
+            //    #region 开始旋转
+            //    if (allEqual(circleflag, 2, 3, 10))
+            //    {
+            //        completeCircle = 1;
+            //        for (int i = 0; i < 11; i++)//参数清零
+            //        {
+            //            circleflag[i] = 0;
+            //            timeForPoseToPose[i] = 0;
+            //        }
+            //    }
+            //    #endregion
+            //}
+            //if(completeCircle==1)
+            //{
+            //    for (int i = 0; i < 10; i++)
+            //    {
+            //        decisions[i].VCode = 3;
+            //        decisions[i].TCode = 10;
+            //    }
+            //}
         }
         #endregion
         #region 与黄鱼互动
@@ -623,7 +673,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, play10, PD10, 10, ref timeForPoseToPose, playflag);
             #endregion
             #region 定住2s，进入下一函数
-            if (allEqual(playflag, 1, 3, 10))
+            if (allEqual(playflag, 2, 3, 10))
             {
                 complete = true;
             }
