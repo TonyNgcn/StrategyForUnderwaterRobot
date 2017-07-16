@@ -1272,19 +1272,21 @@ namespace URWPGSim2D.Strategy
                 xna.Vector3 p1 = new xna.Vector3(-1500, 0, 50);
                 xna.Vector3 p2 = new xna.Vector3(1500, 0, 50);
                 float direction = 0;
-                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 200 && isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) == 0) { hillflag[2] = 1; stopFish(ref decisions[1],2); }
-                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 200) hillflag[1] = 0;
-                if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0 && hillflag[1] != 0) 
+                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 100 && isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) == 0) { hillflag[2] = 1; stopFish(ref decisions[1],2); }
+                else if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 100) hillflag[2] = 0;
+                else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0 && hillflag[2] != 0)
                 {
-                    decisions[1].TCode = 0;
+                    decisions[1].TCode = 2;
                     decisions[1].VCode = 1;
                 }
-                if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0 && hillflag[1] != 0)
+                else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0 && hillflag[2] != 0)
                 {
-                    decisions[1].TCode = 14;
+                    decisions[1].TCode = 12;
                     decisions[1].VCode = 1;
                 }
-                if (hillflag[9] == 0)
+                //else decisions[1].VCode = 0;
+
+                if (hillflag[2] == 0)
                     Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[1]);
             }
             /*
