@@ -122,7 +122,7 @@ namespace URWPGSim2D.Strategy
 
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 0;//主函数标志值
+        private static int flag = 2;//主函数标志值
         private static int timeflag = 0;
         private static int[] timeForPoseToPose = new int[11];
         private static bool complete = false;
@@ -217,19 +217,24 @@ namespace URWPGSim2D.Strategy
             }
             #endregion
             #region 山字第三阶段
-            if (hillflag[1] == 1)
-                fishToPoint(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
-            if(isDirectionRight(fish2.BodyDirectionRad,HD23)==0)
+            if (isDirectionRight(fish2.BodyDirectionRad, HD23) == 0)
             {
                 if (hillflag[1] == 1 && allEqual(hillflag, 1, 2, 10))
-                    hillflag[1] = 3;
+                {
+                    for (int i = 1; i < 11; i++) {
+                        hillflag[i] = 3;
+                    }
+                }
             }
+
+            if (hillflag[1] == 1)
+                fishToPoint(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
             #endregion
             #region 定住5s，进入下一函数
             if (hillflag[1] == 3)
             {
                 timeflag++;
-                if (timeflag >= 200)
+                if (timeflag >= 60)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -348,75 +353,30 @@ namespace URWPGSim2D.Strategy
             float CD9 = (float)2.3562;
             float CD10 = (float)1.6581;
             #endregion
-            #region 获取鱼的位置
-            xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
-            //xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
-            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
-            xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
-            xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
-            xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
-            xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
-            xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
-            xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
-            xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
-            xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
-            #endregion
-            #region 获取鱼的角度
-            float fish1Direction = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
-            float fish2Direction = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
-            float fish3Direction = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
-            float fish4Direction = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
-            float fish5Direction = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
-            float fish6Direction = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
-            float fish7Direction = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
-            float fish8Direction = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
-            float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
-            float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
-            #endregion
             #region 2号鱼绕外围转
-            xna.Vector3 circle2 = new xna.Vector3(972, 0, -1074);
-            float CD2 = -2.3562f;
-            if (circleflag[1] == 0 && completeCircle == 0)  Helpers.PoseToPose(ref decisions[1], fish2, circle2, CD2, 40f, 200f, msPerCycle, ref timeForPoseToPose[2]);
-            if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) < 200 && isDirectionRight(CD2, fish2Direction) == 0) { circleflag[2] = 1; stopFish(ref decisions[1], 2); }
-            if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) > 200) circleflag[2] = 0;
-            if (completeCircle != 0) 
-            {
-                decisions[1].TCode = 6;
-                decisions[1].VCode = 2;
-            }
+            //xna.Vector3 circle2 = new xna.Vector3(972, 0, -1074);
+            //float CD2 = -2.3562f;
+            //if (circleflag[1] == 0 && completeCircle == 0)  Helpers.PoseToPose(ref decisions[1], fish2, circle2, CD2, 40f, 200f, msPerCycle, ref timeForPoseToPose[2]);
+            //if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) < 200 && isDirectionRight(CD2, fish2Direction) == 0) { circleflag[2] = 1; stopFish(ref decisions[1], 2); }
+            //if (circleflag[1] == 0 && getVectorDistance(circle2, fish2Location) > 200) circleflag[2] = 0;
+            //if (completeCircle != 0) 
+            //{
+            //    decisions[1].TCode = 6;
+            //    decisions[1].VCode = 2;
+            //}
             #endregion
             #region 动态圆旋转
             if (completeCircle == 0) //未到达指定点
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle3, CD3, 40f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle4, CD4, 40f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle5, CD5, 40f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle6, CD6, 40f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle7, CD7, 40f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle8, CD8, 40f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle9, CD9, 40f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle10, CD10, 40f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle3, fish3Location) < 200 && isDirectionRight(CD3, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle4, fish4Location) < 200 && isDirectionRight(CD4, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle5, fish5Location) < 200 && isDirectionRight(CD5, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle6, fish6Location) < 200 && isDirectionRight(CD6, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle7, fish7Location) < 200 && isDirectionRight(CD7, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle8, fish8Location) < 200 && isDirectionRight(CD8, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle9, fish9Location) < 200 && isDirectionRight(CD9, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle10, fish10Location) < 200 && isDirectionRight(CD10, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle3, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle4, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle5, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle6, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle7, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle8, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle9, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle10, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle3, CD3, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle4, CD4, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle5, CD5, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle6, CD6, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle7, CD7, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle8, CD8, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle9, CD9, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle10, CD10, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -432,35 +392,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 1)
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle10, fish3Location) < 200 && isDirectionRight(CD10, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle3, fish4Location) < 200 && isDirectionRight(CD3, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle4, fish5Location) < 200 && isDirectionRight(CD4, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle5, fish6Location) < 200 && isDirectionRight(CD5, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle6, fish7Location) < 200 && isDirectionRight(CD6, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle7, fish8Location) < 200 && isDirectionRight(CD7, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle8, fish9Location) < 200 && isDirectionRight(CD8, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle9, fish10Location) < 200 && isDirectionRight(CD9, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle10, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle3, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle4, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle5, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle6, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle7, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle8, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle9, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle10, CD10, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle3, CD3, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle4, CD4, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle5, CD5, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle6, CD6, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle7, CD7, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle8, CD8, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle9, CD9, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -476,35 +416,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 2)
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle9, fish3Location) < 200 && isDirectionRight(CD9, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle10, fish4Location) < 200 && isDirectionRight(CD10, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle3, fish5Location) < 200 && isDirectionRight(CD3, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle4, fish6Location) < 200 && isDirectionRight(CD4, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle5, fish7Location) < 200 && isDirectionRight(CD5, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle6, fish8Location) < 200 && isDirectionRight(CD6, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle7, fish9Location) < 200 && isDirectionRight(CD7, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle8, fish10Location) < 200 && isDirectionRight(CD8, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle9, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle10, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle3, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle4, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle5, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle6, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle7, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle8, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle9, CD9, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle10, CD10, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle3, CD3, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle4, CD4, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle5, CD5, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle6, CD6, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle7, CD7, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle8, CD8, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -520,35 +440,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 3) 
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle8, fish3Location) < 200 && isDirectionRight(CD8, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle9, fish4Location) < 200 && isDirectionRight(CD9, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle10, fish5Location) < 200 && isDirectionRight(CD10, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle3, fish6Location) < 200 && isDirectionRight(CD3, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle4, fish7Location) < 200 && isDirectionRight(CD4, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle5, fish8Location) < 200 && isDirectionRight(CD5, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle6, fish9Location) < 200 && isDirectionRight(CD6, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle7, fish10Location) < 200 && isDirectionRight(CD7, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle8, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle9, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle10, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle3, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle4, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle5, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle6, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle7, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle8, CD8, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle9, CD9, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle10, CD10, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle3, CD3, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle4, CD4, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle5, CD5, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle6, CD6, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle7, CD7, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -564,35 +464,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 4)
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle7, fish3Location) < 200 && isDirectionRight(CD7, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle8, fish4Location) < 200 && isDirectionRight(CD8, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle9, fish5Location) < 200 && isDirectionRight(CD9, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle10, fish6Location) < 200 && isDirectionRight(CD10, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle3, fish7Location) < 200 && isDirectionRight(CD3, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle4, fish8Location) < 200 && isDirectionRight(CD4, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle5, fish9Location) < 200 && isDirectionRight(CD5, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle6, fish10Location) < 200 && isDirectionRight(CD6, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle7, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle8, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle9, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle10, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle3, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle4, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle5, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle6, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle7, CD7, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle8, CD8, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle9, CD9, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle10, CD10, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle3, CD3, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle4, CD4, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle5, CD5, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle6, CD6, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -608,35 +488,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 5)
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle6, fish3Location) < 200 && isDirectionRight(CD6, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle7, fish4Location) < 200 && isDirectionRight(CD7, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle8, fish5Location) < 200 && isDirectionRight(CD8, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle9, fish6Location) < 200 && isDirectionRight(CD9, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle10, fish7Location) < 200 && isDirectionRight(CD10, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle3, fish8Location) < 200 && isDirectionRight(CD3, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle4, fish9Location) < 200 && isDirectionRight(CD4, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle5, fish10Location) < 200 && isDirectionRight(CD5, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle6, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle7, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle8, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle9, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle10, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle3, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle4, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle5, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle6, CD6, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle7, CD7, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle8, CD8, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle9, CD9, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle10, CD10, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle3, CD3, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle4, CD4, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle5, CD5, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -652,35 +512,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 6)
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle5, fish3Location) < 200 && isDirectionRight(CD5, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle6, fish4Location) < 200 && isDirectionRight(CD6, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle7, fish5Location) < 200 && isDirectionRight(CD7, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle8, fish6Location) < 200 && isDirectionRight(CD8, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle9, fish7Location) < 200 && isDirectionRight(CD9, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle10, fish8Location) < 200 && isDirectionRight(CD10, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle3, fish9Location) < 200 && isDirectionRight(CD3, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle4, fish10Location) < 200 && isDirectionRight(CD4, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle5, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle6, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle7, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle8, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle9, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle10, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle3, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle4, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle5, CD5, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle6, CD6, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle7, CD7, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle8, CD8, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle9, CD9, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle10, CD10, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle3, CD3, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle4, CD4, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -696,35 +536,15 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 7)
             {
-                #region 一堆鱼使用PoseToPose函数游到指定位置
-                if (circleflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, circle4, CD4, 10f, 200f, msPerCycle, ref timeForPoseToPose[3]);
-                if (circleflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, circle5, CD5, 10f, 200f, msPerCycle, ref timeForPoseToPose[4]);
-                if (circleflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, circle6, CD6, 10f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-                if (circleflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, circle7, CD7, 10f, 200f, msPerCycle, ref timeForPoseToPose[6]);
-                if (circleflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, circle8, CD8, 10f, 200f, msPerCycle, ref timeForPoseToPose[7]);
-                if (circleflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, circle9, CD9, 10f, 200f, msPerCycle, ref timeForPoseToPose[8]);
-                if (circleflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, circle10, CD10, 10f, 200f, msPerCycle, ref timeForPoseToPose[9]);
-                if (circleflag[10] == 0) Helpers.PoseToPose(ref decisions[9], fish10, circle3, CD3, 10f, 200f, msPerCycle, ref timeForPoseToPose[10]);
-                #endregion;
-                #region 判断是否到达目标点
-                if (getVectorDistance(circle4, fish3Location) < 200 && isDirectionRight(CD4, fish3Direction) == 0) { circleflag[3] = 1; stopFish(ref decisions[2], 3); }
-                if (getVectorDistance(circle5, fish4Location) < 200 && isDirectionRight(CD5, fish4Direction) == 0) { circleflag[4] = 1; stopFish(ref decisions[3], 4); }
-                if (getVectorDistance(circle6, fish5Location) < 200 && isDirectionRight(CD6, fish5Direction) == 0) { circleflag[5] = 1; stopFish(ref decisions[4], 5); }
-                if (getVectorDistance(circle7, fish6Location) < 200 && isDirectionRight(CD7, fish6Direction) == 0) { circleflag[6] = 1; stopFish(ref decisions[5], 6); }
-                if (getVectorDistance(circle8, fish7Location) < 200 && isDirectionRight(CD8, fish7Direction) == 0) { circleflag[7] = 1; stopFish(ref decisions[6], 7); }
-                if (getVectorDistance(circle9, fish8Location) < 200 && isDirectionRight(CD9, fish8Direction) == 0) { circleflag[8] = 1; stopFish(ref decisions[7], 8); }
-                if (getVectorDistance(circle10, fish9Location) < 200 && isDirectionRight(CD10, fish9Direction) == 0) { circleflag[9] = 1; stopFish(ref decisions[8], 9); }
-                if (getVectorDistance(circle3, fish10Location) < 200 && isDirectionRight(CD3, fish10Direction) == 0) { circleflag[10] = 1; stopFish(ref decisions[9], 10); }
-                #endregion
-                #region 如果达到目标点后被破坏需要修正
-                if (getVectorDistance(circle4, fish3Location) > 200) circleflag[3] = 0;
-                if (getVectorDistance(circle5, fish4Location) > 200) circleflag[4] = 0;
-                if (getVectorDistance(circle6, fish5Location) > 200) circleflag[5] = 0;
-                if (getVectorDistance(circle7, fish6Location) > 200) circleflag[6] = 0;
-                if (getVectorDistance(circle8, fish7Location) > 200) circleflag[7] = 0;
-                if (getVectorDistance(circle9, fish8Location) > 200) circleflag[8] = 0;
-                if (getVectorDistance(circle10, fish9Location) > 200) circleflag[9] = 0;
-                if (getVectorDistance(circle3, fish10Location) > 200) circleflag[10] = 0;
+                #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[2], fish3, circle4, CD4, 3, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[3], fish4, circle5, CD5, 4, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[4], fish5, circle6, CD6, 5, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[5], fish6, circle7, CD7, 6, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[6], fish7, circle8, CD8, 7, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[7], fish8, circle9, CD9, 8, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[8], fish9, circle10, CD10, 9, ref timeForPoseToPose, circleflag);
+                fishToPoint(ref decisions[9], fish10, circle3, CD3, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (allEqual(circleflag, 1, 3, 10))
@@ -792,31 +612,6 @@ namespace URWPGSim2D.Strategy
             float PD9 = (float)2.618;
             float PD10 = (float)2.618;
             #endregion
-            #region 获取鱼的位置
-            xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
-            //xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
-            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
-            xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
-            xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
-            xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
-            xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
-            xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
-            xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
-            xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
-            xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
-            #endregion
-            #region 获取鱼的角度
-            float fish1Direction = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
-            float fish2Direction = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
-            float fish3Direction = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
-            float fish4Direction = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
-            float fish5Direction = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
-            float fish6Direction = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
-            float fish7Direction = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
-            float fish8Direction = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
-            float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
-            float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
-            #endregion
             #region 一堆鱼移动到目标点和目标角度
             fishToPoint(ref decisions[2], fish3, play3, PD3, 3, ref timeForPoseToPose, playflag);
             fishToPoint(ref decisions[3], fish4, play4, PD4, 4, ref timeForPoseToPose, playflag);
@@ -835,7 +630,7 @@ namespace URWPGSim2D.Strategy
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 20)
+                if (timeflag >= 30)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -924,10 +719,10 @@ namespace URWPGSim2D.Strategy
             if (flag == 2)
                 playWithYellowFish(ref mission, teamId, ref decisions);
 
-            //if (flag == 3)
-            //    movingCircle(ref mission, teamId, ref decisions);
+            if (flag == 3)
+                movingCircle(ref mission, teamId, ref decisions);
 
-            if (flag == 3) 
+            if (flag == 4) 
             {
                 for(int i=1;i<10;i++)
                 {
