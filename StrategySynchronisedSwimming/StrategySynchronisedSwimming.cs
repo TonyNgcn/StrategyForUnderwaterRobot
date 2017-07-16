@@ -55,8 +55,8 @@ namespace URWPGSim2D.Strategy
             if (b > Math.PI) b -= (float)(2 * Math.PI);
             if (a < -Math.PI) a += (float)(2 * Math.PI);
             if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.1) return 1;//a在b右边
-            else if (a - b < -0.1) return -1; //a在b左边
+            if (a - b > 0.15) return 1;//a在b右边
+            else if (a - b < -0.15) return -1; //a在b左边
             else return 0;
         }
         public static bool allEqual(int[] group, int value, int start, int end)
@@ -1272,10 +1272,20 @@ namespace URWPGSim2D.Strategy
                 xna.Vector3 p1 = new xna.Vector3(-1500, 0, 50);
                 xna.Vector3 p2 = new xna.Vector3(1500, 0, 50);
                 float direction = 0;
-                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[8].PositionMm) < 200 && isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad) == 0) { hillflag[9] = 1; stopFish(ref decisions[8],9); }
-                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[8].PositionMm) > 200) hillflag[9] = 0;
+                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 200 && isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) == 0) { hillflag[2] = 1; stopFish(ref decisions[1],2); }
+                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 200) hillflag[1] = 0;
+                if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0 && hillflag[1] != 0) 
+                {
+                    decisions[1].TCode = 0;
+                    decisions[1].VCode = 1;
+                }
+                if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0 && hillflag[1] != 0)
+                {
+                    decisions[1].TCode = 14;
+                    decisions[1].VCode = 1;
+                }
                 if (hillflag[9] == 0)
-                    Helpers.PoseToPose(ref decisions[8], mission.TeamsRef[teamId].Fishes[8], p2, direction, 45f, 200f, 100, ref timeForPoseToPose[9]);
+                    Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[1]);
             }
             /*
             xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
