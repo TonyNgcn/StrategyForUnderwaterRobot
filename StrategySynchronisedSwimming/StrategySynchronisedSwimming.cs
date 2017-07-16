@@ -1336,6 +1336,7 @@ namespace URWPGSim2D.Strategy
 
 
             }
+
             /*
             xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
             xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;

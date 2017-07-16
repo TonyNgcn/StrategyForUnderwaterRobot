@@ -306,7 +306,13 @@ namespace URWPGSim2D.StrategyHelper
 
             return angle;
         }
-
+        public static double distanceFromLineToPoint(xna.Vector3 L1, xna.Vector3 L2, xna.Vector3 P)
+        {
+            double A = L2.Y - L1.Y;
+            double B = L1.X - L2.X;
+            double C = L2.X * L1.Y - L1.X * L1.Y;
+            return Math.Abs((A * P.X + B * P.Y + C) / Math.Sqrt(A * A + B * B));
+        }
         public static int isDirectionRight(float a, float b)
         {
             if (a > Math.PI) a -= (float)(2 * Math.PI);
