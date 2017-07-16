@@ -207,7 +207,7 @@ namespace URWPGSim2D.StrategyHelper
                     times = 0;
 
                     //decision.VCode = (disSrcPtMmToTmpPtMm < 0.5 * disThreshold) ? 4 : 10;
-                    decision.VCode = 11;
+                    decision.VCode = 10;
                     decision.TCode = 7;
                     float lamdadot = ((destPtMm.X - srcPtMm.X) * (fish.VelocityMmPs * (float)Math.Sin(fish.BodyDirectionRad))
                         - (-destPtMm.Z + srcPtMm.Z) * (fish.VelocityMmPs * (float)Math.Cos(fish.BodyDirectionRad)))
@@ -242,7 +242,7 @@ namespace URWPGSim2D.StrategyHelper
                     double targetVelocity = u1 / Math.Cos(thetae);
                     double targetAngularV = u2 * Math.Pow(Math.Cos(thetae), 2.0);
 
-                     if (disSrcPtMmToDestPtMm < 150.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
+                     if (disSrcPtMmToDestPtMm < 50.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
                     //if (disSrcPtMmToDestPtMm < 150.0f)
                     {
                         decision.VCode = 0;

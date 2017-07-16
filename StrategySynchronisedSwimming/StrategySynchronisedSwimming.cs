@@ -85,31 +85,41 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 200f, 100, ref timeForPoseToPose[noOfFish]);
-                    if (getVectorDistance(targetePoint, fish.PositionMm) < 150)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        hillflag[noOfFish] = 1;
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 100, ref timeForPoseToPose[noOfFish]);
+                    }
+                  //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
+                    if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
+                    {
+                        flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
                     if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
-                        decisions.TCode = 2;
+                        decisions.TCode = 0;
                         decisions.VCode = 1;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
-                        decisions.TCode = 12;
+                        decisions.TCode = 14;
                         decisions.VCode = 1;
                     }
                     else
                         stopFish(ref decisions, noOfFish);
 
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        hillflag[noOfFish] = 0;
+                        flag[noOfFish] = 0;
                     break;
+                default:
+                    decisions.TCode = 7;
+                    decisions.VCode = 0;
+                    break;
+
             }
         }
+
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
         private static int flag = 0;//主函数标志值
@@ -163,7 +173,7 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 hill9 = new xna.Vector3(834, 0, 996);
             xna.Vector3 hill10 = new xna.Vector3(948, 0, 564);
             xna.Vector3 hill22 = new xna.Vector3(204, 0, -1122);
-            xna.Vector3 hill23 = new xna.Vector3(1644, 0, 300);
+            xna.Vector3 hill23 = new xna.Vector3(1644, 0, 300);       
             #endregion
             #region 构成山字的目标角度
             float HD21 = (float)-1.0472;
@@ -177,31 +187,6 @@ namespace URWPGSim2D.Strategy
             float HD10 = (float)-1.5708;
             float HD22 = 0;
             float HD23 = (float)0.7854;
-            #endregion
-            #region 获取鱼的位置
-            xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
-            //xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
-            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
-            xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
-            xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
-            xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
-            xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
-            xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
-            xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
-            xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
-            xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
-            #endregion
-            #region 获取鱼的角度
-            float fish1Direction = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
-            float fish2Direction = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
-            float fish3Direction = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
-            float fish4Direction = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
-            float fish5Direction = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
-            float fish6Direction = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
-            float fish7Direction = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
-            float fish8Direction = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
-            float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
-            float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
             if(hillflag[0]==0)
@@ -234,14 +219,17 @@ namespace URWPGSim2D.Strategy
             #region 山字第三阶段
             if (hillflag[1] == 1)
                 fishToPoint(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
-            if (hillflag[1] == 1 && allEqual(hillflag, 1, 2, 10))
-                hillflag[1] = 3;
+            if(isDirectionRight(fish2.BodyDirectionRad,HD23)==0)
+            {
+                if (hillflag[1] == 1 && allEqual(hillflag, 1, 2, 10))
+                    hillflag[1] = 3;
+            }
             #endregion
             #region 定住5s，进入下一函数
             if (hillflag[1] == 3)
             {
                 timeflag++;
-                if (timeflag >= 80)
+                if (timeflag >= 200)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -275,9 +263,9 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 one4 = new xna.Vector3(108, 0, -702);
             xna.Vector3 one5 = new xna.Vector3(108, 0, -156);
             xna.Vector3 one6 = new xna.Vector3(108, 0, 534);
-            xna.Vector3 one7 = new xna.Vector3(-390, 0, 990);
+            xna.Vector3 one7 = new xna.Vector3(-390, 0, 996);
             xna.Vector3 one8 = new xna.Vector3(216, 0, 996);
-            xna.Vector3 one9 = new xna.Vector3(810, 0, 984);
+            xna.Vector3 one9 = new xna.Vector3(834, 0, 996);
             xna.Vector3 one10 = new xna.Vector3(1182, 0, -432);
             #endregion
             #region 构成数字1的目标角度
@@ -290,31 +278,6 @@ namespace URWPGSim2D.Strategy
             float OD8 = 0;
             float OD9 = 0;
             float OD10 = (float)-1.0472;
-            #endregion
-            #region 获取鱼的位置
-            xna.Vector3 fish1Location = mission.TeamsRef[teamId].Fishes[0].PositionMm;
-            //xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
-            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
-            xna.Vector3 fish3Location = mission.TeamsRef[teamId].Fishes[2].PositionMm;
-            xna.Vector3 fish4Location = mission.TeamsRef[teamId].Fishes[3].PositionMm;
-            xna.Vector3 fish5Location = mission.TeamsRef[teamId].Fishes[4].PositionMm;
-            xna.Vector3 fish6Location = mission.TeamsRef[teamId].Fishes[5].PositionMm;
-            xna.Vector3 fish7Location = mission.TeamsRef[teamId].Fishes[6].PositionMm;
-            xna.Vector3 fish8Location = mission.TeamsRef[teamId].Fishes[7].PositionMm;
-            xna.Vector3 fish9Location = mission.TeamsRef[teamId].Fishes[8].PositionMm;
-            xna.Vector3 fish10Location = mission.TeamsRef[teamId].Fishes[9].PositionMm;
-            #endregion
-            #region 获取鱼的角度
-            float fish1Direction = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
-            float fish2Direction = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
-            float fish3Direction = mission.TeamsRef[teamId].Fishes[2].BodyDirectionRad;
-            float fish4Direction = mission.TeamsRef[teamId].Fishes[3].BodyDirectionRad;
-            float fish5Direction = mission.TeamsRef[teamId].Fishes[4].BodyDirectionRad;
-            float fish6Direction = mission.TeamsRef[teamId].Fishes[5].BodyDirectionRad;
-            float fish7Direction = mission.TeamsRef[teamId].Fishes[6].BodyDirectionRad;
-            float fish8Direction = mission.TeamsRef[teamId].Fishes[7].BodyDirectionRad;
-            float fish9Direction = mission.TeamsRef[teamId].Fishes[8].BodyDirectionRad;
-            float fish10Direction = mission.TeamsRef[teamId].Fishes[9].BodyDirectionRad;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
             fishToPoint(ref decisions[1], fish2, one2, OD2, 2, ref timeForPoseToPose, oneflag);
@@ -335,7 +298,7 @@ namespace URWPGSim2D.Strategy
             if(complete)
             {
                 timeflag++;
-                if (timeflag >= 60)
+                if (timeflag >= 50)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
