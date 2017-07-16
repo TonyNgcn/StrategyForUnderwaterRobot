@@ -439,7 +439,7 @@ namespace URWPGSim2D.Strategy
             if (hillflag[3] == 0) Helpers.PoseToPose(ref decisions[2], fish3, hill3, HD3, 40f, 200f, msPerCycle, ref timeForPoseToPose[3]);
             if (hillflag[4] == 0) Helpers.PoseToPose(ref decisions[3], fish4, hill4, HD4, 40f, 200f, msPerCycle, ref timeForPoseToPose[4]);
             if (hillflag[5] == 0) Helpers.PoseToPose(ref decisions[4], fish5, hill5, HD5, 40f, 200f, msPerCycle, ref timeForPoseToPose[5]);
-            if (hillflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, hill6, HD6, 40f, 200f, msPerCycle, ref timeForPoseToPose[6]);
+            if (hillflag[6] == 0) Helpers.PoseToPose(ref decisions[5], fish6, hill6, HD6, 40f, 200f,  msPerCycle, ref timeForPoseToPose[6]);
             if (hillflag[7] == 0) Helpers.PoseToPose(ref decisions[6], fish7, hill7, HD7, 8f, 200f, msPerCycle, ref timeForPoseToPose[7]);
             if (hillflag[8] == 0) Helpers.PoseToPose(ref decisions[7], fish8, hill8, HD8, 8f, 200f, msPerCycle, ref timeForPoseToPose[8]);
             if (hillflag[9] == 0) Helpers.PoseToPose(ref decisions[8], fish9, hill9, HD9, 8f, 200f, msPerCycle, ref timeForPoseToPose[9]);
@@ -1272,22 +1272,69 @@ namespace URWPGSim2D.Strategy
                 xna.Vector3 p1 = new xna.Vector3(-1500, 0, 50);
                 xna.Vector3 p2 = new xna.Vector3(1500, 0, 50);
                 float direction = 0;
-                if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 100 && isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) == 0) { hillflag[2] = 1; stopFish(ref decisions[1],2); }
-                else if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 100) hillflag[2] = 0;
-                else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0 && hillflag[2] != 0)
+
+                switch (hillflag[2])
                 {
-                    decisions[1].TCode = 2;
-                    decisions[1].VCode = 1;
+                    case 0:
+                        Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[2]);
+                        if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 150)
+                        {
+                            hillflag[2]++;
+                            
+                        }
+                        
+                        break;
+
+                    case 1:
+
+                        if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0)
+                        {
+                            decisions[1].TCode = 2;
+                            decisions[1].VCode = 1;
+                        }
+                        else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0)
+                        {
+                            decisions[1].TCode = 12;
+                            decisions[1].VCode = 1;
+                        }
+                        else
+                            stopFish(ref decisions[1], 2);
+
+                        if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 150)
+                            hillflag[2]--;
+                        break;
                 }
-                else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0 && hillflag[2] != 0)
-                {
-                    decisions[1].TCode = 12;
-                    decisions[1].VCode = 1;
-                }
+
+
+                //        if (hillflag[2] == 0)
+                //{
+                //    Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[2]);
+
+                //    if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 150)
+                //    {
+                //        hillflag[2] = 1;
+                //        stopFish(ref decisions[1], 2);
+                //    }
+                //    else if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 150)
+                //        hillflag[2] = 0;
+
+                //}
+
+
+                //else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0 && hillflag[2] != 0)
+                //{
+                //    decisions[1].TCode = 2;
+                //    decisions[1].VCode = 1;
+                //}
+                //else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0 && hillflag[2] != 0)
+                //{
+                //    decisions[1].TCode = 12;
+                //    decisions[1].VCode = 1;
+                //}
                 //else decisions[1].VCode = 0;
 
-                if (hillflag[2] == 0)
-                    Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[1]);
+
+
             }
             /*
             xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];

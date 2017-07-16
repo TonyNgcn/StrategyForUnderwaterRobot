@@ -242,8 +242,8 @@ namespace URWPGSim2D.StrategyHelper
                     double targetVelocity = u1 / Math.Cos(thetae);
                     double targetAngularV = u2 * Math.Pow(Math.Cos(thetae), 2.0);
 
-                    // if (disSrcPtMmToDestPtMm < 150.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
-                    if (disSrcPtMmToDestPtMm < 150.0f)
+                     if (disSrcPtMmToDestPtMm < 150.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
+                    //if (disSrcPtMmToDestPtMm < 150.0f)
                     {
                         decision.VCode = 0;
                         decision.TCode = 7;
