@@ -264,7 +264,7 @@ namespace URWPGSim2D.Strategy
             }
             if(startRoadflag[0]==1)
             {
-                dribbleFishToPoint(ref decisions[3], fish4, startRoad42, SRD42, 4, startRoadflag);
+                fishToPoint(ref decisions[3], fish4, startRoad42, SRD42, 4, ref timeForPoseToPose, startRoadflag);
                 startRoadflag[1] = 1;
             }
             if(startRoadflag[1]==1&&startRoadflag[4]==1)
@@ -273,12 +273,11 @@ namespace URWPGSim2D.Strategy
                 complete = true;
             }
             #endregion
-            #region 定住3s，进入下一函数
-
+            #region 定住1s，进入下一函数
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 30)
+                if (timeflag >= 10)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -357,7 +356,7 @@ namespace URWPGSim2D.Strategy
                 timeForPoseToPose[2] = 0;
             }
             if (hillflag[0] == 1)
-                dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
+                fishToPoint(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
             if (hillflag[0] == 1 && hillflag[2] == 1)
             {
                 hillflag[1] = 1;
@@ -377,7 +376,7 @@ namespace URWPGSim2D.Strategy
                 }
             }
             if (hillflag[1] == 1)
-                dribbleFishToPoint(ref decisions[1], fish2, hill23, HD23, 2, hillflag);
+                fishToPoint(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
             #endregion
             #region 定住5s，进入下一函数
             if (hillflag[1] == 3)
