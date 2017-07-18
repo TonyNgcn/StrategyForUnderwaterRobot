@@ -134,7 +134,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 10f, 50f, 14, 10, 15, 100, false);
+                        Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 5f, 10f, 50f, 14, 10, 6, 100, false);
                     }
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
                     {
@@ -260,13 +260,14 @@ namespace URWPGSim2D.Strategy
             if (startRoadflag[0] == 0 && allEqual(startRoadflag, 2, 2, 10)) 
             {
                 startRoadflag[0] = 1;
+                startRoadflag[4] = 0;
             }
             if(startRoadflag[0]==1)
             {
                 dribbleFishToPoint(ref decisions[3], fish4, startRoad42, SRD42, 4, startRoadflag);
                 startRoadflag[1] = 1;
             }
-            if(startRoadflag[1]==1&&allEqual(startRoadflag,1,2,10))
+            if(startRoadflag[1]==1&&startRoadflag[4]==1)
             {
                 startRoadflag[0] = 2;
                 complete = true;
@@ -698,16 +699,27 @@ namespace URWPGSim2D.Strategy
 
             #endregion
             if (flag == 0)
-                hillCharacter(ref mission, teamId, ref decisions);
+                startRoad(ref mission, teamId, ref decisions);
 
             if (flag == 1)
-                numberOne(ref mission, teamId, ref decisions);
+                hillCharacter(ref mission, teamId, ref decisions);
 
             if (flag == 2)
-                playWithYellowFish(ref mission, teamId, ref decisions);
+                numberOne(ref mission, teamId, ref decisions);
 
             if (flag == 3)
+                playWithYellowFish(ref mission, teamId, ref decisions);
+
+            if (flag == 4)
                 movingCircle(ref mission, teamId, ref decisions);
+
+            if (flag == 5) 
+            {
+                for (int i = 2; i <= 10;i++)
+                {
+                    stopFish(ref decisions[i - 1], i);
+                }
+            }
             return decisions;
         }
     }
