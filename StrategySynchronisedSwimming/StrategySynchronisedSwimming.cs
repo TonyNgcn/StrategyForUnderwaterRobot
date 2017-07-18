@@ -88,12 +88,12 @@ namespace URWPGSim2D.Strategy
                     if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
-                        decisions.VCode = 1;
+                        decisions.VCode = 2;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
-                        decisions.TCode = 14;
-                        decisions.VCode = 1;
+                        decisions.TCode = 15;
+                        decisions.VCode = 2;
                     }
                     else
                     {
@@ -139,12 +139,12 @@ namespace URWPGSim2D.Strategy
                     if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
-                        decisions.VCode = 1;
+                        decisions.VCode = 2;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
-                        decisions.TCode = 14;
-                        decisions.VCode = 1;
+                        decisions.TCode = 15;
+                        decisions.VCode = 2;
                     }
                     else
                     {
