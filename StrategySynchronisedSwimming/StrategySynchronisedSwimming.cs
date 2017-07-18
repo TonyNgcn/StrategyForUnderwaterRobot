@@ -38,17 +38,6 @@ namespace URWPGSim2D.Strategy
         {
             return "Team First";
         }
-
-        //public static int isDirectionRight(float a, float b)
-        //{
-        //    if ((Math.Abs(a - b) < 0.1) || (Math.Abs(a + (float)Math.PI - b) < 0.1)
-        //        return 0;
-
-        //    else return 1;
-        //    //if (a - b > 0.1) return 1;//a在b右边
-        //    //else if (a - b < -0.1) return -1; //a在b左边
-        //}
-
         public static int isDirectionRight(float a, float b)
         {
             if (a > Math.PI) a -= (float)(2 * Math.PI);
@@ -89,7 +78,7 @@ namespace URWPGSim2D.Strategy
                     {
                         Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 100, ref timeForPoseToPose[noOfFish]);
                     }
-                  //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
+                    //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
                     {
                         flag[noOfFish] = 1;
@@ -202,9 +191,6 @@ namespace URWPGSim2D.Strategy
         private static int timeflag = 0;
         private static int[] timeForPoseToPose = new int[11];
         private static bool complete = false;
-        //private int remainRecord = 0;
-        //private int[] zeroflag = new int[10];
-        //private int[] flyflag = new int[10];
         private static int[] startRoadflag = new int[11];
         private static int[] hillflag = new int[11];
         private static int[] oneflag = new int[11];
@@ -289,7 +275,7 @@ namespace URWPGSim2D.Strategy
         #endregion
         #region 山字
         public static void hillCharacter(ref Mission mission, int teamId, ref Decision[] decisions)
-         {
+        {
             //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
             //log.Write(allEqual(hillflag, 1, 2, 10));
             //log.Write(' ');
@@ -320,7 +306,7 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 hill9 = new xna.Vector3(834, 0, 996);
             xna.Vector3 hill10 = new xna.Vector3(948, 0, 564);
             xna.Vector3 hill22 = new xna.Vector3(204, 0, -1122);
-            xna.Vector3 hill23 = new xna.Vector3(1644, 0, 300);       
+            xna.Vector3 hill23 = new xna.Vector3(1644, 0, 300);
             #endregion
             #region 构成山字的目标角度
             float HD21 = (float)-1.0472;
@@ -336,7 +322,7 @@ namespace URWPGSim2D.Strategy
             float HD23 = (float)0.7854;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            if(hillflag[0]==0)
+            if (hillflag[0] == 0)
                 fishToPoint(ref decisions[1], fish2, hill21, HD21, 2, ref timeForPoseToPose, hillflag);
             fishToPoint(ref decisions[2], fish3, hill3, HD3, 3, ref timeForPoseToPose, hillflag);
             fishToPoint(ref decisions[3], fish4, hill4, HD4, 4, ref timeForPoseToPose, hillflag);
@@ -355,8 +341,7 @@ namespace URWPGSim2D.Strategy
             }
             if (hillflag[0] == 1)
                 dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
-
-            if (hillflag[0] == 1 && hillflag[2] == 1) 
+            if (hillflag[0] == 1 && hillflag[2] == 1)
             {
                 hillflag[1] = 1;
                 hillflag[0] = 3;
@@ -368,12 +353,12 @@ namespace URWPGSim2D.Strategy
             {
                 if (hillflag[1] == 1 && allEqual(hillflag, 2, 2, 10))
                 {
-                    for (int i = 1; i < 11; i++) {
+                    for (int i = 1; i < 11; i++)
+                    {
                         hillflag[i] = 3;
                     }
                 }
             }
-
             if (hillflag[1] == 1)
                 dribbleFishToPoint(ref decisions[1], fish2, hill23, HD23, 2, hillflag);
             #endregion
@@ -443,11 +428,11 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
             #endregion
             #region 定住5s，进入下一函数
-            if (allEqual(oneflag, 2, 2, 10)) 
+            if (allEqual(oneflag, 2, 2, 10))
             {
                 complete = true;
             }
-            if(complete)
+            if (complete)
             {
                 timeflag++;
                 if (timeflag >= 50)
@@ -480,6 +465,7 @@ namespace URWPGSim2D.Strategy
             #endregion
             #endregion
             #region 构成动态圆的目标点
+            xna.Vector3 circle2 = new xna.Vector3(1392, 0, -828);
             xna.Vector3 circle3 = new xna.Vector3(684, 0, -628);
             xna.Vector3 circle4 = new xna.Vector3(-30, 0, -1116);
             xna.Vector3 circle5 = new xna.Vector3(-756, 0, -804);
@@ -490,6 +476,7 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 circle10 = new xna.Vector3(888, 0, -102);
             #endregion
             #region 构成动态圆的目标角度
+            float CD2 = (float)0.8203;
             float CD3 = (float)0.7854;
             float CD4 = (float)-0.0873;
             float CD5 = (float)-0.7854;
@@ -503,6 +490,7 @@ namespace URWPGSim2D.Strategy
             if (completeCircle == 0) //未到达指定点
             {
                 #region 一堆鱼移动到目标点和目标角度
+                fishToPoint(ref decisions[1], fish2, circle2, CD2, 2, ref timeForPoseToPose, circleflag);
                 fishToPoint(ref decisions[2], fish3, circle3, CD3, 3, ref timeForPoseToPose, circleflag);
                 fishToPoint(ref decisions[3], fish4, circle4, CD4, 4, ref timeForPoseToPose, circleflag);
                 fishToPoint(ref decisions[4], fish5, circle5, CD5, 5, ref timeForPoseToPose, circleflag);
@@ -522,10 +510,47 @@ namespace URWPGSim2D.Strategy
                         timeForPoseToPose[i] = 0;
                     }
                 }
-                #endregion
+                if (completeCircle == 1)
+                {
+                    decisions[1].TCode = 13;
+                    decisions[1].VCode = 3;
+                    timeflag++;
+                    for (int i = 2; i < 10; i++)
+                    {
+                        decisions[i].TCode = 10;
+                        decisions[i].VCode = 3;
+                    }
+                    if (timeflag >= 60)//旋转6s
+                    {
+                        for (int i = 0; i < 11; i++)
+                            timeForPoseToPose[i] = 0;
+                        timeflag = 0;
+                        completeCircle = 2;
+                    }
+                }
+                if (completeCircle == 2)
+                {
+                    decisions[1].TCode = 13;
+                    decisions[1].VCode = 3;
+                    timeflag++;
+                    for (int i = 2; i < 10; i++)
+                    {
+                        decisions[i].TCode = 14;
+                        decisions[i].VCode = 2;
+                    }
+                    if (timeflag >= 30)//旋转6s
+                    {
+                        for (int i = 0; i < 11; i++)
+                            timeForPoseToPose[i] = 0;
+                        timeflag = 0;
+                        flag++;
+                    }
+                }
             }
-            
+            #endregion
         }
+        #endregion
+
         #endregion
         #region 与黄鱼互动
         public static void playWithYellowFish(ref Mission mission, int teamId, ref Decision[] decisions)
@@ -594,7 +619,6 @@ namespace URWPGSim2D.Strategy
             #endregion
         }
         #endregion
-
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -657,15 +681,10 @@ namespace URWPGSim2D.Strategy
             #endregion
 
             #endregion
-
-            //xna.Vector3 hill9 = new xna.Vector3(834, 0, 996);
-            //float HD9 = 0;
-
-
-            if (flag == 0) 
+            if (flag == 0)
                 hillCharacter(ref mission, teamId, ref decisions);
 
-            if (flag == 1) 
+            if (flag == 1)
                 numberOne(ref mission, teamId, ref decisions);
 
             if (flag == 2)
@@ -673,94 +692,11 @@ namespace URWPGSim2D.Strategy
 
             if (flag == 3)
                 movingCircle(ref mission, teamId, ref decisions);
-
-            if (flag == 4) 
-            {
-                for(int i=1;i<10;i++)
-                {
-                    stopFish(ref decisions[i], i + 1);
-                }
-            }
-            //if(flag==5)//test
-            //{
-            //    xna.Vector3 p1 = new xna.Vector3(-1500, 0, 50);
-            //    xna.Vector3 p2 = new xna.Vector3(1500, 0, 50);
-            //    float direction = 0;
-                
-            //    //switch (hillflag[2])
-            //    //{
-            //    //    case 0:
-            //    //        Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[2]);
-            //    //        if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 150)
-            //    //        {
-            //    //            hillflag[2]++;  
-            //    //        }
-            //    //        break;
-            //    //    case 1:
-            //    //        if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0)
-            //    //        {
-            //    //            decisions[1].TCode = 2;
-            //    //            decisions[1].VCode = 1;
-            //    //        }
-            //    //        else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0)
-            //    //        {
-            //    //            decisions[1].TCode = 12;
-            //    //            decisions[1].VCode = 1;
-            //    //        }
-            //    //        else
-            //    //            stopFish(ref decisions[1], 2);
-
-            //    //        if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 150)
-            //    //            hillflag[2]--;
-            //    //        break;
-            //    //}
-
-
-            //    //        if (hillflag[2] == 0)
-            //    //{
-            //    //    Helpers.PoseToPose(ref decisions[1], mission.TeamsRef[teamId].Fishes[1], p2, direction, 6f, 200f, 100, ref timeForPoseToPose[2]);
-
-            //    //    if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) < 150)
-            //    //    {
-            //    //        hillflag[2] = 1;
-            //    //        stopFish(ref decisions[1], 2);
-            //    //    }
-            //    //    else if (getVectorDistance(p2, mission.TeamsRef[teamId].Fishes[1].PositionMm) > 150)
-            //    //        hillflag[2] = 0;
-
-            //    //}
-
-
-            //    //else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) < 0 && hillflag[2] != 0)
-            //    //{
-            //    //    decisions[1].TCode = 2;
-            //    //    decisions[1].VCode = 1;
-            //    //}
-            //    //else if (isDirectionRight(direction, mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad) > 0 && hillflag[2] != 0)
-            //    //{
-            //    //    decisions[1].TCode = 12;
-            //    //    decisions[1].VCode = 1;
-            //    //}
-            //    //else decisions[1].VCode = 0;
-
-
-
-            //}
-
-            /*
-            xna.Vector3 fish1Location2 = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[2];
-            xna.Vector3 fish2Location = mission.TeamsRef[teamId].Fishes[1].PositionMm;
-            xna.Vector3 A1 = new xna.Vector3(-12, 0, -696);
-            float AD1 = (float)-2.1991;
-            RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
-            //Helpers.fishMoving(A1, AD1, ref decisions[1], ref fish2, ref timeflag);
-            if (zeroflag[1] == 0) Helpers.Dribble(ref decisions[1], fish2, A1, AD1, 30, 10, 60, 14, 5, 18, mission.CommonPara.MsPerCycle, true);
-            Helpers.Dribble(ref decisions[9], mission.TeamsRef[teamId].Fishes[9], fish1Location2, (float)2.0769, 30, 30, 30, 14, 12, 5, mission.CommonPara.MsPerCycle, true);
-            if (isDirectionRight(mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad, AD1) == 0 && getVectorDistance(A1, fish2Location) < 45) { decisions[1].VCode = 0; zeroflag[1] = 1; decisions[1].TCode = 7; }
-            if (getVectorDistance(A1, fish2Location) > 60) zeroflag[1] = 0;
-            */
             return decisions;
         }
     }
 }
+
+
+
 
