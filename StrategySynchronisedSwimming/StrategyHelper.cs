@@ -197,7 +197,8 @@ namespace URWPGSim2D.StrategyHelper
 
             if (Math.Abs(deltaTheta) > angThreshold * Math.PI / 180.0)
             {// 目标角度绝对值超过某一阈值（默认30度）速度档位置次低进行小半径转弯。防止控制率过大。
-                decision.VCode = 1;
+                //decision.VCode = 1;
+                decision.VCode = 3;
                 decision.TCode = (deltaTheta <= 0) ? 1 : 13;
             }
             else

@@ -44,8 +44,8 @@ namespace URWPGSim2D.Strategy
             if (b > Math.PI) b -= (float)(2 * Math.PI);
             if (a < -Math.PI) a += (float)(2 * Math.PI);
             if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.2) return 1;//a在b右边
-            else if (a - b < -0.2) return -1; //a在b左边
+            if (a - b > 0.12) return 1;//a在b右边
+            else if (a - b < -0.12) return -1; //a在b左边
             else return 0;
         }
         public static bool allEqual(int[] group, int value, int start, int end)
