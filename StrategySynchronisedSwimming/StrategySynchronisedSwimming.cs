@@ -230,6 +230,7 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 startRoad8 = new xna.Vector3(492, 0, -402);
             xna.Vector3 startRoad9 = new xna.Vector3(594, 0, 954);
             xna.Vector3 startRoad10 = new xna.Vector3(660, 0, 202);
+            xna.Vector3 startRoad42 = new xna.Vector3(-60, 0, -762);
             #endregion
             #region 构成开始路的目标角度
             float SRD2 = (float)1.0472;
@@ -241,11 +242,13 @@ namespace URWPGSim2D.Strategy
             float SRD8 = (float)2.0944;
             float SRD9 = (float)2.0944;
             float SRD10 = (float)1.0472;
+            float SRD42 = (float)-1.5708;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
             fishToPoint(ref decisions[1], fish2, startRoad2, SRD2, 2, ref timeForPoseToPose, startRoadflag);
             fishToPoint(ref decisions[2], fish3, startRoad3, SRD3, 3, ref timeForPoseToPose, startRoadflag);
-            fishToPoint(ref decisions[3], fish4, startRoad4, SRD4, 4, ref timeForPoseToPose, startRoadflag);
+            if(startRoadflag[0]==0)
+                fishToPoint(ref decisions[3], fish4, startRoad4, SRD4, 4, ref timeForPoseToPose, startRoadflag);
             fishToPoint(ref decisions[4], fish5, startRoad5, SRD5, 5, ref timeForPoseToPose, startRoadflag);
             fishToPoint(ref decisions[5], fish6, startRoad6, SRD6, 6, ref timeForPoseToPose, startRoadflag);
             fishToPoint(ref decisions[6], fish7, startRoad7, SRD7, 7, ref timeForPoseToPose, startRoadflag);
@@ -253,11 +256,24 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[8], fish9, startRoad9, SRD9, 9, ref timeForPoseToPose, startRoadflag);
             fishToPoint(ref decisions[9], fish10, startRoad10, SRD10, 10, ref timeForPoseToPose, startRoadflag);
             #endregion
-            #region 定住3s，进入下一函数
-            if (allEqual(oneflag, 2, 2, 10))
+            #region 进入下一阶段
+            if (startRoadflag[0] == 0 && allEqual(startRoadflag, 2, 2, 10)) 
             {
+                startRoadflag[0] = 1;
+            }
+            if(startRoadflag[0]==1)
+            {
+                dribbleFishToPoint(ref decisions[3], fish4, startRoad42, SRD42, 4, startRoadflag);
+                startRoadflag[1] = 1;
+            }
+            if(startRoadflag[1]==1&&allEqual(startRoadflag,1,2,10))
+            {
+                startRoadflag[0] = 2;
                 complete = true;
             }
+            #endregion
+            #region 定住3s，进入下一函数
+
             if (complete)
             {
                 timeflag++;
