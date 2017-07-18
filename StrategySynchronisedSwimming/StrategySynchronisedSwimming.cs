@@ -104,22 +104,16 @@ namespace URWPGSim2D.Strategy
                         flag[noOfFish] = 0;
                     break;
                 case 2:
-                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
-                        decisions.TCode = 0;
-                        decisions.VCode = 1;
+                        flag[noOfFish] = 1;
                     }
-                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
-                    {
-                        decisions.TCode = 14;
-                        decisions.VCode = 1;
-                    }
+                    else if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                        flag[noOfFish] = 0;
                     else
                     {
                         stopFish(ref decisions, noOfFish);
                     }
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
                     break;
                 default:
                     decisions.TCode = 7;
@@ -161,22 +155,16 @@ namespace URWPGSim2D.Strategy
                         flag[noOfFish] = 0;
                     break;
                 case 2:
-                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
-                        decisions.TCode = 0;
-                        decisions.VCode = 1;
+                        flag[noOfFish] = 1;
                     }
-                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
-                    {
-                        decisions.TCode = 14;
-                        decisions.VCode = 1;
-                    }
+                    else if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                        flag[noOfFish] = 0;
                     else
                     {
                         stopFish(ref decisions, noOfFish);
                     }
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
                     break;
                 default:
                     decisions.TCode = 7;
@@ -198,6 +186,7 @@ namespace URWPGSim2D.Strategy
         private static int[] playflag = new int[11];
         private static int[] circleflag = new int[11];
         private static int[] oneHeartflag = new int[11];
+        private static int[] lastflag = new int[11];
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -715,6 +704,90 @@ namespace URWPGSim2D.Strategy
             #endregion
         }
         #endregion
+        #region 最后动作
+        public static void lastMovement(ref Mission mission, int teamId, ref Decision[] decisions)
+        {
+            #region 声明变量
+            int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
+            #region 一堆鱼
+            RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
+            RoboFish fish3 = mission.TeamsRef[teamId].Fishes[2];
+            RoboFish fish4 = mission.TeamsRef[teamId].Fishes[3];
+            RoboFish fish5 = mission.TeamsRef[teamId].Fishes[4];
+            RoboFish fish6 = mission.TeamsRef[teamId].Fishes[5];
+            RoboFish fish7 = mission.TeamsRef[teamId].Fishes[6];
+            RoboFish fish8 = mission.TeamsRef[teamId].Fishes[7];
+            RoboFish fish9 = mission.TeamsRef[teamId].Fishes[8];
+            RoboFish fish10 = mission.TeamsRef[teamId].Fishes[9];
+            #endregion
+            #endregion
+            #region 构成最后动作的目标点
+            xna.Vector3 last2 = new xna.Vector3(-1818, 0, 30);
+            xna.Vector3 last3 = new xna.Vector3(-1614, 0, -750);
+            xna.Vector3 last4 = new xna.Vector3(-652, 0, -750);
+            xna.Vector3 last5 = new xna.Vector3(150, 0, -750);
+            xna.Vector3 last6 = new xna.Vector3(1218, 0, -750);
+            xna.Vector3 last7 = new xna.Vector3(1218, 0, 650);
+            xna.Vector3 last8 = new xna.Vector3(150, 0, 650);
+            xna.Vector3 last9 = new xna.Vector3(-652, 0, 650);
+            xna.Vector3 last10 = new xna.Vector3(-1650, 0, 650);
+            xna.Vector3 last22 = new xna.Vector3(1600, 0, 30);
+            #endregion
+            #region 构成最后动作的目标角度
+            float LD2 = 0;
+            float LD3 = (float)-3.1415;
+            float LD4 = (float)-3.1415;
+            float LD5 = (float)-3.1415;
+            float LD6 = (float)-3.1415;
+            float LD7 = (float)-3.1415;
+            float LD8 = (float)-3.1415;
+            float LD9 = (float)-3.1415;
+            float LD10 = (float)-3.1415;
+            float LD22 = 0;
+            #endregion
+            #region 一堆鱼移动到目标点和目标角度
+            fishToPoint(ref decisions[1], fish2, last2, LD2, 2, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[2], fish3, last3, LD3, 3, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[3], fish4, last4, LD4, 4, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[4], fish5, last5, LD5, 5, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[5], fish6, last6, LD6, 6, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[6], fish7, last7, LD7, 7, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[7], fish8, last8, LD8, 8, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[8], fish9, last9, LD9, 9, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[9], fish10, last10, LD10, 10, ref timeForPoseToPose, lastflag);
+            #endregion
+            #region 进入下一阶段
+            if (lastflag[0] == 0 && allEqual(lastflag, 2, 2, 10))
+            {
+                lastflag[0] = 1;
+                lastflag[2] = 0;
+            }
+            if (lastflag[0] == 1)
+            {
+                fishToPoint(ref decisions[1], fish4, last22, LD22, 2, ref timeForPoseToPose, lastflag);
+                lastflag[1] = 1;
+            }
+            if (lastflag[1] == 1 && lastflag[2] == 1)
+            {
+                lastflag[0] = 2;
+                complete = true;
+            }
+            #endregion
+            #region 定住结束
+            if (allEqual(lastflag, 2, 2, 10))
+            {
+                complete = true;
+            }
+            if (complete)
+            {
+                for (int i = 2; i <= 10; i++)
+                {
+                    stopFish(ref decisions[i - 1], i);
+                }
+            }
+            #endregion
+        }
+        #endregion
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -787,23 +860,17 @@ namespace URWPGSim2D.Strategy
                 numberOne(ref mission, teamId, ref decisions);
 
             if (flag == 3)
-                //playWithYellowFish(ref mission, teamId, ref decisions);
                 movingCircle(ref mission, teamId, ref decisions);
 
             if (flag == 4)
-                //movingCircle(ref mission, teamId, ref decisions);
                 playWithYellowFish(ref mission, teamId, ref decisions);
 
             if (flag == 5)
                 theOneHeart(ref mission, teamId, ref decisions);
 
-            if (flag == 6) 
-            {
-                for (int i = 2; i <= 10;i++)
-                {
-                    stopFish(ref decisions[i - 1], i);
-                }
-            }
+            if (flag == 6)
+                lastMovement(ref mission, teamId, ref decisions);
+
             return decisions;
         }
     }
