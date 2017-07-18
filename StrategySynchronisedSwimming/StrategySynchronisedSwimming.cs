@@ -134,7 +134,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 5f, 10f, 50f, 14, 10, 6, 100, false);
+                        Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 2f, 3f, 50f, 14, 13, 6, 100, false);
                     }
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
                     {

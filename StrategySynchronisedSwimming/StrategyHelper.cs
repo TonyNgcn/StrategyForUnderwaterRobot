@@ -55,7 +55,7 @@ namespace URWPGSim2D.StrategyHelper
 
             // 鱼体绘图中心指向目标点向量方向的弧度值（中间方向）
             double dirFishToDestPtRad = xna.MathHelper.ToRadians((float)GetAngleDegree(destPtMm - fish.PositionMm));
-            if (disSrcPtMmToDestPtMm < 30)
+            if (disSrcPtMmToDestPtMm < 50)
             {// 起始点到目标点距离小于阈值（默认58毫米）将中间方向调为目标方向
                 dirFishToDestPtRad = destDirRad;
             }
