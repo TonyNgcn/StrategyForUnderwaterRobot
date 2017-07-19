@@ -76,7 +76,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 30f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 25f, 50f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
@@ -361,9 +361,9 @@ namespace URWPGSim2D.Strategy
             }
             #endregion
             #region 山字第三阶段
-            if (isDirectionRight(fish2.BodyDirectionRad, HD23) == 0)
+            if (getVectorDistance(hill23,fish2.PositionMm)<=100)
             {
-                if (hillflag[1] == 1 && allEqual(hillflag, 2, 2, 10))
+                if (hillflag[1] == 1 && allEqual(hillflag, 2, 3, 10))
                 {
                     for (int i = 1; i < 11; i++)
                     {
@@ -379,7 +379,7 @@ namespace URWPGSim2D.Strategy
             if (hillflag[1] == 3)
             {
                 timeflag++;
-                if (timeflag >= 60)
+                if (timeflag >= 50)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -573,6 +573,7 @@ namespace URWPGSim2D.Strategy
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
             #region 一堆鱼
+            RoboFish fish1 = mission.TeamsRef[teamId].Fishes[0];
             RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
             RoboFish fish3 = mission.TeamsRef[teamId].Fishes[2];
             RoboFish fish4 = mission.TeamsRef[teamId].Fishes[3];
@@ -613,9 +614,10 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[7], fish8, play8, PD8, 8, ref timeForPoseToPose, playflag);
             fishToPoint(ref decisions[8], fish9, play9, PD9, 9, ref timeForPoseToPose, playflag);
             fishToPoint(ref decisions[9], fish10, play10, PD10, 10, ref timeForPoseToPose, playflag);
+            fishToPoint(ref decisions[1], fish2, fish1.PositionMm, (float)fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
             #endregion
-            #region 定住2s，进入下一函数
-            if (allEqual(playflag, 2, 3, 10))
+            #region 到指定位置3s，进入下一函数
+            if (allEqual(playflag, 1, 3, 10))
             {
                 complete = true;
             }
