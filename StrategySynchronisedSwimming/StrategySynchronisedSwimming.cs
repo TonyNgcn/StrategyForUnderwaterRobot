@@ -90,12 +90,12 @@ namespace URWPGSim2D.Strategy
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
-                        decisions.VCode = 2;
+                        decisions.VCode = 1;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
                         decisions.TCode = 15;
-                        decisions.VCode = 2;
+                        decisions.VCode = 1;
                     }
                     else
                     {
@@ -173,7 +173,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 3;//主函数标志值
+        private static int flag = 0;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -757,7 +757,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, last10, LD10, 10, ref timeForPoseToPose, lastflag);
             #endregion
             #region 进入下一阶段
-            if (lastflag[0] == 0 && allEqual(lastflag, 2, 2, 10))
+            if (lastflag[0] == 0 && allEqual(lastflag, 1, 2, 10))
             {
                 lastflag[0] = 1;
                 lastflag[2] = 0;
