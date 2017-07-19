@@ -44,8 +44,8 @@ namespace URWPGSim2D.Strategy
             if (b > Math.PI) b -= (float)(2 * Math.PI);
             if (a < -Math.PI) a += (float)(2 * Math.PI);
             if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.12) return 1;//a在b右边
-            else if (a - b < -0.12) return -1; //a在b左边
+            if (a - b > 0.15) return 1;//a在b右边
+            else if (a - b < -0.15) return -1; //a在b左边
             else return 0;
         }
         public static bool allEqual(int[] group, int value, int start, int end)
@@ -76,7 +76,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 10f, 50f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
@@ -88,12 +88,12 @@ namespace URWPGSim2D.Strategy
                     if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
-                        decisions.VCode = 2;
+                        decisions.VCode = 1;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
                         decisions.TCode = 15;
-                        decisions.VCode = 2;
+                        decisions.VCode = 1;
                     }
                     else
                     {
@@ -116,8 +116,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 default:
-                    decisions.TCode = 7;
-                    decisions.VCode = 0;
+                    stopFish(ref decisions, noOfFish);
                     break;
             }
         }
@@ -139,12 +138,12 @@ namespace URWPGSim2D.Strategy
                     if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
-                        decisions.VCode = 2;
+                        decisions.VCode = 1;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
                         decisions.TCode = 15;
-                        decisions.VCode = 2;
+                        decisions.VCode = 1;
                     }
                     else
                     {
@@ -167,8 +166,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 default:
-                    decisions.TCode = 7;
-                    decisions.VCode = 0;
+                    stopFish(ref decisions, noOfFish);
                     break;
 
             }
