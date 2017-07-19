@@ -48,12 +48,16 @@ namespace URWPGSim2D.Strategy
             else if (a - b < -0.15) return -1; //a在b左边
             else return 0;
         }
-        public static bool allEqual(int[] group, int value, int start, int end)
+        public static bool allEqual(int[] group, int value, int start, int end)//核对group数组从start到end元素与value相等
         {
             for (int i = start; i <= end; i++)
             {
                 if (group[i] != value)
                 {
+                    if (value == 1 && group[i] == 2) //value==2是value==1的特殊情况
+                    {
+                        continue;
+                    }
                     return false;
                 }
             }
@@ -173,7 +177,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 0;//主函数标志值
+        private static int flag = 4;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -614,7 +618,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[7], fish8, play8, PD8, 8, ref timeForPoseToPose, playflag);
             fishToPoint(ref decisions[8], fish9, play9, PD9, 9, ref timeForPoseToPose, playflag);
             fishToPoint(ref decisions[9], fish10, play10, PD10, 10, ref timeForPoseToPose, playflag);
-            fishToPoint(ref decisions[1], fish2, fish1.PositionMm, (float)fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
+            fishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
             #endregion
             #region 到指定位置3s，进入下一函数
             if (allEqual(playflag, 1, 3, 10))
@@ -759,7 +763,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, last10, LD10, 10, ref timeForPoseToPose, lastflag);
             #endregion
             #region 进入下一阶段
-            if (lastflag[0] == 0 && allEqual(lastflag, 1, 2, 10))
+            if (lastflag[0] == 0 && allEqual(lastflag, 1, 3, 10) && lastflag[2] == 2) 
             {
                 lastflag[0] = 1;
                 lastflag[2] = 0;
@@ -776,7 +780,7 @@ namespace URWPGSim2D.Strategy
             }
             #endregion
             #region 定住结束
-            if (allEqual(lastflag, 2, 2, 10))
+            if (allEqual(lastflag, 1, 2, 10))
             {
                 complete = true;
             }
