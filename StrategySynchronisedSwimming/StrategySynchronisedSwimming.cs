@@ -173,7 +173,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 0;//主函数标志值
+        private static int flag = 3;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -480,7 +480,8 @@ namespace URWPGSim2D.Strategy
             #region 构成动态圆的目标点
             xna.Vector3 circle2 = new xna.Vector3(1392, 0, -828);
             xna.Vector3 circle3 = new xna.Vector3(684, 0, -628);
-            xna.Vector3 circle4 = new xna.Vector3(-30, 0, -1116);
+            //xna.Vector3 circle4 = new xna.Vector3(-30, 0, -1116);
+            xna.Vector3 circle4 = new xna.Vector3(-30, 0, -1000);
             xna.Vector3 circle5 = new xna.Vector3(-756, 0, -804);
             xna.Vector3 circle6 = new xna.Vector3(-1008, 0, -192);
             xna.Vector3 circle7 = new xna.Vector3(-708, 0, 558);
@@ -523,43 +524,44 @@ namespace URWPGSim2D.Strategy
                         timeForPoseToPose[i] = 0;
                     }
                 }
-                if (completeCircle == 1)
+            }
+            if (completeCircle == 1)
+            {
+                decisions[1].TCode = 13;
+                decisions[1].VCode = 3;
+                timeflag++;
+                for (int i = 2; i < 10; i++)
                 {
-                    decisions[1].TCode = 13;
-                    decisions[1].VCode = 3;
-                    timeflag++;
-                    for (int i = 2; i < 10; i++)
-                    {
-                        decisions[i].TCode = 10;
-                        decisions[i].VCode = 3;
-                    }
-                    if (timeflag >= 60)//旋转6s
-                    {
-                        for (int i = 0; i < 11; i++)
-                            timeForPoseToPose[i] = 0;
-                        timeflag = 0;
-                        completeCircle = 2;
-                    }
+                    decisions[i].TCode = 10;
+                    decisions[i].VCode = 3;
                 }
-                if (completeCircle == 2)
+                if (timeflag >= 50)//旋转5s
                 {
-                    decisions[1].TCode = 13;
-                    decisions[1].VCode = 3;
-                    timeflag++;
-                    for (int i = 2; i < 10; i++)
-                    {
-                        decisions[i].TCode = 14;
-                        decisions[i].VCode = 2;
-                    }
-                    if (timeflag >= 30)//旋转6s
-                    {
-                        for (int i = 0; i < 11; i++)
-                            timeForPoseToPose[i] = 0;
-                        timeflag = 0;
-                        flag++;
-                    }
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    timeflag = 0;
+                    completeCircle = 2;
                 }
             }
+            if (completeCircle == 2)
+            {
+                decisions[1].TCode = 13;
+                decisions[1].VCode = 3;
+                timeflag++;
+                for (int i = 2; i < 10; i++)
+                {
+                    decisions[i].TCode = 14;
+                    decisions[i].VCode = 2;
+                }
+                if (timeflag >= 20)//旋转2s
+                {
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    timeflag = 0;
+                    flag++;
+                }
+            }
+
             #endregion
         }
         #endregion
