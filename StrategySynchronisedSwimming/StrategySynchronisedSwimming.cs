@@ -76,7 +76,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 1f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 50f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
@@ -90,12 +90,12 @@ namespace URWPGSim2D.Strategy
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
-                        decisions.VCode = 1;
+                        decisions.VCode = 2;
                     }
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
                     {
                         decisions.TCode = 15;
-                        decisions.VCode = 1;
+                        decisions.VCode = 2;
                     }
                     else
                     {

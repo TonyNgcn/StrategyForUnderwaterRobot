@@ -198,7 +198,7 @@ namespace URWPGSim2D.StrategyHelper
             if (Math.Abs(deltaTheta) > angThreshold * Math.PI / 180.0)
             {// 目标角度绝对值超过某一阈值（默认30度）速度档位置次低进行小半径转弯。防止控制率过大。
                 //decision.VCode = 1;
-                decision.VCode = 3;
+                decision.VCode = 2;
                 decision.TCode = (deltaTheta <= 0) ? 1 : 13;
             }
             else
@@ -208,7 +208,7 @@ namespace URWPGSim2D.StrategyHelper
                     times = 0;
 
                     //decision.VCode = (disSrcPtMmToTmpPtMm < 0.5 * disThreshold) ? 4 : 10;
-                    decision.VCode = 14;
+                    decision.VCode = 13;
                     decision.TCode = 7;
                     float lamdadot = ((destPtMm.X - srcPtMm.X) * (fish.VelocityMmPs * (float)Math.Sin(fish.BodyDirectionRad))
                         - (-destPtMm.Z + srcPtMm.Z) * (fish.VelocityMmPs * (float)Math.Cos(fish.BodyDirectionRad)))
@@ -223,7 +223,8 @@ namespace URWPGSim2D.StrategyHelper
                     }
                     else
                     {// 目标角度为正目标方向在鱼体方向右边需要给右转档位
-                        while ((decision.TCode < 14) && (DataBasedOnExperiment.TCodeAndAngularVelocityTable[decision.TCode] < targetAngularV))
+                        //while ((decision.TCode < 14) && (DataBasedOnExperiment.TCodeAndAngularVelocityTable[decision.TCode] < targetAngularV))
+                        while ((decision.TCode < 15) && (DataBasedOnExperiment.TCodeAndAngularVelocityTable[decision.TCode] < targetAngularV))
                         {// 目标（转弯）档位对应的角速度值尚未达到目标角速度则调高目标（转弯）档位
                             decision.TCode++;
                         }
@@ -251,7 +252,8 @@ namespace URWPGSim2D.StrategyHelper
                     }
                     else
                     {
-                        decision.VCode = 2;
+                        //decision.VCode = 2;
+                        decision.VCode = 1;
                         while ((decision.VCode < 14) && (DataBasedOnExperiment.VCodeAndVelocityTable[decision.VCode] < targetVelocity))
                         {// 目标（速度）档位对应的速度值尚未达到目标速度则调高目标（速度）档位
                             decision.VCode++;
