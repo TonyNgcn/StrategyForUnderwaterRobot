@@ -85,7 +85,9 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 1:
-                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                        flag[noOfFish] = 0;
+                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
                         decisions.TCode = 0;
                         decisions.VCode = 1;
@@ -100,16 +102,14 @@ namespace URWPGSim2D.Strategy
                         flag[noOfFish] = 2;
                         stopFish(ref decisions, noOfFish);
                     }
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
                     break;
                 case 2:
-                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                        flag[noOfFish] = 0;
+                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
                         flag[noOfFish] = 1;
                     }
-                    else if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
                     else
                     {
                         stopFish(ref decisions, noOfFish);
@@ -173,7 +173,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 1;//主函数标志值
+        private static int flag = 0;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
