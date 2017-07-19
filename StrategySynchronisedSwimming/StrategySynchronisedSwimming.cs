@@ -741,14 +741,14 @@ namespace URWPGSim2D.Strategy
             #endregion
             #region 构成最后动作的目标角度
             float LD2 = 0;
-            float LD3 = (float)-3.1415;
-            float LD4 = (float)-3.1415;
-            float LD5 = (float)-3.1415;
-            float LD6 = (float)-3.1415;
-            float LD7 = (float)-3.1415;
-            float LD8 = (float)-3.1415;
-            float LD9 = (float)-3.1415;
-            float LD10 = (float)-3.1415;
+            float LD3 = 0;
+            float LD4 = 0;
+            float LD5 = 0;
+            float LD6 = 0;
+            float LD7 = 0;
+            float LD8 = 0;
+            float LD9 = 0;
+            float LD10 = 0;
             float LD22 = 0;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
