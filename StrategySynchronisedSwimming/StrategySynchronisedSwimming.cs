@@ -76,7 +76,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 10f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 1f, 50f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
@@ -173,7 +173,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 5;//主函数标志值
+        private static int flag = 1;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -351,8 +351,8 @@ namespace URWPGSim2D.Strategy
                 timeForPoseToPose[2] = 0;
             }
             if (hillflag[0] == 1)
-                //fishToPoint(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
-                dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
+                fishToPoint(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
+                //dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
             if (hillflag[0] == 1 && hillflag[2] == 1)
             {
                 hillflag[1] = 1;
@@ -372,8 +372,8 @@ namespace URWPGSim2D.Strategy
                 }
             }
             if (hillflag[1] == 1)
-                //fishToPoint(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
-                dribbleFishToPoint(ref decisions[1], fish2, hill23, HD23, 2, hillflag);
+                fishToPoint(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
+                //dribbleFishToPoint(ref decisions[1], fish2, hill23, HD23, 2, hillflag);
             #endregion
             #region 定住5s，进入下一函数
             if (hillflag[1] == 3)
