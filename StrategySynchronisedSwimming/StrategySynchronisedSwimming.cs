@@ -177,7 +177,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 0;//主函数标志值
+        private static int flag = 6;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -366,7 +366,7 @@ namespace URWPGSim2D.Strategy
             }
             #endregion
             #region 山字第三阶段
-            if (getVectorDistance(hill23,fish2.PositionMm)<=150)
+            if (fish2.PositionMm.Z > 200) 
             {
                 if (hillflag[1] == 1 && allEqual(hillflag, 2, 3, 10))
                 {
