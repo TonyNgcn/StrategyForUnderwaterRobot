@@ -68,6 +68,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -80,6 +81,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\URWPGSim2D\bin\URWPGSim2D.Common.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="URWPGSim2D.Core">
+      <HintPath>..\..\URWPGSim2D\bin\URWPGSim2D.Core.dll</HintPath>
     </Reference>
     <Reference Include="URWPGSim2D.StrategyLoader, Version=1.0.11.316, Culture=neutral, PublicKeyToken=04f000b8db128100, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
