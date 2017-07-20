@@ -754,8 +754,7 @@ namespace URWPGSim2D.Strategy
             float LD22 = 0;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            if(lastflag[0]==0)
-                fishToPoint(ref decisions[1], fish2, last2, LD2, 2, ref timeForPoseToPose, lastflag);
+            fishToPoint(ref decisions[1], fish2, last2, LD2, 2, ref timeForPoseToPose, lastflag);
             fishToPoint(ref decisions[2], fish3, last3, LD3, 3, ref timeForPoseToPose, lastflag);
             fishToPoint(ref decisions[3], fish4, last4, LD4, 4, ref timeForPoseToPose, lastflag);
             fishToPoint(ref decisions[4], fish5, last5, LD5, 5, ref timeForPoseToPose, lastflag);
@@ -774,8 +773,9 @@ namespace URWPGSim2D.Strategy
             if (lastflag[0] == 1)
             {
                 fishToPoint(ref decisions[1], fish2, last22, LD22, 2, ref timeForPoseToPose, lastflag);
+                lastflag[1] = 1;
             }
-            if (lastflag[0] == 1 && (lastflag[2] == 1 || lastflag[2] == 2)) 
+            if (lastflag[1] == 1 && (lastflag[2] == 1 || lastflag[2] == 2)) 
             {
                 lastflag[0] = 2;
                 complete = true;
