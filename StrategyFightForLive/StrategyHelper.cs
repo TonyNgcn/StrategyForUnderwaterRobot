@@ -199,8 +199,8 @@ namespace URWPGSim2D.StrategyHelper
             {// 目标角度绝对值超过某一阈值（默认30度）速度档位置次低进行小半径转弯。防止控制率过大。
              //decision.VCode = 1;
              //decision.TCode = (deltaTheta <= 0) ? 1 : 13;
-                decision.VCode = 2;
-                decision.TCode = (deltaTheta <= 0) ? 0 : 14;
+                decision.VCode = 3;
+                decision.TCode = (deltaTheta <= 0) ? 0 : 15;
             }
             else
             {
@@ -210,7 +210,7 @@ namespace URWPGSim2D.StrategyHelper
 
                     //decision.VCode = (disSrcPtMmToTmpPtMm < 0.5 * disThreshold) ? 4 : 10;
                     //decision.VCode = 8;
-                    decision.VCode = 13;
+                    decision.VCode = 15;
                     decision.TCode = 7;
                     float lamdadot = ((destPtMm.X - srcPtMm.X) * (fish.VelocityMmPs * (float)Math.Sin(fish.BodyDirectionRad))
                         - (-destPtMm.Z + srcPtMm.Z) * (fish.VelocityMmPs * (float)Math.Cos(fish.BodyDirectionRad)))
