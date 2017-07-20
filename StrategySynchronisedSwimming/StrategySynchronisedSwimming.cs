@@ -78,18 +78,18 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 80)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 25f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 75f, 70f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
-                    if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) < 80)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 130)
                         flag[noOfFish] = 0;
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
@@ -108,7 +108,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
+                    if (getVectorDistance(targetePoint, fish.PositionMm) > 130)
                         flag[noOfFish] = 0;
                     else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -177,7 +177,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 5;//主函数标志值
+        private static int flag = 0;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -255,7 +255,7 @@ namespace URWPGSim2D.Strategy
                 startRoadflag[0] = 1;
                 startRoadflag[4] = 0;
             }
-            if(startRoadflag[0]==1)
+            if (startRoadflag[0] == 1) 
             {
                 fishToPoint(ref decisions[3], fish4, startRoad42, SRD42, 4, ref timeForPoseToPose, startRoadflag);
 
@@ -265,18 +265,19 @@ namespace URWPGSim2D.Strategy
                 //if (getVectorDistance(fish4.PositionMm, startRoad42) < 100)
                 startRoadflag[1] = 1;
             }
-            if(startRoadflag[1]==1&&startRoadflag[4]==1)
+            if (startRoadflag[1] == 1 && (startRoadflag[4] == 1 || startRoadflag[4] == 2)) 
             //if (startRoadflag[1] == 1)
             {
                 startRoadflag[0] = 2;
+                stopFish(ref decisions[3], 4);
                 complete = true;
             }
             #endregion
-            #region 定住1s，进入下一函数
+            #region 定住0.5s，进入下一函数
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 10)
+                if (timeflag >= 5)
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -334,7 +335,7 @@ namespace URWPGSim2D.Strategy
             float HD9 = 0;
             float HD10 = (float)-1.5708;
             float HD22 = 0;
-            float HD23 = (float)0.7854;
+            float HD23 = (float)0.4;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
             if (hillflag[0] == 0)
@@ -357,7 +358,7 @@ namespace URWPGSim2D.Strategy
             if (hillflag[0] == 1)
                 fishToPoint(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
                 //dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
-            if (hillflag[0] == 1 && hillflag[2] == 1)
+            if (hillflag[0] == 1 && (hillflag[2] == 1||hillflag[2]==2))
             {
                 hillflag[1] = 1;
                 hillflag[0] = 3;
@@ -365,7 +366,7 @@ namespace URWPGSim2D.Strategy
             }
             #endregion
             #region 山字第三阶段
-            if (getVectorDistance(hill23,fish2.PositionMm)<=100)
+            if (getVectorDistance(hill23,fish2.PositionMm)<=150)
             {
                 if (hillflag[1] == 1 && allEqual(hillflag, 2, 3, 10))
                 {
@@ -373,6 +374,7 @@ namespace URWPGSim2D.Strategy
                     {
                         hillflag[i] = 3;
                     }
+                    stopFish(ref decisions[1], 2);
                 }
             }
             if (hillflag[1] == 1)
@@ -413,7 +415,7 @@ namespace URWPGSim2D.Strategy
             #endregion
             #region 构成数字1的目标点
             xna.Vector3 one2 = new xna.Vector3(1656, 0, -582);
-            xna.Vector3 one3 = new xna.Vector3(-276, 0, -504);
+            xna.Vector3 one3 = new xna.Vector3(-195,0,-685);
             xna.Vector3 one4 = new xna.Vector3(108, 0, -702);
             xna.Vector3 one5 = new xna.Vector3(108, 0, -156);
             xna.Vector3 one6 = new xna.Vector3(108, 0, 534);
@@ -424,7 +426,7 @@ namespace URWPGSim2D.Strategy
             #endregion
             #region 构成数字1的目标角度
             float OD2 = (float)-0.7854;
-            float OD3 = (float)2.0944;
+            float OD3 = (float)-0.7459;
             float OD4 = (float)-1.5708;
             float OD5 = (float)-1.5708;
             float OD6 = (float)-1.5708;
@@ -773,7 +775,7 @@ namespace URWPGSim2D.Strategy
                 fishToPoint(ref decisions[1], fish2, last22, LD22, 2, ref timeForPoseToPose, lastflag);
                 lastflag[1] = 1;
             }
-            if (lastflag[1] == 1 && lastflag[2] == 1)
+            if (lastflag[1] == 1 && (lastflag[2] == 1 || lastflag[2] == 2)) 
             {
                 lastflag[0] = 2;
                 complete = true;
