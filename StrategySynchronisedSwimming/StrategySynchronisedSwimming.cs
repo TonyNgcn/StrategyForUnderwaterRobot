@@ -45,6 +45,7 @@ namespace URWPGSim2D.Strategy
         //    else
         //        return false;
         //}
+
         public static bool rangeX(float x, float rangeA, float rangeB)
         {
             if (x > rangeA && x < rangeB)
