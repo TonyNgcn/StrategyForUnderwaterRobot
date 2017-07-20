@@ -81,11 +81,6 @@
       <HintPath>..\..\URWPGSim2D\bin\URWPGSim2D.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="URWPGSim2D.StrategyHelper, Version=1.2.122.20110, Culture=neutral, PublicKeyToken=04f000b8db128100, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\URWPGSim2D\bin\URWPGSim2D.StrategyHelper.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="URWPGSim2D.StrategyLoader, Version=1.0.11.316, Culture=neutral, PublicKeyToken=04f000b8db128100, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\URWPGSim2D\bin\URWPGSim2D.StrategyLoader.dll</HintPath>
@@ -95,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StrategyFightForLive.cs" />
+    <Compile Include="StrategyHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
