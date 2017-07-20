@@ -38,6 +38,38 @@ namespace URWPGSim2D.Strategy
         {
             return "白鲸华尔兹";
         }
+        //public static bool rangeZ(float z,float rangeA,float rangeB)
+        //{
+        //    if (z > rangeA && z < rangeB)
+        //        return true;
+        //    else
+        //        return false;
+        //}
+        public static bool rangeX(float x, float rangeA, float rangeB)
+        {
+            if (x > rangeA && x < rangeB)
+                return true;
+            else
+                return false;
+        }
+        public static bool atRange1(Mission mission,int teamId)
+        {
+            for (int i = 2; i < 6; i++) 
+            {
+                if (!rangeX(mission.TeamsRef[teamId].Fishes[i].PositionMm.X, -1600, -1300)) 
+                {
+                    return false;
+                }
+            }
+            for (int i = 6; i < 10; i++)
+            {
+                if (!rangeX(mission.TeamsRef[teamId].Fishes[i].PositionMm.X, 1400, 1600)) 
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public static int isDirectionRight(float a, float b)
         {
             if (a > Math.PI) a -= (float)(2 * Math.PI);
@@ -177,7 +209,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 0;//主函数标志值
+        private static int flag = 4;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -635,7 +667,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
             #endregion
             #region 到指定位置，进入下一函数
-            if (allEqual(playflag, 1, 3, 10))
+            if (allEqual(playflag, 1, 3, 10) || atRange1(mission, teamId))
             {
                 complete = true;
             }
@@ -870,7 +902,7 @@ namespace URWPGSim2D.Strategy
             #endregion
 
             #endregion
-            if (flag == 0)
+            if (flag == 6)
                 startRoad(ref mission, teamId, ref decisions);
 
             if (flag == 1)
@@ -888,8 +920,8 @@ namespace URWPGSim2D.Strategy
             if (flag == 5)
                 theOneHeart(ref mission, teamId, ref decisions);
 
-            if (flag == 6)
-                lastMovement(ref mission, teamId, ref decisions);
+            //if (flag == 6)
+            //    lastMovement(ref mission, teamId, ref decisions);
 
             return decisions;
         }
