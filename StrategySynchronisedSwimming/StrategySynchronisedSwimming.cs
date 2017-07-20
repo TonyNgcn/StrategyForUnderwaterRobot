@@ -36,7 +36,7 @@ namespace URWPGSim2D.Strategy
         /// <returns>队伍名称字符串</returns>
         public string GetTeamName()
         {
-            return "Team First";
+            return "白鲸华尔兹";
         }
         public static int isDirectionRight(float a, float b)
         {
@@ -414,7 +414,7 @@ namespace URWPGSim2D.Strategy
             #endregion
             #endregion
             #region 构成数字1的目标点
-            xna.Vector3 one2 = new xna.Vector3(1656, 0, -582);
+            xna.Vector3 one2 = new xna.Vector3(0, 0, -1200);
             xna.Vector3 one3 = new xna.Vector3(-195,0,-685);
             xna.Vector3 one4 = new xna.Vector3(108, 0, -702);
             xna.Vector3 one5 = new xna.Vector3(108, 0, -156);
@@ -436,7 +436,8 @@ namespace URWPGSim2D.Strategy
             float OD10 = (float)1.0647;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            fishToPoint(ref decisions[1], fish2, one2, OD2, 2, ref timeForPoseToPose, oneflag);
+            if (oneflag[2] == 0) 
+                fishToPoint(ref decisions[1], fish2, one2, OD2, 2, ref timeForPoseToPose, oneflag);
             fishToPoint(ref decisions[2], fish3, one3, OD3, 3, ref timeForPoseToPose, oneflag);
             fishToPoint(ref decisions[3], fish4, one4, OD4, 4, ref timeForPoseToPose, oneflag);
             fishToPoint(ref decisions[4], fish5, one5, OD5, 5, ref timeForPoseToPose, oneflag);
@@ -444,10 +445,21 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[6], fish7, one7, OD7, 7, ref timeForPoseToPose, oneflag);
             fishToPoint(ref decisions[7], fish8, one8, OD8, 8, ref timeForPoseToPose, oneflag);
             fishToPoint(ref decisions[8], fish9, one9, OD9, 9, ref timeForPoseToPose, oneflag);
-            fishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
+            if (oneflag[10] == 0) 
+                fishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
+            if(getVectorDistance(fish2.PositionMm,one2)<150)
+            {
+                decisions[1].VCode = 2;
+                decisions[1].TCode = 15;
+            }
+            if (getVectorDistance(fish10.PositionMm, one10) < 150)
+            {
+                decisions[9].VCode = 2;
+                decisions[9].TCode = 15;
+            }
             #endregion
             #region 定住5s，进入下一函数
-            if (allEqual(oneflag, 2, 2, 10))
+            if (allEqual(oneflag, 2, 3, 9))
             {
                 complete = true;
             }
@@ -622,7 +634,7 @@ namespace URWPGSim2D.Strategy
             fishToPoint(ref decisions[9], fish10, play10, PD10, 10, ref timeForPoseToPose, playflag);
             fishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
             #endregion
-            #region 到指定位置3s，进入下一函数
+            #region 到指定位置，进入下一函数
             if (allEqual(playflag, 1, 3, 10))
             {
                 complete = true;
@@ -630,7 +642,7 @@ namespace URWPGSim2D.Strategy
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 30)
+                if (timeflag >= 1)//不需要等待
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
