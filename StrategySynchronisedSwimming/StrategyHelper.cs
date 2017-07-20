@@ -197,8 +197,10 @@ namespace URWPGSim2D.StrategyHelper
 
             if (Math.Abs(deltaTheta) > angThreshold * Math.PI / 180.0)
             {// 目标角度绝对值超过某一阈值（默认30度）速度档位置次低进行小半径转弯。防止控制率过大。
-                decision.VCode = 1;
-                decision.TCode = (deltaTheta <= 0) ? 1 : 13;
+             //decision.VCode = 1;
+             //decision.TCode = (deltaTheta <= 0) ? 1 : 13;
+                decision.VCode = 2;
+                decision.TCode = (deltaTheta <= 0) ? 0 : 14;
             }
             else
             {
@@ -207,7 +209,8 @@ namespace URWPGSim2D.StrategyHelper
                     times = 0;
 
                     //decision.VCode = (disSrcPtMmToTmpPtMm < 0.5 * disThreshold) ? 4 : 10;
-                    decision.VCode = 8;
+                    //decision.VCode = 8;
+                    decision.VCode = 12;
                     decision.TCode = 7;
                     float lamdadot = ((destPtMm.X - srcPtMm.X) * (fish.VelocityMmPs * (float)Math.Sin(fish.BodyDirectionRad))
                         - (-destPtMm.Z + srcPtMm.Z) * (fish.VelocityMmPs * (float)Math.Cos(fish.BodyDirectionRad)))
@@ -242,7 +245,8 @@ namespace URWPGSim2D.StrategyHelper
                     double targetVelocity = u1 / Math.Cos(thetae);
                     double targetAngularV = u2 * Math.Pow(Math.Cos(thetae), 2.0);
 
-                    if (disSrcPtMmToDestPtMm < 150.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
+                    //if (disSrcPtMmToDestPtMm < 150.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
+                    if (disSrcPtMmToDestPtMm < 200.0f && Math.Abs(deltaTheta) < 10.0f * Math.PI / 180.0f)
                     {
                         decision.VCode = 0;
                         decision.TCode = 7;
@@ -311,87 +315,6 @@ namespace URWPGSim2D.StrategyHelper
             double B = L1.X - L2.X;
             double C = L2.X * L1.Z - L1.X * L2.Z;
             return Math.Abs((A * P.X + B * P.Z + C) / Math.Sqrt(A * A + B * B));
-        }
-        public static int isDirectionRight(float a, float b)
-        {
-            if (a > Math.PI) a -= (float)(2 * Math.PI);
-            if (b > Math.PI) b -= (float)(2 * Math.PI);
-            if (a < -Math.PI) a += (float)(2 * Math.PI);
-            if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.15) return 1;//a在b右边
-            else if (a - b < -0.15) return -1; //a在b左边
-            else return 0;
-        }
-        public static float getVectorDistance(xna.Vector3 a, xna.Vector3 b)
-        {
-            return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2) + Math.Pow((a.Z - b.Z), 2)));
-        }
-        //public static void 
-        public static void fishMoving(xna.Vector3 dest, float destRad, ref Decision decision, ref RoboFish fish, ref int flagMoving)
-        { 
-            xna.Vector3 location = fish.PositionMm;
-            float direction = fish.BodyDirectionRad;
-            xna.Vector3 vectorToMove = new xna.Vector3(dest.X - location.X, 0, dest.Z - location.Z);
-            float radToMove = GetAngleDegree(vectorToMove);
-            if (flagMoving == 0 && isDirectionRight(direction, radToMove) != 0) //起始位置指向目标位置，方向正确
-            {
-                if (isDirectionRight(direction, radToMove) == 1)
-                {
-                    decision.VCode = 4;
-                    decision.TCode = 6;
-                }
-                else
-                {
-                    decision.VCode = 4;
-                    decision.TCode = 8;
-                }
-            }
-            else
-            {
-                decision.VCode = 6;
-                decision.TCode = 7;
-                flagMoving = 1;
-            }
-            if (flagMoving == 1 && getVectorDistance(location, dest) > 50) 
-            {
-                decision.VCode = 14;
-                decision.TCode = 7;
-            }
-            if ((flagMoving == 1 || flagMoving == 2) && getVectorDistance(location, dest) <= 50) 
-            {
-                flagMoving = 2;
-                decision.VCode = 6;
-                if (isDirectionRight(direction, radToMove) == 1)
-                {
-                    decision.TCode = 6;
-                }
-                else if (isDirectionRight(direction, radToMove) == -1)
-                {
-                    decision.TCode = 8;
-                }
-                else
-                    decision.TCode = 7;
-            }
-            if ((flagMoving == 3 || flagMoving == 2) && getVectorDistance(location, dest) <= 30 && isDirectionRight(direction, destRad) != 0) 
-            {
-                flagMoving = 3;
-                if (isDirectionRight(direction, destRad) == 1)
-                {
-                    decision.VCode = 1;
-                    decision.TCode = 6;
-                }
-                else
-                {
-                    decision.VCode = 1;
-                    decision.TCode = 8;
-                }
-            }
-            if (flagMoving == 3 && isDirectionRight(direction, destRad) == 0)
-            {
-                decision.VCode = 0;
-                decision.TCode = 7;
-            }
-
         }
     }
 }
