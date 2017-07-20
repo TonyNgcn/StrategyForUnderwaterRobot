@@ -80,7 +80,7 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (getVectorDistance(targetePoint, fish.PositionMm) > 80)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 60f, 20f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 40f, 20f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
                     if (getVectorDistance(targetePoint, fish.PositionMm) < 80)
@@ -265,7 +265,7 @@ namespace URWPGSim2D.Strategy
                 //if (getVectorDistance(fish4.PositionMm, startRoad42) < 100)
                 startRoadflag[1] = 1;
             }
-            if (startRoadflag[1] == 1 && (startRoadflag[4] == 1 || startRoadflag[4] == 2)) 
+            if (startRoadflag[1] == 1 && (fish4.PositionMm.Z<-750)) 
             //if (startRoadflag[1] == 1)
             {
                 startRoadflag[0] = 2;
@@ -357,8 +357,8 @@ namespace URWPGSim2D.Strategy
             }
             if (hillflag[0] == 1)
                 fishToPoint(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
-                //dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
-            if (hillflag[0] == 1 && (hillflag[2] == 1||hillflag[2]==2))
+            //dribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
+            if (hillflag[0] == 1 && (fish2.PositionMm.Z < -1000 && (fish2.PositionMm.X > -150 && fish2.PositionMm.X < 400))) 
             {
                 hillflag[1] = 1;
                 hillflag[0] = 3;
