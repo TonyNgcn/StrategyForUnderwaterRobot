@@ -835,10 +835,10 @@ namespace URWPGSim2D.Strategy
                 numberOne(ref mission, teamId, ref decisions);
 
             if (flag == 3)
-                movingCircle(ref mission, teamId, ref decisions);
+                playWithYellowFish(ref mission, teamId, ref decisions);
 
             if (flag == 4)
-                playWithYellowFish(ref mission, teamId, ref decisions);
+                movingCircle(ref mission, teamId, ref decisions);
 
             if (flag == 5)
                 theOneHeart(ref mission, teamId, ref decisions);
