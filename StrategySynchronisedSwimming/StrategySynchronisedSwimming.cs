@@ -103,12 +103,11 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 140)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 5f, 30f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 2f, 40f, 100, ref timeForPoseToPose[noOfFish]);
                     }
-                    //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) < 140)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
                     {
                         flag[noOfFish] = 1;
                     }
@@ -154,18 +153,18 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 170)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 45f, 30f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 45f, 50f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) < 170)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 180)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 250)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
@@ -184,7 +183,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 250)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -414,14 +413,13 @@ namespace URWPGSim2D.Strategy
             FishToPoint(ref decisions[9], fish10, hill10, HD10, 10, ref timeForPoseToPose, hillflag);
             #endregion
             #region 山字第二阶段
-            if (hillflag[0] == 0 && AllEqual(hillflag, 2, 2, 10))
+            if (hillflag[0] == 0 && AllEqual(hillflag, 2, 3, 10) && hillflag[2] == 1) 
             {
                 hillflag[0] = 1;
                 timeForPoseToPose[2] = 0;
             }
             if (hillflag[0] == 1)
                 FishToPointQuick(ref decisions[1], fish2, hill22, HD22, 2, ref timeForPoseToPose, hillflag);
-            //DribbleFishToPoint(ref decisions[1], fish2, hill22, HD22, 2, hillflag);
             if (hillflag[0] == 1 && (fish2.PositionMm.Z < -1000 && (fish2.PositionMm.X > -150 && fish2.PositionMm.X < 400))) 
             {
                 hillflag[1] = 1;
@@ -443,7 +441,6 @@ namespace URWPGSim2D.Strategy
             }
             if (hillflag[1] == 1)
                 FishToPointQuick(ref decisions[1], fish2, hill23, HD23, 2, ref timeForPoseToPose, hillflag);
-                //DribbleFishToPoint(ref decisions[1], fish2, hill23, HD23, 2, hillflag);
             #endregion
             #region 定住5s，进入下一函数
             if (hillflag[1] == 3)
@@ -578,7 +575,7 @@ namespace URWPGSim2D.Strategy
             float CD5 = (float)-0.7854;
             float CD6 = (float)-1.7453;
             float CD7 = (float)-2.3562;
-            float CD8 = (float)2.9671;
+            float CD8 = (float)2.8671;
             float CD9 = (float)2.3562;
             float CD10 = (float)1.6581;
             #endregion

@@ -35,64 +35,9 @@ namespace URWPGSim2D.Strategy
         /// <returns>队伍名称字符串</returns>
         public string GetTeamName()
         {
-            return "生存挑战 Test Team";
+            return "Team First";
         }
-        public static int[] timeForPoseToPose = new int[5];
-        public static int IsDirectionRight(float a, float b)
-        {
-            if (a > Math.PI) a -= (float)(2 * Math.PI);
-            if (b > Math.PI) b -= (float)(2 * Math.PI);
-            if (a < -Math.PI) a += (float)(2 * Math.PI);
-            if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.15) return 1;//a在b右边
-            else if (a - b < -0.15) return -1; //a在b左边
-            else return 0;
-        }
-        public static bool AllEqual(int[] group, int value, int start, int end)//核对group数组从start到end元素与value相等
-        {
-            for (int i = start; i <= end; i++)
-            {
-                if (group[i] != value)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        public static void StopFish(ref Decision decision, int i)
-        {
-            decision.VCode = 0;
-            decision.TCode = 7;
-            timeForPoseToPose[i] = 0;
-        }
-        public static float GetVectorDistance(xna.Vector3 a, xna.Vector3 b)
-        {
-            return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
-        }
-        public static int GetFishArea(xna.Vector3 a)
-        {
-            if (a.X < 250 && a.X > -250) 
-            {
-                if (a.Z > 900)
-                    return 8;
-                else if (a.Z > 200)
-                    return 7;
-                else if (a.Z > -500)
-                    return 6;
-                else
-                    return 5;
-            }
-            if (a.X < 0 && a.Z > 0)
-                return 3;
-            else if (a.X > 0 && a.Z < 0)
-                return 1;
-            else if (a.X < 0 && a.Z < 0)
-                return 4;
-            else 
-                return 2;
-        }
-        //public static int CalculateFishToCatch(Mission mission, int teamId)
-    
+
 
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
@@ -108,13 +53,24 @@ namespace URWPGSim2D.Strategy
             {// 根据决策类当前对象对应的仿真使命参与队伍仿真机器鱼的数量分配决策数组空间
                 decisions = new Decision[mission.CommonPara.FishCntPerTeam];
             }
-            int by2 = Convert.ToInt32(mission.HtMissionVariables["IsYellowFish2Caught"]);
-            int by3 = Convert.ToInt32(mission.HtMissionVariables["IsYellowFish3Caught"]);
-            int by4 = Convert.ToInt32(mission.HtMissionVariables["IsYellowFish4Caught"]);
-            int br2 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish2Caught"]);
-            int br3 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish3Caught"]);
-            int br4 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish4Caught"]);
-            //RoboFish 
+            //int by2 = Convert.ToInt32(mission.HtMissionVariables["IsYellowFish2Caught"]);
+            //int by3 = Convert.ToInt32(mission.HtMissionVariables["IsYellowFish3Caught"]);
+            //int by4 = Convert.ToInt32(mission.HtMissionVariables["IsYellowFish4Caught"]);
+            //int br2 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish2Caught"]);
+            //int br3 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish3Caught"]);
+            //int br4 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish4Caught"]);
+            //RoboFish fightFish = mission.TeamsRef[teamId % 2 + 1].Fishes[0];
+            //RoboFish protectFish = mission.TeamsRef[teamId].Fishes[0];
+            //RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
+            //RoboFish fish3 = mission.TeamsRef[teamId].Fishes[2];
+            //RoboFish fish4 = mission.TeamsRef[teamId].Fishes[3];
+            //decisions[0].VCode = 15;
+            //decisions[0].TCode = 7;
+            //for (int i = 1; i < 4; i++)
+            //{
+            //    decisions[i].TCode = 7;
+            //    decisions[i].VCode = 8;
+            //}
             return decisions;
         }
     }
