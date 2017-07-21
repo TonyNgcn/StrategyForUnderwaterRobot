@@ -33,7 +33,7 @@ namespace URWPGSim2D.Strategy
         /// <summary>
         /// 获取队伍名称 在此处设置参赛队伍的名称
         /// </summary>
-        /// <returns>队伍名称字符串</returns>                if (AllEqual(circleflag, 1, 3, 10))
+        /// <returns>队伍名称字符串</returns>
         public string GetTeamName()
         {
             return "白鲸华尔兹";
@@ -103,12 +103,12 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 130)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 45f, 30f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 35f, 20f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) < 150)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) < 130)
                     {
                         flag[noOfFish] = 1;
                     }
