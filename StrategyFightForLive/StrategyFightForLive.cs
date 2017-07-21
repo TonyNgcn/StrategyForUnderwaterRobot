@@ -69,108 +69,6 @@ namespace URWPGSim2D.Strategy
         {
             return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
         }
-        public static void FishToPoint(ref Decision decisions, RoboFish fish, xna.Vector3 targetePoint, float targetDirection, int noOfFish, ref int[] timeForPoseToPose, int[] flag)
-        {
-            switch (flag[noOfFish])
-            {
-                case 0:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
-                    {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 45f, 30f, 100, ref timeForPoseToPose[noOfFish]);
-                    }
-                    //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
-                    if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
-                    {
-                        flag[noOfFish] = 1;
-                    }
-                    break;
-                case 1:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
-                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
-                    {
-                        decisions.TCode = 0;
-                        decisions.VCode = 1;
-                    }
-                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
-                    {
-                        decisions.TCode = 15;
-                        decisions.VCode = 1;
-                    }
-                    else
-                    {
-                        flag[noOfFish] = 2;
-                        stopFish(ref decisions, noOfFish);
-                    }
-                    break;
-                case 2:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
-                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
-                    {
-                        flag[noOfFish] = 1;
-                    }
-                    else
-                    {
-                        stopFish(ref decisions, noOfFish);
-                    }
-                    break;
-                default:
-                    stopFish(ref decisions, noOfFish);
-                    break;
-            }
-        }
-        public static void DribbleFishToPoint(ref Decision decisions, RoboFish fish, xna.Vector3 targetePoint, float targetDirection, int noOfFish, int[] flag)
-        {
-            switch (flag[noOfFish])
-            {
-                case 0:
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 100)
-                    {
-                        Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 5, 10, 150, 14, 13, 5, 100, true);
-                    }
-                    if (getVectorDistance(targetePoint, fish.PositionMm) < 100)
-                    {
-                        flag[noOfFish] = 1;
-                    }
-                    break;
-                case 1:
-                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
-                    {
-                        decisions.TCode = 0;
-                        decisions.VCode = 1;
-                    }
-                    else if (isDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
-                    {
-                        decisions.TCode = 15;
-                        decisions.VCode = 1;
-                    }
-                    else
-                    {
-                        flag[noOfFish] = 2;
-                        stopFish(ref decisions, noOfFish);
-                    }
-                    if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
-                    break;
-                case 2:
-                    if (isDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
-                    {
-                        flag[noOfFish] = 1;
-                    }
-                    else if (getVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
-                    else
-                    {
-                        stopFish(ref decisions, noOfFish);
-                    }
-                    break;
-                default:
-                    stopFish(ref decisions, noOfFish);
-                    break;
-
-            }
-        }
         public static int GetFishArea(xna.Vector3 a)
         {
             if (a.X < 250 && a.X > -250) 
@@ -216,7 +114,7 @@ namespace URWPGSim2D.Strategy
             int br2 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish2Caught"]);
             int br3 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish3Caught"]);
             int br4 = Convert.ToInt32(mission.HtMissionVariables["IsRedFish4Caught"]);
-
+            //RoboFish 
             return decisions;
         }
     }

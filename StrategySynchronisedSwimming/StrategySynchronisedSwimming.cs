@@ -274,7 +274,7 @@ namespace URWPGSim2D.Strategy
             FishToPoint(ref decisions[9], fish10, startRoad10, SRD10, 10, ref timeForPoseToPose, startRoadflag);
             #endregion
             #region 进入下一阶段
-            if (startRoadflag[0] == 0 && AllEqual(startRoadflag, 2, 2, 10)) 
+            if (startRoadflag[0] == 0 && AllEqual(startRoadflag, 1, 2, 10)) 
             {
                 startRoadflag[0] = 1;
                 startRoadflag[4] = 0;
@@ -462,12 +462,12 @@ namespace URWPGSim2D.Strategy
                 FishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
             if(GetVectorDistance(fish2.PositionMm,one2)<150)
             {
-                decisions[1].VCode = 1;
+                decisions[1].VCode = 0;
                 decisions[1].TCode = 15;
             }
             if (GetVectorDistance(fish10.PositionMm, one10) < 150)
             {
-                decisions[9].VCode = 1;
+                decisions[9].VCode = 0;
                 decisions[9].TCode = 0;
             }
             #endregion
@@ -806,7 +806,8 @@ namespace URWPGSim2D.Strategy
                 numberOne(ref mission, teamId, ref decisions);
 
             if (flag == 3)
-                playWithYellowFish(ref mission, teamId, ref decisions);
+                //playWithYellowFish(ref mission, teamId, ref decisions);
+                flag++;
 
             if (flag == 4)
                 movingCircle(ref mission, teamId, ref decisions);
