@@ -82,7 +82,8 @@ namespace URWPGSim2D.StrategyHelper
             // 以角度预计时间游过目标距离所需平均速度值（目标速度）
             double targetVelocity = disSrcPtMmToDestPtMm / estimatedTimeByAngle;
 
-            int code = 1;   // 目标（速度）档位初值置1
+            //int code = 1;   // 目标（速度）档位初值置1
+            int code = 5;   // 目标（速度）档位初值置5
             while ((code < 10) && (DataBasedOnExperiment.VCodeAndVelocityTable[code] < targetVelocity))
             {// 目标（速度）档位对应的速度值尚未达到目标速度则调高目标（速度）档位
                 code++;
