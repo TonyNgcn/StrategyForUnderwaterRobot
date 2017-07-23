@@ -46,19 +46,19 @@ namespace URWPGSim2D.Strategy
             double destX = centralPoint.X;
             double destZ = centralPoint.Z;
             xna.Vector3 fishTowardsPoint = centralPoint - fightFish.PositionMm;
-            double angle = Helpers.GetAngleDegree(fishTowardsPoint);
+            double angle = MathHelper.ToRadians(Helpers.GetAngleDegree(fishTowardsPoint));
             if (angle >= 0)
             {
                 if (angle > Math.PI / 2) 
                 {
                     angle = Math.PI - angle;
-                    destX += radius * Math.Cos(angle);
-                    destZ -= radius * Math.Sin(angle);
+                    destX -= radius * Math.Cos(angle);
+                    destZ += radius * Math.Sin(angle);
                 }
                 else
                 {
-                    destX -= radius * Math.Cos(angle);
-                    destZ -= radius * Math.Sin(angle);
+                    destX += radius * Math.Cos(angle);
+                    destZ += radius * Math.Sin(angle);
                 }
             }
             else
@@ -66,14 +66,14 @@ namespace URWPGSim2D.Strategy
                 if (angle < -Math.PI / 2) 
                 {
                     angle = Math.PI - Math.Abs(angle);
-                    destX += radius * Math.Cos(angle);
-                    destZ += radius * Math.Sin(angle);
+                    destX -= radius * Math.Cos(angle);
+                    destZ -= radius * Math.Sin(angle);
                 }
                 else
                 {
                     angle = Math.Abs(angle);
-                    destX -= radius * Math.Sin(angle);
-                    destZ += radius * Math.Cos(angle);
+                    destX += radius * Math.Sin(angle);
+                    destZ -= radius * Math.Cos(angle);
                 }
             }
             xna.Vector3 destPoint = new xna.Vector3((float)destX, 0, (float)destZ);

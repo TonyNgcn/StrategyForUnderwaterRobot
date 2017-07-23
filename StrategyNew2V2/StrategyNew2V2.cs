@@ -39,51 +39,51 @@ namespace URWPGSim2D.Strategy
 
         #region 自定义数据的声明
 
-        private xna.Vector3 v3 = new xna.Vector3(-1300, 0, 1000);
-        private xna.Vector3 v4 = new xna.Vector3(-1300, 0, -1000);
+        private Vector3 v3 = new Vector3(-1300, 0, 1000);
+        private Vector3 v4 = new Vector3(-1300, 0, -1000);
 
-        private xna.Vector3 LeftCourt_BottomCorner = new xna.Vector3(-1500, 0, 1000);  //左场地最下角
-        private xna.Vector3 LeftCourt_TopCorner = new xna.Vector3(-1500, 0, -1000); //左场地最上角
-        private xna.Vector3 RightCourt_BottomCorner = new xna.Vector3(1500, 0, 1000);  //右场地最下角
-        private xna.Vector3 RightCourt_TopCorner = new xna.Vector3(1500, 0, -1000); //右场地最上角
+        private Vector3 LeftCourt_BottomCorner = new Vector3(-1500, 0, 1000);  //左场地最下角
+        private Vector3 LeftCourt_TopCorner = new Vector3(-1500, 0, -1000); //左场地最上角
+        private Vector3 RightCourt_BottomCorner = new Vector3(1500, 0, 1000);  //右场地最下角
+        private Vector3 RightCourt_TopCorner = new Vector3(1500, 0, -1000); //右场地最上角
 
         //private xna.Vector3 LeftCourt_DownMidpoint = new xna.Vector3(-1500, 0, 50); //最左边场地的中点
         //private xna.Vector3 LeftCourt_UpMidpoint = new xna.Vector3(-1500, 0, -50);
 
 
-        private xna.Vector3 LeftCourt_DownMidpoint = new xna.Vector3(-1500, 0, 50); //最左边场地的中点
-        private xna.Vector3 LeftCourt_UpMidpoint = new xna.Vector3(-1500, 0, -50);
+        private Vector3 LeftCourt_DownMidpoint = new Vector3(-1500, 0, 50); //最左边场地的中点
+        private Vector3 LeftCourt_UpMidpoint = new Vector3(-1500, 0, -50);
 
-        private xna.Vector3 p1 = new xna.Vector3(-1100, 0, 50); //鱼1需要到达的点
-        private xna.Vector3 p2 = new xna.Vector3(-1300, 0, -50);  //鱼2需要到达的点
-        private xna.Vector3 p = new xna.Vector3(-1300, 0, 0); //鱼1需要到达的点
+        private Vector3 p1 = new Vector3(-1100, 0, 50); //鱼1需要到达的点
+        private Vector3 p2 = new Vector3(-1300, 0, -50);  //鱼2需要到达的点
+        private Vector3 p = new Vector3(-1300, 0, 0); //鱼1需要到达的点
 
-        private xna.Vector3 LeftGoal_RightTopCorner = new xna.Vector3(-800, 0, -700); //左球门右上角
-        private xna.Vector3 LeftGoal_RightBottomCorner = new xna.Vector3(-800, 0, 700); //左球门右下角
+        private Vector3 LeftGoal_RightTopCorner = new Vector3(-800, 0, -700); //左球门右上角
+        private Vector3 LeftGoal_RightBottomCorner = new Vector3(-800, 0, 700); //左球门右下角
 
-        private xna.Vector3 LeftGoal_LeftTopCorner = new xna.Vector3(-1500, 0, -440); //右球门右上角
-        private xna.Vector3 LeftGoal_LeftBottomCorner = new xna.Vector3(-1500, 0, 440); //右球门右下角
-
-
-        private xna.Vector3 RightCourt_DownMidpoint = new xna.Vector3(1500, 0, 50); //最右边场地的中点
-        private xna.Vector3 RightCourt_UpMidpoint = new xna.Vector3(1500, 0, -50);
+        private Vector3 LeftGoal_LeftTopCorner = new Vector3(-1500, 0, -440); //右球门右上角
+        private Vector3 LeftGoal_LeftBottomCorner = new Vector3(-1500, 0, 440); //右球门右下角
 
 
-        private static xna.Vector3 LeftCourt_Midpoint = new xna.Vector3(-1500, 0, 0);
-        private xna.Vector3 temp1 = new xna.Vector3(-1300, 0, 0);
-        private xna.Vector3 temp2 = new xna.Vector3(-1150, 0, 0);
+        private Vector3 RightCourt_DownMidpoint = new Vector3(1500, 0, 50); //最右边场地的中点
+        private Vector3 RightCourt_UpMidpoint = new Vector3(1500, 0, -50);
+
+
+        private static Vector3 LeftCourt_Midpoint = new Vector3(-1500, 0, 0);
+        private Vector3 temp1 = new Vector3(-1300, 0, 0);
+        private Vector3 temp2 = new Vector3(-1150, 0, 0);
 
 
 
-        private xna.Vector3 ball0;   //球1的坐标
-        private xna.Vector3 ball1;   //球2的坐标
-        private xna.Vector3 ball2;   //球3的坐标
-        private xna.Vector3 ball3;   //球4的坐标
-        private xna.Vector3 ball4;   //球5的坐标
-        private xna.Vector3 ball5;   //球6的坐标
-        private xna.Vector3 ball6;   //球7的坐标
-        private xna.Vector3 ball7;   //球8的坐标
-        private xna.Vector3 ball8;   //球9的坐标
+        private Vector3 ball0;   //球1的坐标
+        private Vector3 ball1;   //球2的坐标
+        private Vector3 ball2;   //球3的坐标
+        private Vector3 ball3;   //球4的坐标
+        private Vector3 ball4;   //球5的坐标
+        private Vector3 ball5;   //球6的坐标
+        private Vector3 ball6;   //球7的坐标
+        private Vector3 ball7;   //球8的坐标
+        private Vector3 ball8;   //球9的坐标
 
         private RoboFish My_fish1;
         private RoboFish My_fish2;
@@ -93,14 +93,14 @@ namespace URWPGSim2D.Strategy
 
         private int MyScore;
 
-        private xna.Vector3 fish1_head;  //鱼头1的坐标
-        private xna.Vector3 fish1_body;  //鱼体1的坐标
+        private Vector3 fish1_head;  //鱼头1的坐标
+        private Vector3 fish1_body;  //鱼体1的坐标
 
-        private xna.Vector3 fish2_head;  //鱼头2的坐标
-        private xna.Vector3 fish2_body;  //鱼体2的坐标
+        private Vector3 fish2_head;  //鱼头2的坐标
+        private Vector3 fish2_body;  //鱼体2的坐标
 
-        private xna.Vector3 fish1_Position; //鱼1的头部刚体中心
-        private xna.Vector3 fish2_Position; //鱼2的头部刚体中心
+        private Vector3 fish1_Position; //鱼1的头部刚体中心
+        private Vector3 fish2_Position; //鱼2的头部刚体中心
 
         private float fish1_velocity;  //鱼1当前的速度
         private float fish2_velocity;  //鱼2当前的速度
@@ -126,7 +126,7 @@ namespace URWPGSim2D.Strategy
 
         //StreamWriter log = new StreamWriter("C:/Users/陈俊杰/Desktop/2D仿真/抢球博弈/Log.txt", false);  //可用于打印关键文件 , true:表示不删除以前的记录；false：表示删除以前记录
 
-        public double distance(xna.Vector3 temp1, xna.Vector3 temp2)   //点与点的最短距离
+        public double distance(Vector3 temp1, Vector3 temp2)   //点与点的最短距离
         {
             return Math.Sqrt(Math.Pow(temp1.X - temp2.X, 2.0) + Math.Pow(temp1.Z - temp2.Z, 2.0));
         }
@@ -149,7 +149,7 @@ namespace URWPGSim2D.Strategy
 
 
         #region 判断球在哪个区域的函数
-        public int Field(xna.Vector3 PositionMm)
+        public int Field(Vector3 PositionMm)
         {
             int flag = 0;
 
@@ -191,7 +191,7 @@ namespace URWPGSim2D.Strategy
             My_fish1 = mission.TeamsRef[teamId].Fishes[0];
             fish1_head = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0];
             fish1_BodyDirectionRad = mission.TeamsRef[teamId].Fishes[0].BodyDirectionRad;
-            xna.Vector3 goal;
+            Vector3 goal;
 
             ball0_field = Field(ball0); //判断球在哪个区域
             ball1_field = Field(ball1);
@@ -214,7 +214,7 @@ namespace URWPGSim2D.Strategy
             ball8 = mission.EnvRef.Balls[8].PositionMm;
 
 
-            xna.Vector3 enemyDownGoal;
+            Vector3 enemyDownGoal;
 
             if (mission.TeamsRef[teamId].Para.MyHalfCourt == HalfCourt.LEFT)  //在左半场
             {
@@ -228,12 +228,18 @@ namespace URWPGSim2D.Strategy
                 int b7_l = Convert.ToInt32(mission.HtMissionVariables["Ball_7_Left_Status"]);
                 int b8_l = Convert.ToInt32(mission.HtMissionVariables["Ball_8_Left_Status"]);
 
-                goal = new xna.Vector3(-1000, 0, -500);
+                goal = new Vector3(-1000, 0, -500);
 
                 if (ball3_field == 3 && b3_l == 0)
                 {
-                    float dir3 = xna.MathHelper.ToRadians((float)Helpers.GetAngleDegree(goal - ball3)); //球3和对应的洞的连线的弧度
-                    xna.Vector3 destPtMm3 = new xna.Vector3(ball3.X - 65 * (float)Math.Cos(dir3), 0, ball3.Z - 65 * (float)Math.Sin(dir3));//球3的顶球点
+                    if (fish1_BodyDirectionRad < 0)
+                        goal = new Vector3(-1000, 0, -500);
+                    else
+                        goal = new Vector3(-1000, 0, 500);
+                    float dir3 = MathHelper.ToRadians(Helpers.GetAngleDegree(goal - ball3)); //球3和对应的洞的连线的弧度
+                    //xna.Vector3 destPtMm3 = new xna.Vector3(ball3.X - 65 * (float)Math.Cos(dir3), 0, ball3.Z - 65 * (float)Math.Sin(dir3));//球3的顶球点
+                    Vector3 destPtMm3 = new Vector3(ball3.X - 65 * (float)Math.Cos(dir3), 0, ball3.Z - 65 * (float)Math.Sin(dir3));//球3的顶球点
+                    //int flag = 0;
 
                     switch (fish_field)
                     {
@@ -247,7 +253,29 @@ namespace URWPGSim2D.Strategy
                         case 1:
                         case 3:
                         case 8:
-                            Helpers.Dribble(ref decisions[0], My_fish1, destPtMm3, dir3, 15, 10, 140, 8, 6, 5, 100, false);
+                            Helpers.Dribble(ref decisions[0], My_fish1, destPtMm3, dir3, 5, 8, 50, 10, 6, 20, 100, false);
+                            //if (distance(fish1_body, ball3) < 80)
+                            //    flag = 1;
+                            //if(flag==0)
+                            //    Helpers.Dribble(ref decisions[0], My_fish1, destPtMm3, dir3, 15, 15, 120, 14, 8, 15, 100, false);
+                            //else
+                            //{
+                            //    if (Helpers.GetAngleDegree(ball3 - fish1_body) < -90 || Helpers.GetAngleDegree(ball3 - fish1_body) > 90)
+                            //        flag = 0;
+                            //    if(fish1_BodyDirectionRad<0)
+                            //    {
+                            //        decisions[0].VCode = 1;
+                            //        decisions[0].TCode = 15;
+                            //    }
+                            //    else
+                            //    {
+                            //        decisions[0].VCode = 1;
+                            //        decisions[0].TCode = 0;
+                            //    }
+                            //}
+
+
+                            //Helpers.PoseToPose(ref decisions[0], My_fish1, destPtMm3, dir3, 50f, 100f, 100, ref time);
                             break;
 
                         //case 7:
@@ -284,7 +312,7 @@ namespace URWPGSim2D.Strategy
                 int b7_r = Convert.ToInt32(mission.HtMissionVariables["Ball_7_Right_Status"]);
                 int b8_r = Convert.ToInt32(mission.HtMissionVariables["Ball_8_Right_Status"]);
 
-                enemyDownGoal = new xna.Vector3(-1500, 0, 630);
+                enemyDownGoal = new Vector3(-1500, 0, 630);
                 switch (fish_field)
                 {
                     case 1:
@@ -334,16 +362,16 @@ namespace URWPGSim2D.Strategy
             Enemy_fish1 = mission.TeamsRef[(1 + teamId) % 2].Fishes[0];  //敌方鱼1
             Enemy_fish2 = mission.TeamsRef[(1 + teamId) % 2].Fishes[1];  //敌方鱼2
 
-            xna.Vector3 enemyFish1_head = Enemy_fish1.PositionMm;
-            xna.Vector3 enemyFish2_head = Enemy_fish2.PositionMm;
+            Vector3 enemyFish1_head = Enemy_fish1.PositionMm;
+            Vector3 enemyFish2_head = Enemy_fish2.PositionMm;
 
 
             fish1_head = mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0];
-            fish1_body = new xna.Vector3((mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].Z) / 2);
+            fish1_body = new Vector3((mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[0].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[0].PolygonVertices[4].Z) / 2);
             fish1_Position = mission.TeamsRef[teamId].Fishes[0].PositionMm;
 
             fish2_head = mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0];
-            fish2_body = new xna.Vector3((mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].Z) / 2);
+            fish2_body = new Vector3((mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].X + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].X) / 2, 0, (mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0].Z + mission.TeamsRef[teamId].Fishes[1].PolygonVertices[3].Z) / 2);
             fish2_Position = mission.TeamsRef[teamId].Fishes[1].PositionMm;
 
             fish1_velocity = mission.TeamsRef[teamId].Fishes[0].AngularVelocityRadPs;
