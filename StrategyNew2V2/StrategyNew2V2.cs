@@ -342,7 +342,30 @@ namespace URWPGSim2D.Strategy
                 }
             }
         }
+        #endregion
+        #region 鱼2 下半场捣乱
+        public void Fish2(Mission mission, int teamId, int fish_field)
+        {
+            My_fish2 = mission.TeamsRef[teamId].Fishes[1];
+            fish2_head = mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0];
+            fish2_BodyDirectionRad = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
+            Vector3 goal;
+            if (mission.TeamsRef[teamId].Para.MyHalfCourt == HalfCourt.LEFT)  //在左半场
+            {
+                switch(fish_field)
+                {
+                    case 5:
+                        goal = new Vector3(1500, 0, 800);
+                        Helpers.Dribble(ref decisions[1], My_fish2, goal, 0f, 20f, 30f, 150f, 15, 10, 15, 100, false);
+                        break;
+                    case 2:
+                        goal = new Vector3(1020, 0, -380);
+                        Helpers.Dribble(ref decisions[1], My_fish2, goal, (float)Math.PI/4*3, 8f, 10f, 150f, 10, 8, 15, 100, false);
+                        break;
+                }
+            }
 
+         }
         #endregion
 
 
@@ -418,9 +441,9 @@ namespace URWPGSim2D.Strategy
 
 
             fish1_field = Field(fish1_Position);
-
+            fish2_field = Field(fish2_Position);
             Fish1(mission, teamId, fish1_field);
-
+            Fish2(mission, teamId, fish2_field);
 
 
             return decisions;
