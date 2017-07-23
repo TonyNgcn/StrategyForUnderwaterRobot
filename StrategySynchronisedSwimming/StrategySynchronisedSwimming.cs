@@ -153,17 +153,17 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 3f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 5f, 60f, 100, ref timeForPoseToPose[noOfFish]);
                     }
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 180)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 230)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
@@ -182,7 +182,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 230)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -371,7 +371,7 @@ namespace URWPGSim2D.Strategy
         /// 用于作为索引访问Mission对象的TeamsRef队伍列表中代表当前队伍的元素</param>
         /// <returns>当前队伍所有仿真机器鱼的决策数据构成的Decision数组对象</returns>
         #region 开始路
-        public static void startRoad(ref Mission mission, int teamId, ref Decision[] decisions)
+        public static void StartRoad(ref Mission mission, int teamId, ref Decision[] decisions)
         {
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
@@ -453,7 +453,7 @@ namespace URWPGSim2D.Strategy
         }
         #endregion
         #region 山字
-        public static void hillCharacter(ref Mission mission, int teamId, ref Decision[] decisions)
+        public static void HillCharacter(ref Mission mission, int teamId, ref Decision[] decisions)
         {
             //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
             //log.Write(AllEqual(hillflag, 1, 2, 10));
@@ -558,7 +558,7 @@ namespace URWPGSim2D.Strategy
         }
         #endregion
         #region 数字1
-        public static void numberOne(ref Mission mission, int teamId, ref Decision[] decisions)
+        public static void NumberOne(ref Mission mission, int teamId, ref Decision[] decisions)
         {
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
@@ -608,16 +608,6 @@ namespace URWPGSim2D.Strategy
             FishToPointLine(ref decisions[8], fish9, one9, OD9, 9, ref timeForPoseToPose, oneflag);
             if (oneflag[10] == 0) 
                 FishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
-            if (GetVectorDistance(fish2.PositionMm, one2) < 150) 
-            {
-                decisions[1].VCode = 0;
-                decisions[1].TCode = 15;
-            }
-            if (GetVectorDistance(fish10.PositionMm, one10) < 150) 
-            {
-                decisions[9].VCode = 0;
-                decisions[9].TCode = 0;
-            }
             #endregion
             #region 定住6s，进入下一函数
             if (AllEqual(oneflag, 2, 3, 9))
@@ -627,7 +617,10 @@ namespace URWPGSim2D.Strategy
             if (complete)
             {
                 for (int i = 1; i < 10; i++)
+                {
+                    decisions[i].TCode = 7;
                     decisions[i].VCode = 0;
+                }
                 timeflag++;
                 if (timeflag >= 60)
                 {
@@ -642,7 +635,7 @@ namespace URWPGSim2D.Strategy
         }
         #endregion
         #region 动态圆
-        public static void movingCircle(ref Mission mission, int teamId, ref Decision[] decisions)
+        public static void MovingCircle(ref Mission mission, int teamId, ref Decision[] decisions)
         {
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
@@ -744,7 +737,7 @@ namespace URWPGSim2D.Strategy
 
         #endregion
         #region 与黄鱼互动
-        public static void playWithYellowFish(ref Mission mission, int teamId, ref Decision[] decisions)
+        public static void PlayWithYellowFish(ref Mission mission, int teamId, ref Decision[] decisions)
         {
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
@@ -790,7 +783,8 @@ namespace URWPGSim2D.Strategy
             FishToPoint(ref decisions[7], fish8, play8, PD8, 8, ref timeForPoseToPose, playflag);
             FishToPoint(ref decisions[8], fish9, play9, PD9, 9, ref timeForPoseToPose, playflag);
             FishToPoint(ref decisions[9], fish10, play10, PD10, 10, ref timeForPoseToPose, playflag);
-            FishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
+            //FishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
+            Helpers.Dribble(ref decisions[1], fish2, fish1.PositionMm, fish1.BodyDirectionRad - (float)1.309, 50f, 30f, 100f, 14, 12, 15, 100, false);
             #endregion
             #region 到指定位置，进入下一函数
             if (AllEqual(playflag, 1, 3, 10) || AtRange1(mission, teamId))
@@ -800,7 +794,7 @@ namespace URWPGSim2D.Strategy
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 30)//等待3s
+                if (timeflag >= 80)//等待8s
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -813,7 +807,7 @@ namespace URWPGSim2D.Strategy
         }
         #endregion
         #region 一心
-        public static void theOneHeart(ref Mission mission, int teamId, ref Decision[] decisions)
+        public static void TheOneHeart(ref Mission mission, int teamId, ref Decision[] decisions)
         {
             #region 声明变量
             int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
@@ -947,23 +941,22 @@ namespace URWPGSim2D.Strategy
 
             #endregion
             if (flag == 1)
-                hillCharacter(ref mission, teamId, ref decisions);
+                HillCharacter(ref mission, teamId, ref decisions);
 
             if (flag == 2)
-                numberOne(ref mission, teamId, ref decisions);
+                NumberOne(ref mission, teamId, ref decisions);
 
             if (flag == 3)
-                //playWithYellowFish(ref mission, teamId, ref decisions);
-                flag++;
+                MovingCircle(ref mission, teamId, ref decisions);
 
             if (flag == 4)
-                movingCircle(ref mission, teamId, ref decisions);
+                PlayWithYellowFish(ref mission, teamId, ref decisions);
 
             if (flag == 5)
-                theOneHeart(ref mission, teamId, ref decisions);
+                TheOneHeart(ref mission, teamId, ref decisions);
 
             if (flag == 6)
-                startRoad(ref mission, teamId, ref decisions);
+                StartRoad(ref mission, teamId, ref decisions);
 
             return decisions;
         }
