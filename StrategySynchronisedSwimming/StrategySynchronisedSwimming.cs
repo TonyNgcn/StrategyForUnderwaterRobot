@@ -103,9 +103,109 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 100)
+                    {
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 3f, 20f, 100, ref timeForPoseToPose[noOfFish]);
+                    }
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 100)
+                    {
+                        flag[noOfFish] = 1;
+                    }
+                    break;
+                case 1:
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
+                        flag[noOfFish] = 0;
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    {
+                        decisions.TCode = 0;
+                        decisions.VCode = 1;
+                    }
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
+                    {
+                        decisions.TCode = 15;
+                        decisions.VCode = 1;
+                    }
+                    else
+                    {
+                        flag[noOfFish] = 2;
+                        StopFish(ref decisions, noOfFish);
+                    }
+                    break;
+                case 2:
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150) 
+                        flag[noOfFish] = 0;
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
+                    {
+                        flag[noOfFish] = 1;
+                    }
+                    else
+                    {
+                        StopFish(ref decisions, noOfFish);
+                    }
+                    break;
+                default:
+                    StopFish(ref decisions, noOfFish);
+                    break;
+            }
+        }
+        public static void FishToPointCircle(ref Decision decisions, RoboFish fish, xna.Vector3 targetePoint, float targetDirection, int noOfFish, ref int[] timeForPoseToPose, int[] flag)
+        {
+            switch (flag[noOfFish])
+            {
+                case 0:
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
+                    {
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 3f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                    }
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 180)
+                    {
+                        flag[noOfFish] = 1;
+                    }
+                    break;
+                case 1:
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 230)
+                        flag[noOfFish] = 0;
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    {
+                        decisions.TCode = 0;
+                        decisions.VCode = 1;
+                    }
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
+                    {
+                        decisions.TCode = 15;
+                        decisions.VCode = 1;
+                    }
+                    else
+                    {
+                        flag[noOfFish] = 2;
+                        StopFish(ref decisions, noOfFish);
+                    }
+                    break;
+                case 2:
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 230)
+                        flag[noOfFish] = 0;
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
+                    {
+                        flag[noOfFish] = 1;
+                    }
+                    else
+                    {
+                        StopFish(ref decisions, noOfFish);
+                    }
+                    break;
+                default:
+                    StopFish(ref decisions, noOfFish);
+                    break;
+            }
+        }
+        public static void FishToPointLine(ref Decision decisions, RoboFish fish, xna.Vector3 targetePoint, float targetDirection, int noOfFish, ref int[] timeForPoseToPose, int[] flag)
+        {
+            switch (flag[noOfFish])
+            {
+                case 0:
                     if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 2f, 40f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 30f, 50f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
                     {
@@ -132,7 +232,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180) 
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -153,18 +253,18 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 45f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 45f, 80f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     //  Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 6f, 10f, 50, ref timeForPoseToPose[noOfFish]);
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 180)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 250)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
@@ -183,7 +283,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 250)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -407,9 +507,9 @@ namespace URWPGSim2D.Strategy
             FishToPoint(ref decisions[3], fish4, hill4, HD4, 4, ref timeForPoseToPose, hillflag);
             FishToPoint(ref decisions[4], fish5, hill5, HD5, 5, ref timeForPoseToPose, hillflag);
             FishToPoint(ref decisions[5], fish6, hill6, HD6, 6, ref timeForPoseToPose, hillflag);
-            FishToPoint(ref decisions[6], fish7, hill7, HD7, 7, ref timeForPoseToPose, hillflag);
-            FishToPoint(ref decisions[7], fish8, hill8, HD8, 8, ref timeForPoseToPose, hillflag);
-            FishToPoint(ref decisions[8], fish9, hill9, HD9, 9, ref timeForPoseToPose, hillflag);
+            FishToPointLine(ref decisions[6], fish7, hill7, HD7, 7, ref timeForPoseToPose, hillflag);
+            FishToPointLine (ref decisions[7], fish8, hill8, HD8, 8, ref timeForPoseToPose, hillflag);
+            FishToPointLine(ref decisions[8], fish9, hill9, HD9, 9, ref timeForPoseToPose, hillflag);
             FishToPoint(ref decisions[9], fish10, hill10, HD10, 10, ref timeForPoseToPose, hillflag);
             #endregion
             #region 山字第二阶段
@@ -497,15 +597,15 @@ namespace URWPGSim2D.Strategy
             float OD10 = (float)1.0647;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            if (oneflag[2] == 0) 
+            if (oneflag[2] == 0)
                 FishToPoint(ref decisions[1], fish2, one2, OD2, 2, ref timeForPoseToPose, oneflag);
             FishToPoint(ref decisions[2], fish3, one3, OD3, 3, ref timeForPoseToPose, oneflag);
-            FishToPoint(ref decisions[3], fish4, one4, OD4, 4, ref timeForPoseToPose, oneflag);
-            FishToPoint(ref decisions[4], fish5, one5, OD5, 5, ref timeForPoseToPose, oneflag);
-            FishToPoint(ref decisions[5], fish6, one6, OD6, 6, ref timeForPoseToPose, oneflag);
-            FishToPoint(ref decisions[6], fish7, one7, OD7, 7, ref timeForPoseToPose, oneflag);
-            FishToPoint(ref decisions[7], fish8, one8, OD8, 8, ref timeForPoseToPose, oneflag);
-            FishToPoint(ref decisions[8], fish9, one9, OD9, 9, ref timeForPoseToPose, oneflag);
+            FishToPointQuick(ref decisions[3], fish4, one4, OD4, 4, ref timeForPoseToPose, oneflag);
+            FishToPointQuick(ref decisions[4], fish5, one5, OD5, 5, ref timeForPoseToPose, oneflag);
+            FishToPointQuick(ref decisions[5], fish6, one6, OD6, 6, ref timeForPoseToPose, oneflag);
+            FishToPointLine(ref decisions[6], fish7, one7, OD7, 7, ref timeForPoseToPose, oneflag);
+            FishToPointLine(ref decisions[7], fish8, one8, OD8, 8, ref timeForPoseToPose, oneflag);
+            FishToPointLine(ref decisions[8], fish9, one9, OD9, 9, ref timeForPoseToPose, oneflag);
             if (oneflag[10] == 0) 
                 FishToPoint(ref decisions[9], fish10, one10, OD10, 10, ref timeForPoseToPose, oneflag);
             if (GetVectorDistance(fish2.PositionMm, one2) < 150) 
@@ -526,6 +626,8 @@ namespace URWPGSim2D.Strategy
             }
             if (complete)
             {
+                for (int i = 1; i < 10; i++)
+                    decisions[i].VCode = 0;
                 timeflag++;
                 if (timeflag >= 60)
                 {
@@ -582,15 +684,15 @@ namespace URWPGSim2D.Strategy
             if (completeCircle == 0) //未到达指定点
             {
                 #region 一堆鱼移动到目标点和目标角度
-                FishToPoint(ref decisions[1], fish2, circle2, CD2, 2, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[2], fish3, circle3, CD3, 3, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[3], fish4, circle4, CD4, 4, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[4], fish5, circle5, CD5, 5, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[5], fish6, circle6, CD6, 6, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[6], fish7, circle7, CD7, 7, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[7], fish8, circle8, CD8, 8, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[8], fish9, circle9, CD9, 9, ref timeForPoseToPose, circleflag);
-                FishToPoint(ref decisions[9], fish10, circle10, CD10, 10, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[1], fish2, circle2, CD2, 2, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[2], fish3, circle3, CD3, 3, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[3], fish4, circle4, CD4, 4, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[4], fish5, circle5, CD5, 5, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[5], fish6, circle6, CD6, 6, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[6], fish7, circle7, CD7, 7, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[7], fish8, circle8, CD8, 8, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[8], fish9, circle9, CD9, 9, ref timeForPoseToPose, circleflag);
+                FishToPointCircle(ref decisions[9], fish10, circle10, CD10, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
                 if (AllEqual(circleflag, 2, 2, 10))
@@ -625,7 +727,7 @@ namespace URWPGSim2D.Strategy
                 for (int i = 1; i < 10; i++)
                 {
                     decisions[i].TCode = 14;
-                    decisions[i].VCode = 2;
+                    decisions[i].VCode = 3;
                 }
                 if (timeflag >= 10)//旋转2s
                 {
@@ -698,7 +800,7 @@ namespace URWPGSim2D.Strategy
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 1)//不需要等待
+                if (timeflag >= 30)//等待3s
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -733,10 +835,10 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 oneheart4 = new xna.Vector3(-636, 0, 30);
             xna.Vector3 oneheart5 = new xna.Vector3(624, 0, -108);
             xna.Vector3 oneheart6 = new xna.Vector3(1164, 0, -252);
-            xna.Vector3 oneheart7 = new xna.Vector3(1206, 0, 144);
-            xna.Vector3 oneheart8 = new xna.Vector3(888, 0, 636);
-            xna.Vector3 oneheart9 = new xna.Vector3(522, 0, 438);
-            xna.Vector3 oneheart10 = new xna.Vector3(294, 0, -12);
+            xna.Vector3 oneheart7 = new xna.Vector3(1338, 0, 48);
+            xna.Vector3 oneheart8 = new xna.Vector3(1150, 0, 562);
+            xna.Vector3 oneheart9 = new xna.Vector3(570, 0, 537);
+            xna.Vector3 oneheart10 = new xna.Vector3(264, 0, -12);
             #endregion
             #region 构成一心的目标角度
             float OHD2 = 0;
@@ -744,15 +846,15 @@ namespace URWPGSim2D.Strategy
             float OHD4 = 0;
             float OHD5 = (float)0.7854;
             float OHD6 = (float)-0.7854;
-            float OHD7 = (float)2.0071;
-            float OHD8 = (float)2.2689;
-            float OHD9 = (float)-2.2689;
-            float OHD10 = (float)-2.0071;
+            float OHD7 = (float)-1.1305;
+            float OHD8 = (float)-1.0229;
+            float OHD9 = (float)-2.1876;
+            float OHD10 = (float)-2.0316;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            FishToPoint(ref decisions[1], fish2, oneheart2, OHD2, 2, ref timeForPoseToPose, oneHeartflag);
-            FishToPoint(ref decisions[2], fish3, oneheart3, OHD3, 3, ref timeForPoseToPose, oneHeartflag);
-            FishToPoint(ref decisions[3], fish4, oneheart4, OHD4, 4, ref timeForPoseToPose, oneHeartflag);
+            FishToPointLine(ref decisions[1], fish2, oneheart2, OHD2, 2, ref timeForPoseToPose, oneHeartflag);
+            FishToPointLine(ref decisions[2], fish3, oneheart3, OHD3, 3, ref timeForPoseToPose, oneHeartflag);
+            FishToPointLine(ref decisions[3], fish4, oneheart4, OHD4, 4, ref timeForPoseToPose, oneHeartflag);
             FishToPoint(ref decisions[4], fish5, oneheart5, OHD5, 5, ref timeForPoseToPose, oneHeartflag);
             FishToPoint(ref decisions[5], fish6, oneheart6, OHD6, 6, ref timeForPoseToPose, oneHeartflag);
             FishToPoint(ref decisions[6], fish7, oneheart7, OHD7, 7, ref timeForPoseToPose, oneHeartflag);
@@ -767,6 +869,8 @@ namespace URWPGSim2D.Strategy
             }
             if (complete)
             {
+                for (int i = 1; i < 10; i++)
+                    decisions[i].VCode = 0;
                 timeflag++;
                 if (timeflag >= 50)
                 {
