@@ -52,13 +52,13 @@ namespace URWPGSim2D.Strategy
                 if (angle > Math.PI / 2) 
                 {
                     angle = Math.PI - angle;
-                    destX -= radius * Math.Cos(angle);
-                    destZ += radius * Math.Sin(angle);
+                    destX += radius * Math.Cos(angle);
+                    destZ -= radius * Math.Sin(angle);
                 }
                 else
                 {
-                    destX += radius * Math.Cos(angle);
-                    destZ += radius * Math.Sin(angle);
+                    destX -= radius * Math.Cos(angle);
+                    destZ -= radius * Math.Sin(angle);
                 }
             }
             else
@@ -66,21 +66,21 @@ namespace URWPGSim2D.Strategy
                 if (angle < -Math.PI / 2) 
                 {
                     angle = Math.PI - Math.Abs(angle);
-                    destX -= radius * Math.Cos(angle);
-                    destZ -= radius * Math.Sin(angle);
+                    destX += radius * Math.Cos(angle);
+                    destZ += radius * Math.Sin(angle);
                 }
                 else
                 {
                     angle = Math.Abs(angle);
-                    destX += radius * Math.Sin(angle);
-                    destZ -= radius * Math.Cos(angle);
+                    destX -= radius * Math.Sin(angle);
+                    destZ += radius * Math.Cos(angle);
                 }
             }
             xna.Vector3 destPoint = new xna.Vector3((float)destX, 0, (float)destZ);
             //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
-            //log.Write(fightFish.PositionMm.X);
+            //log.Write(destPoint.X);
             //log.Write(' ');
-            //log.Write(fightFish.PositionMm.Z);
+            //log.Write(destPoint.Z);
             //log.WriteLine("end");
             //log.Close();
             return destPoint;
@@ -141,9 +141,6 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 blockUp = mission.EnvRef.ObstaclesRect[0].PositionMm;
             xna.Vector3 blockMiddle = mission.EnvRef.ObstaclesRect[1].PositionMm;
             xna.Vector3 blockDown = mission.EnvRef.ObstaclesRect[2].PositionMm;
-            //xna.Vector3 blockUp = new xna.Vector3(0, 0, -700);
-            //xna.Vector3 blockMiddle = new xna.Vector3(0, 0, 0);
-            //xna.Vector3 blockDown = new xna.Vector3(0, 0, 700);
             #endregion
             #region 圆形算法躲避
             JudgeFish(ref decisions, fish2, CalCirclePoint(fightFish, blockUp), 2);
@@ -152,13 +149,7 @@ namespace URWPGSim2D.Strategy
             Helpers.PoseToPose(ref decisions[2], fish3, CalCirclePoint(fightFish, blockMiddle), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[3]);
             JudgeFish(ref decisions, fish4, CalCirclePoint(fightFish, blockDown), 4);
             Helpers.PoseToPose(ref decisions[3], fish4, CalCirclePoint(fightFish, blockDown), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[4]);
-
-            //Helpers.Dribble(ref decisions[1], fish2, CalCirclePoint(fightFish, blockUp), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI/2), 20, 15, 20, 8, 8, 5, 100, false);
-            //Helpers.Dribble(ref decisions[2], fish3, CalCirclePoint(fightFish, blockMiddle), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI/2), 20, 15, 20, 8, 8, 5, 100, false);
-            //Helpers.Dribble(ref decisions[3], fish4, CalCirclePoint(fightFish, blockDown), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI/2), 20, 15, 20, 8, 8, 5, 100, false);
             #endregion
-            //decisions[0].TCode = 8;
-            //decisions[0].VCode = 12;
             return decisions;
         }
     }
