@@ -352,7 +352,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 1;//主函数标志值
+        private static int flag = 3;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -763,6 +763,7 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 play8 = new xna.Vector3(1500, 0, -300);
             xna.Vector3 play9 = new xna.Vector3(1500, 0, 300);
             xna.Vector3 play10 = new xna.Vector3(1500, 0, 900);
+            xna.Vector3 center = new xna.Vector3(0, 0, 0);
             #endregion
             #region 构成与黄鱼互动的目标角度
             float PD3 = (float)-0.5236;
@@ -784,7 +785,9 @@ namespace URWPGSim2D.Strategy
             FishToPoint(ref decisions[8], fish9, play9, PD9, 9, ref timeForPoseToPose, playflag);
             FishToPoint(ref decisions[9], fish10, play10, PD10, 10, ref timeForPoseToPose, playflag);
             //FishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
-            Helpers.Dribble(ref decisions[1], fish2, fish1.PositionMm, fish1.BodyDirectionRad - (float)1.309, 50f, 30f, 100f, 14, 12, 15, 100, false);
+            //Helpers.Dribble(ref decisions[1], fish2, fish1.PositionMm, fish1.BodyDirectionRad - (float)1.309, 50f, 30f, 100f, 14, 12, 15, 100, false);
+            float dir3 = xna.MathHelper.ToRadians(Helpers.GetAngleDegree(center - fish1.PositionMm));
+            Helpers.Dribble(ref decisions[1], fish2, fish1.PolygonVertices[0], dir3, 15, 30, 150, 14, 12, 15, 100, true);
             #endregion
             #region 到指定位置，进入下一函数
             if (AllEqual(playflag, 1, 3, 10) || AtRange1(mission, teamId))
