@@ -252,7 +252,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 1;//主函数标志值
+        private static int flag = 4;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
@@ -557,27 +557,26 @@ namespace URWPGSim2D.Strategy
             #endregion
             #endregion
             #region 构成动态圆的目标点
-            xna.Vector3 circle2 = new xna.Vector3(1392, 0, -828);
-            xna.Vector3 circle3 = new xna.Vector3(684, 0, -628);
-            //xna.Vector3 circle4 = new xna.Vector3(-30, 0, -1116);
-            xna.Vector3 circle4 = new xna.Vector3(-30, 0, -1000);
-            xna.Vector3 circle5 = new xna.Vector3(-756, 0, -804);
-            xna.Vector3 circle6 = new xna.Vector3(-1008, 0, -192);
-            xna.Vector3 circle7 = new xna.Vector3(-708, 0, 558);
-            xna.Vector3 circle8 = new xna.Vector3(-60, 0, 864);
-            xna.Vector3 circle9 = new xna.Vector3(630, 0, 546);
-            xna.Vector3 circle10 = new xna.Vector3(888, 0, -102);
+            xna.Vector3 circle2 = new xna.Vector3(1080, 0, -324);
+            xna.Vector3 circle3 = new xna.Vector3(546, 0, -888);
+            xna.Vector3 circle4 = new xna.Vector3(-108, 0, -1014);
+            xna.Vector3 circle5 = new xna.Vector3(-678, 0, -666);
+            xna.Vector3 circle6 = new xna.Vector3(-900, 0, -66);
+            xna.Vector3 circle7 = new xna.Vector3(474, 0, 948);
+            xna.Vector3 circle8 = new xna.Vector3(-810, 0, 600);
+            xna.Vector3 circle9 = new xna.Vector3(-288, 0, 1008);
+            xna.Vector3 circle10 = new xna.Vector3(1050, 0, 378);
             #endregion
             #region 构成动态圆的目标角度
-            float CD2 = (float)0.8203;
-            float CD3 = (float)0.7854;
-            float CD4 = (float)-0.0873;
-            float CD5 = (float)-0.7854;
-            float CD6 = (float)-1.7453;
-            float CD7 = (float)-2.3562;
-            float CD8 = (float)2.8671;
-            float CD9 = (float)2.3562;
-            float CD10 = (float)1.6581;
+            float CD2 = (float)1.0472;
+            float CD3 = (float)0.4363;
+            float CD4 = (float)-0.2618;
+            float CD5 = (float)-1.0472;
+            float CD6 = (float)-1.5708;
+            float CD7 = (float)2.618;
+            float CD8 = (float)-2.2689;
+            float CD9 = (float)-2.9674;
+            float CD10 = (float)1.9199;
             #endregion
             #region 动态圆旋转
             if (completeCircle == 0) //未到达指定点
@@ -594,7 +593,7 @@ namespace URWPGSim2D.Strategy
                 FishToPoint(ref decisions[9], fish10, circle10, CD10, 10, ref timeForPoseToPose, circleflag);
                 #endregion
                 #region 开始旋转
-                if (AllEqual(circleflag, 2, 3, 10))
+                if (AllEqual(circleflag, 2, 2, 10))
                 {
                     completeCircle = 1;
                     for (int i = 0; i < 11; i++)//参数清零
@@ -606,10 +605,8 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 1)
             {
-                decisions[1].TCode = 13;
-                decisions[1].VCode = 3;
                 timeflag++;
-                for (int i = 2; i < 10; i++)
+                for (int i = 1; i < 10; i++)
                 {
                     decisions[i].TCode = 10;
                     decisions[i].VCode = 3;
@@ -624,15 +621,13 @@ namespace URWPGSim2D.Strategy
             }
             if (completeCircle == 2)
             {
-                decisions[1].TCode = 13;
-                decisions[1].VCode = 3;
                 timeflag++;
-                for (int i = 2; i < 10; i++)
+                for (int i = 1; i < 10; i++)
                 {
                     decisions[i].TCode = 14;
                     decisions[i].VCode = 2;
                 }
-                if (timeflag >= 20)//旋转2s
+                if (timeflag >= 10)//旋转2s
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
