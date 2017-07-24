@@ -183,7 +183,17 @@ namespace URWPGSim2D.Strategy
             return flag;
         }
         #endregion
-
+        public void BallOutFromSixOrSeven(Vector3 ball)
+        {
+            Vector3 goal;
+            if (fish2_BodyDirectionRad < 0)
+                goal = new Vector3(1500, 0, -840);
+            else
+                goal = new Vector3(1500, 0, 840);
+            float dir = MathHelper.ToRadians(Helpers.GetAngleDegree(goal - ball)); //球和对应的洞的连线的弧度
+            Vector3 destPtMm = new Vector3(ball.X - 75 * (float)Math.Cos(dir), 0, ball.Z - 75 * (float)Math.Sin(dir));//球的顶球点
+            Helpers.Dribble(ref decisions[1], My_fish2, destPtMm, dir, 2, 3, 60, 8, 3, 20, 100, true);
+        }
 
         #region 鱼1 下半场进攻
         public void Fish1(Mission mission, int teamId, int fish_field)
@@ -238,7 +248,7 @@ namespace URWPGSim2D.Strategy
                         goal = new Vector3(-1000, 0, 500);
                     float dir3 = MathHelper.ToRadians(Helpers.GetAngleDegree(goal - ball3)); //球3和对应的洞的连线的弧度
                     //xna.Vector3 destPtMm3 = new xna.Vector3(ball3.X - 65 * (float)Math.Cos(dir3), 0, ball3.Z - 65 * (float)Math.Sin(dir3));//球3的顶球点
-                    Vector3 destPtMm3 = new Vector3(ball3.X - 65 * (float)Math.Cos(dir3), 0, ball3.Z - 65 * (float)Math.Sin(dir3));//球3的顶球点
+                    Vector3 destPtMm3 = new Vector3(ball3.X - 75 * (float)Math.Cos(dir3), 0, ball3.Z - 75 * (float)Math.Sin(dir3));//球3的顶球点
                     //int flag = 0;
 
                     switch (fish_field)
@@ -247,13 +257,13 @@ namespace URWPGSim2D.Strategy
                         case 2:
                         case 5:
                         case 9:
-                            Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_BottomCorner, (float)(Math.PI), 8, 12, 10, 14, 13, 5, 100, true);
+                            Helpers.Dribble(ref decisions[0], My_fish1, LeftCourt_BottomCorner, (float)(-Math.PI / 3 * 2), 8, 12, 10, 14, 13, 5, 100, true);
                             break;
 
                         case 1:
                         case 3:
                         case 8:
-                            Helpers.Dribble(ref decisions[0], My_fish1, destPtMm3, dir3, 5, 8, 50, 10, 6, 20, 100, false);
+                            Helpers.Dribble(ref decisions[0], My_fish1, destPtMm3, dir3, 2, 3, 60, 8, 3, 20, 100, true);
                             //if (distance(fish1_body, ball3) < 80)
                             //    flag = 1;
                             //if(flag==0)
@@ -346,6 +356,16 @@ namespace URWPGSim2D.Strategy
         #region 鱼2 下半场捣乱
         public void Fish2(Mission mission, int teamId, int fish_field)
         {
+            ball0_field = Field(ball0); //判断球在哪个区域
+            ball1_field = Field(ball1);
+            ball2_field = Field(ball2);
+            ball3_field = Field(ball3);
+            ball4_field = Field(ball4);
+            ball5_field = Field(ball5);
+            ball6_field = Field(ball6);
+            ball7_field = Field(ball7);
+            ball8_field = Field(ball8);
+            int flag = 0;
             My_fish2 = mission.TeamsRef[teamId].Fishes[1];
             fish2_head = mission.TeamsRef[teamId].Fishes[1].PolygonVertices[0];
             fish2_BodyDirectionRad = mission.TeamsRef[teamId].Fishes[1].BodyDirectionRad;
@@ -364,10 +384,35 @@ namespace URWPGSim2D.Strategy
                         break;
 
                     case 6:
+                        goal = new Vector3(1000, 0, 500);
+                        if (flag == 0) 
+                            Helpers.Dribble(ref decisions[1], My_fish2, goal, (float)Math.PI / 4 * 3, 8f, 10f, 100f, 14, 12, 20, 100, false);
+                        if(distance(My_fish2.PositionMm,goal)<200)
+                            flag = 1;
+                        if(flag==1)
+                        {   if (ball0_field == 6 || ball0_field == 7)
+                            {
+                                BallOutFromSixOrSeven(ball0);
+                                return;
+                            }
+                            else if (ball1_field == 6 || ball1_field == 7)
+                            {
+                                BallOutFromSixOrSeven(ball1);
+                                return;
+                            }                            
+                            else if (ball2_field == 6 || ball2_field == 7)
+                            {
+                                BallOutFromSixOrSeven(ball2);
+                                return;
+                            }
+
+                        }
+                        break;
+
                     case 7:
-                        decisions[1].VCode = 14;
-                        decisions[1].TCode = 2;
-                            break;
+                        //decisions[1].VCode = 14;
+                        //decisions[1].TCode = 2;
+                        break;
 
 
            
