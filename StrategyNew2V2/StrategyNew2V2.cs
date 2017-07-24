@@ -156,7 +156,7 @@ namespace URWPGSim2D.Strategy
             if (PositionMm.X >= -1500 && PositionMm.X <= -1150 && PositionMm.Z >= -1000 && PositionMm.Z <= -550) //区域1
                 flag = 1;
 
-            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= -1000 && PositionMm.Z <= -550) //区域2
+            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= -1000 && PositionMm.Z <= -500) //区域2
                 flag = 2;
 
             else if (PositionMm.X >= -1500 && PositionMm.X <= -1150 && PositionMm.Z >= -550 && PositionMm.Z <= 550) //区域3
@@ -168,16 +168,16 @@ namespace URWPGSim2D.Strategy
             else if ((PositionMm.X >= -940 && PositionMm.X <= 940) || (PositionMm.X >= -1150 && PositionMm.X <= 1150 && PositionMm.Z >= -1000 && PositionMm.Z <= -550) || (PositionMm.X >= -1150 && PositionMm.X <= 1150 && PositionMm.Z >= 550 && PositionMm.Z <= 1000)) //区域5
                 flag = 5;
 
-            else if (PositionMm.X >= 940 && PositionMm.X <= 1150 && PositionMm.Z >= -550 && PositionMm.Z <= 550) //区域6
+            else if (PositionMm.X >= 940 && PositionMm.X <= 1150 && PositionMm.Z >= -500 && PositionMm.Z <= 500) //区域6
                 flag = 6;
 
-            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= -550 && PositionMm.Z <= 550) //区域7
+            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= -500 && PositionMm.Z <= 500) //区域7
                 flag = 7;
 
             else if (PositionMm.X >= -1500 && PositionMm.X <= -1150 && PositionMm.Z >= 550 && PositionMm.Z <= 1000) //区域8
                 flag = 8;
 
-            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= 550 && PositionMm.Z <= 1000) //区域9
+            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= 500 && PositionMm.Z <= 1000) //区域9
                 flag = 9;
 
             return flag;
@@ -355,13 +355,22 @@ namespace URWPGSim2D.Strategy
                 switch(fish_field)
                 {
                     case 5:
-                        goal = new Vector3(1500, 0, 800);
-                        Helpers.Dribble(ref decisions[1], My_fish2, goal, 0f, 20f, 30f, 150f, 15, 10, 15, 100, false);
+                        goal = new Vector3(1500, 0, -840);
+                        Helpers.Dribble(ref decisions[1], My_fish2, goal, (float)Math.PI / 4, 20f, 30f, 150f, 15, 10, 15, 100, false);
                         break;
                     case 2:
                         goal = new Vector3(1020, 0, -380);
                         Helpers.Dribble(ref decisions[1], My_fish2, goal, (float)Math.PI/4*3, 8f, 10f, 150f, 10, 8, 15, 100, false);
                         break;
+
+                    case 6:
+                    case 7:
+                        decisions[1].VCode = 14;
+                        decisions[1].TCode = 2;
+                            break;
+
+
+           
                 }
             }
 
@@ -441,7 +450,7 @@ namespace URWPGSim2D.Strategy
 
 
             fish1_field = Field(fish1_Position);
-            fish2_field = Field(fish2_Position);
+            int fish2_field = Field(fish2_Position);
             Fish1(mission, teamId, fish1_field);
             Fish2(mission, teamId, fish2_field);
 
