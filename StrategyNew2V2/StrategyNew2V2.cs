@@ -186,10 +186,10 @@ namespace URWPGSim2D.Strategy
         public void BallOutFromSixOrSeven(Vector3 ball)
         {
             Vector3 goal;
-            if (fish2_BodyDirectionRad < 0)
+            //if (fish2_BodyDirectionRad < 0)
                 goal = new Vector3(1500, 0, -840);
-            else
-                goal = new Vector3(1500, 0, 840);
+            //else
+            //    goal = new Vector3(1500, 0, 840);
             float dir = MathHelper.ToRadians(Helpers.GetAngleDegree(goal - ball)); //球和对应的洞的连线的弧度
             Vector3 destPtMm = new Vector3(ball.X - 75 * (float)Math.Cos(dir), 0, ball.Z - 75 * (float)Math.Sin(dir));//球的顶球点
             Helpers.Dribble(ref decisions[1], My_fish2, destPtMm, dir, 2, 3, 60, 8, 3, 20, 100, true);
@@ -385,11 +385,15 @@ namespace URWPGSim2D.Strategy
 
                     case 6:
                         goal = new Vector3(1000, 0, 500);
-                        if (flag == 0) 
-                            Helpers.Dribble(ref decisions[1], My_fish2, goal, (float)Math.PI / 4 * 3, 8f, 10f, 100f, 14, 12, 20, 100, false);
-                        if(distance(My_fish2.PositionMm,goal)<200)
+                        if (flag == 0)
+                        //Helpers.Dribble(ref decisions[1], My_fish2, goal, (float)Math.PI / 4 * 3, 8f, 10f, 100f, 14, 12, 20, 100, false);
+                        {
+                            decisions[1].TCode = 6;
+                            decisions[1].VCode = 15;
+                        }
+                        if (distance(My_fish2.PositionMm, goal) < 300) 
                             flag = 1;
-                        if(flag==1)
+                        if (flag == 1) 
                         {   if (ball0_field == 6 || ball0_field == 7)
                             {
                                 BallOutFromSixOrSeven(ball0);
