@@ -40,51 +40,51 @@ namespace URWPGSim2D.Strategy
             return "Team First";
         }
         public static int[] timeForPoseToPose = new int[5];
-        public static xna.Vector3 CalCirclePoint(RoboFish fightFish, xna.Vector3 centralPoint)
-        {
-            int radius = 500;
-            double destX = centralPoint.X;
-            double destZ = centralPoint.Z;
-            xna.Vector3 fishTowardsPoint = centralPoint - fightFish.PositionMm;
-            double angle = MathHelper.ToRadians(Helpers.GetAngleDegree(fishTowardsPoint));
-            if (angle >= 0)
-            {
-                if (angle > Math.PI / 2) 
-                {
-                    angle = Math.PI - angle;
-                    destX -= radius * Math.Cos(angle);
-                    destZ += radius * Math.Sin(angle);
-                }
-                else
-                {
-                    destX += radius * Math.Cos(angle);
-                    destZ += radius * Math.Sin(angle);
-                }
-            }
-            else
-            {
-                if (angle < -Math.PI / 2) 
-                {
-                    angle = Math.PI - Math.Abs(angle);
-                    destX -= radius * Math.Cos(angle);
-                    destZ -= radius * Math.Sin(angle);
-                }
-                else
-                {
-                    angle = Math.Abs(angle);
-                    destX += radius * Math.Sin(angle);
-                    destZ -= radius * Math.Cos(angle);
-                }
-            }
-            xna.Vector3 destPoint = new xna.Vector3((float)destX, 0, (float)destZ);
-            //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
-            //log.Write(destPoint.X);
-            //log.Write(' ');
-            //log.Write(destPoint.Z);
-            //log.WriteLine("end");
-            //log.Close();
-            return destPoint;
-        }
+        //public static xna.Vector3 CalCirclePoint(RoboFish fightFish, xna.Vector3 centralPoint)
+        //{
+        //    int radius = 500;
+        //    double destX = centralPoint.X;
+        //    double destZ = centralPoint.Z;
+        //    xna.Vector3 fishTowardsPoint = centralPoint - fightFish.PositionMm;
+        //    double angle = MathHelper.ToRadians(Helpers.GetAngleDegree(fishTowardsPoint));
+        //    if (angle >= 0)
+        //    {
+        //        if (angle > Math.PI / 2) 
+        //        {
+        //            angle = Math.PI - angle;
+        //            destX -= radius * Math.Cos(angle);
+        //            destZ += radius * Math.Sin(angle);
+        //        }
+        //        else
+        //        {
+        //            destX += radius * Math.Cos(angle);
+        //            destZ += radius * Math.Sin(angle);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (angle < -Math.PI / 2) 
+        //        {
+        //            angle = Math.PI - Math.Abs(angle);
+        //            destX -= radius * Math.Cos(angle);
+        //            destZ -= radius * Math.Sin(angle);
+        //        }
+        //        else
+        //        {
+        //            angle = Math.Abs(angle);
+        //            destX += radius * Math.Sin(angle);
+        //            destZ -= radius * Math.Cos(angle);
+        //        }
+        //    }
+        //    xna.Vector3 destPoint = new xna.Vector3((float)destX, 0, (float)destZ);
+        //    //StreamWriter log = new StreamWriter("C:\\Users\\wujun\\Desktop\\URWPGSim2D\\URWPGSim2D\\Strategy\\log.txt", true);
+        //    //log.Write(destPoint.X);
+        //    //log.Write(' ');
+        //    //log.Write(destPoint.Z);
+        //    //log.WriteLine("end");
+        //    //log.Close();
+        //    return destPoint;
+        //}
         public static float CorrectRad(float angleToCorrect)
         {
             if (angleToCorrect > Math.PI)
@@ -142,14 +142,21 @@ namespace URWPGSim2D.Strategy
             xna.Vector3 blockMiddle = mission.EnvRef.ObstaclesRect[1].PositionMm;
             xna.Vector3 blockDown = mission.EnvRef.ObstaclesRect[2].PositionMm;
             #endregion
-            #region 圆形算法躲避
-            JudgeFish(ref decisions, fish2, CalCirclePoint(fightFish, blockUp), 2);
-            Helpers.PoseToPose(ref decisions[1], fish2, CalCirclePoint(fightFish, blockUp), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[2]);
-            JudgeFish(ref decisions, fish3, CalCirclePoint(fightFish, blockMiddle), 3);
-            Helpers.PoseToPose(ref decisions[2], fish3, CalCirclePoint(fightFish, blockMiddle), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[3]);
-            JudgeFish(ref decisions, fish4, CalCirclePoint(fightFish, blockDown), 4);
-            Helpers.PoseToPose(ref decisions[3], fish4, CalCirclePoint(fightFish, blockDown), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[4]);
-            #endregion
+            //#region 圆形算法躲避
+            //JudgeFish(ref decisions, fish2, CalCirclePoint(fightFish, blockUp), 2);
+            //Helpers.PoseToPose(ref decisions[1], fish2, CalCirclePoint(fightFish, blockUp), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[2]);
+            //JudgeFish(ref decisions, fish3, CalCirclePoint(fightFish, blockMiddle), 3);
+            //Helpers.PoseToPose(ref decisions[2], fish3, CalCirclePoint(fightFish, blockMiddle), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[3]);
+            //JudgeFish(ref decisions, fish4, CalCirclePoint(fightFish, blockDown), 4);
+            //Helpers.PoseToPose(ref decisions[3], fish4, CalCirclePoint(fightFish, blockDown), CorrectRad(fightFish.BodyDirectionRad + (float)Math.PI), 80, 150, 100, ref timeForPoseToPose[4]);
+            //#endregion
+
+            decisions[1].VCode = 3;
+            decisions[1].TCode = 2;
+            decisions[2].VCode = 3;
+            decisions[2].TCode = 1;
+            decisions[3].VCode = 3;
+            decisions[3].TCode = 0;
             return decisions;
         }
     }
