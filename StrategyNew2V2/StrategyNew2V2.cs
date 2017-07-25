@@ -62,8 +62,8 @@ namespace URWPGSim2D.Strategy
         }
         public Vector3 CalPointOnBall(Vector3 ball,float targetDirection)
         {
-            double x = ball.X - Math.Cos(targetDirection) *80;
-            double z = ball.Z - Math.Sin(targetDirection) *80;
+            double x = ball.X - Math.Cos(targetDirection) *65;
+            double z = ball.Z - Math.Sin(targetDirection) *65;
             Vector3 point = new Vector3((float)x, 0, (float)z);
             return point;
         }
@@ -81,8 +81,8 @@ namespace URWPGSim2D.Strategy
             {
                 Vector3 upPoint = new Vector3(-1000, 0, -500);
                 Vector3 bottomPoint = new Vector3(-1000, 0, 500);
-                Vector3 upTempPoint = new Vector3(-1300, 0, -700);
-                Vector3 bottomTempPoint = new Vector3(-1300, 0, 700);
+                Vector3 upTempPoint = new Vector3(-1350, 0, -750);
+                Vector3 bottomTempPoint = new Vector3(-1350, 0, 750);
                 if (ball.X > -1000) //球在门外
                 {
                     if (ball.Z > 0)//距离上面的点近一点
@@ -95,78 +95,78 @@ namespace URWPGSim2D.Strategy
                     }
                     targetPoint = CalPointOnBall(ball, targetDirection);
                     if (GetVectorDistance(ball, fishLocation) > 150)//快速游到目标点
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 20f, 30f, 400, 14, 8, 15, 100, true);
                     else
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 3f, 4f, 80, 5, 3, 10, 100, true);
                 }
-                else if (ball.X <= 1250)
-                {
-                    if (ball.Z < -300)
-                    {
-                        targetDirection = CalAngle(ball, bottomPoint);
-                        targetPoint = CalPointOnBall(ball, targetDirection);
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
-                    }
-                    else if (ball.Z > 300)
-                    {
-                        targetDirection = CalAngle(ball, upPoint);
-                        targetPoint = CalPointOnBall(ball, targetDirection);
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
-                    }
-                    else
-                    {
-                        if (fishDirection < 0)
-                        {
-                            targetDirection = CalAngle(ball, upPoint);
-                            targetPoint = CalPointOnBall(ball, targetDirection);
-                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 7, 5, 15, 100, true);
-                        }
-                        else
-                        {
-                            targetDirection = CalAngle(ball, bottomPoint);
-                            targetPoint = CalPointOnBall(ball, targetDirection);
-                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 7, 5, 15, 100, true);
-                        }
-                    }
+                //else if (ball.X <= -1240)
+                //{
+                //    if (ball.Z < -300)
+                //    {
+                //        targetDirection = CalAngle(ball, bottomPoint);
+                //        targetPoint = CalPointOnBall(ball, targetDirection);
+                //        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 3f, 6f, 80, 5, 3, 10, 100, true);
+                //    }
+                //    else if (ball.Z > 300)
+                //    {
+                //        targetDirection = CalAngle(ball, upPoint);
+                //        targetPoint = CalPointOnBall(ball, targetDirection);
+                //        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 10, 100, true);
+                //    }
+                //    else
+                //    {
+                //        if (fishDirection < 0)
+                //        {
+                //            targetDirection = CalAngle(ball, upPoint);
+                //            targetPoint = CalPointOnBall(ball, targetDirection);
+                //            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
+                //        }
+                //        else
+                //        {
+                //            targetDirection = CalAngle(ball, bottomPoint);
+                //            targetPoint = CalPointOnBall(ball, targetDirection);
+                //            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
+                //        }
+                //    }
 
-                }
-                else if (ball.X <= -1000 && ball.X > -1250) 
+                //}
+                else //if (ball.X <= -1000 && ball.X > -1240) 
                 {
                     if (ball.Z < -500)//卡在球门上侧的情况
                     {
                         targetDirection = CalAngle(ball, upTempPoint);
                         targetPoint = CalPointOnBall(ball, targetDirection);
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 20, 100, true);
                     }
                     else if (ball.Z > 500)//卡在球门上侧的情况
                     {
                         targetDirection = CalAngle(ball, bottomTempPoint);
                         targetPoint = CalPointOnBall(ball, targetDirection);
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
                     }
                     else//球门区域内
                     {
-                        if (fishLocation.Z > ball.Z + 60)//鱼在球下面
+                        if (fishLocation.Z > ball.Z) //鱼在球下面
                         {
                             targetDirection = -(float)Math.PI * 0.61f;
-                            targetPoint = new Vector3(ball.X - 50, 0, ball.Z - 20);
-                            if (GetVectorDistance(fishLocation, targetPoint) > 50 && IsDirectionRight(fishDirection, targetDirection) != 0) 
-                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                            targetPoint = new Vector3(ball.X - 50, 0, ball.Z - 25);
+                            if (GetVectorDistance(fishLocation, ball) > 80 || IsDirectionRight(fishDirection, targetDirection) != 0) 
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
                             else
                             {
-                                decision.TCode = 12;
+                                decision.TCode = 15;
                                 decision.VCode = 1;
                             }
                         }
                         else//鱼在球上面
                         {
                             targetDirection = (float)Math.PI * 0.61f;
-                            targetPoint = new Vector3(ball.X - 50, 0, ball.Z + 20);
-                            if (GetVectorDistance(fishLocation, targetPoint) > 50 && IsDirectionRight(fishDirection, targetDirection) != 0)
-                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                            targetPoint = new Vector3(ball.X - 50, 0, ball.Z + 25);
+                            if (GetVectorDistance(fishLocation, ball) > 80 || IsDirectionRight(fishDirection, targetDirection) != 0)
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
                             else
                             {
-                                decision.TCode = 3;
+                                decision.TCode = 0;
                                 decision.VCode = 1;
                             }
                         }
