@@ -309,7 +309,7 @@ namespace URWPGSim2D.Strategy
         }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 3;//主函数标志值
+        private static int flag = 1;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
