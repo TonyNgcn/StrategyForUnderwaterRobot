@@ -7,8 +7,6 @@ using xna = Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework;
 using URWPGSim2D.Common;
 using URWPGSim2D.StrategyLoader;
-using URWPGSim2D.StrategyHelper;
-using System.IO;
 
 namespace URWPGSim2D.Strategy
 {
@@ -41,20 +39,6 @@ namespace URWPGSim2D.Strategy
         public string GetTeamName()
         {
             return "Team First";
-        }
-        public int IsDirectionRight(float a, float b)
-        {
-            if (a > Math.PI) a -= (float)(2 * Math.PI);
-            if (b > Math.PI) b -= (float)(2 * Math.PI);
-            if (a < -Math.PI) a += (float)(2 * Math.PI);
-            if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.15) return 1;//a在b右边
-            else if (a - b < -0.15) return -1; //a在b左边
-            else return 0;
-        }
-        public static float GetVectorDistance(xna.Vector3 a, xna.Vector3 b)
-        {
-            return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
         }
         #region 判断球在哪个区域的函数
         public int Field(Vector3 PositionMm)
@@ -91,7 +75,43 @@ namespace URWPGSim2D.Strategy
             return flag;
         }
         #endregion
-        public int myflag = 0;
+        #region 在区域中找出高分球
+        public int Find3Ball(Ball[] ballGroup)//可能死循环
+        {
+            if (Field(ballGroup[0].PositionMm) == 5)
+                return 0;
+            if (Field(ballGroup[1].PositionMm) == 5)
+                return 1;
+            if (Field(ballGroup[2].PositionMm) == 5)
+                return 2;
+            if (Field(ballGroup[0].PositionMm) == 2)
+                return 0;
+            if (Field(ballGroup[1].PositionMm) == 2)
+                return 1;
+            if (Field(ballGroup[2].PositionMm) == 2)
+                return 2;
+            if (Field(ballGroup[0].PositionMm) == 8)
+                return 0;
+            if (Field(ballGroup[1].PositionMm) == 8)
+                return 1;
+            if (Field(ballGroup[2].PositionMm) == 8)
+                return 2;
+            if (Field(ballGroup[0].PositionMm) == 6)
+                return 0;
+            if (Field(ballGroup[1].PositionMm) == 6)
+                return 1;
+            if (Field(ballGroup[2].PositionMm) == 6)
+                return 2;
+            if (Field(ballGroup[0].PositionMm) == 7)
+                return 0;
+            if (Field(ballGroup[1].PositionMm) == 7)
+                return 1;
+            if (Field(ballGroup[2].PositionMm) == 7)
+                return 2;
+            return 10;
+        }
+        public int Find2Ball(Ball[] ballGroup)
+        #endregion
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -111,38 +131,20 @@ namespace URWPGSim2D.Strategy
                 ballGroup[i] = mission.EnvRef.Balls[i];
             RoboFish myFish1 = mission.TeamsRef[teamId].Fishes[0];
             RoboFish myFish2 = mission.TeamsRef[teamId].Fishes[1];
-            Vector3 goal;
-            int fish_field = Field(myFish2.PositionMm);
+            int b0_l = Convert.ToInt32(mission.HtMissionVariables["Ball_0_Left_Status"]); //判断球是否已经得分的状态量，1为得分，0为没得分
+            int b1_l = Convert.ToInt32(mission.HtMissionVariables["Ball_1_Left_Status"]);
+            int b2_l = Convert.ToInt32(mission.HtMissionVariables["Ball_2_Left_Status"]);
+            int b3_l = Convert.ToInt32(mission.HtMissionVariables["Ball_3_Left_Status"]);
+            int b4_l = Convert.ToInt32(mission.HtMissionVariables["Ball_4_Left_Status"]);
+            int b5_l = Convert.ToInt32(mission.HtMissionVariables["Ball_5_Left_Status"]);
+            int b6_l = Convert.ToInt32(mission.HtMissionVariables["Ball_6_Left_Status"]);
+            int b7_l = Convert.ToInt32(mission.HtMissionVariables["Ball_7_Left_Status"]);
+            int b8_l = Convert.ToInt32(mission.HtMissionVariables["Ball_8_Left_Status"]);
 
-            if (mission.TeamsRef[teamId].Para.MyHalfCourt == HalfCourt.LEFT)  //在左半场
-            {
-                switch (fish_field)
-                {
-                    case 5:
-                        goal = new Vector3(1500, 0, -800);
-                        Helpers.Dribble(ref decisions[1], myFish2, goal, 0, 20f, 30f, 150f, 15, 10, 15, 100, false);
-                        break;
-                    case 2:
-                        goal = new Vector3(1500, 0, -800);
-                        Vector3 goal2 = new Vector3(1500,0,-1000);
-                        if (myflag == 0) 
-                            Helpers.Dribble(ref decisions[1], myFish2, goal, 0, 8f, 10f, 150f, 14, 10, 15, 100, false);
-                        if (IsDirectionRight(myFish2.BodyDirectionRad, 0) == 0 && GetVectorDistance(myFish2.PositionMm, goal) < 200)
-                            myflag = 1;
-                        if (myflag == 1)
-                            Helpers.Dribble(ref decisions[1], myFish2, goal, (float)-Math.PI / 2, 8f, 10f, 150f, 14, 10, 15, 100, false);
-                        if (IsDirectionRight(myFish2.BodyDirectionRad, (float)-Math.PI / 2) == 0 && GetVectorDistance(myFish2.PositionMm, goal2) < 250)
-                            myflag = 2;
-                        if (myflag == 2) 
-                        {
-                            decisions[1].TCode = 5;
-                            decisions[1].VCode = 14;
-                        }
-                        break;
-                }
-            }
-        return decisions;
-          
+
+
+
+            return decisions;
         }
     }
 }
