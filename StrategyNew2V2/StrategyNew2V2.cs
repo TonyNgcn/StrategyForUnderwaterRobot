@@ -38,80 +38,9 @@ namespace URWPGSim2D.Strategy
         /// <returns>队伍名称字符串</returns>
         public string GetTeamName()
         {
-            return "Team First";
+            return "抢球博弈 Test Team";
         }
-        #region 判断球在哪个区域的函数
-        public int Field(Vector3 PositionMm)
-        {
-            int flag = 0;
 
-            if (PositionMm.X >= -1500 && PositionMm.X <= -1150 && PositionMm.Z >= -1000 && PositionMm.Z <= -550) //区域1
-                flag = 1;
-
-            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= -1000 && PositionMm.Z <= -500) //区域2
-                flag = 2;
-
-            else if (PositionMm.X >= -1500 && PositionMm.X <= -1150 && PositionMm.Z >= -550 && PositionMm.Z <= 550) //区域3
-                flag = 3;
-
-            else if (PositionMm.X >= -1150 && PositionMm.X <= -940 && PositionMm.Z >= -550 && PositionMm.Z <= 550) //区域4
-                flag = 4;
-
-            else if ((PositionMm.X >= -940 && PositionMm.X <= 940) || (PositionMm.X >= -1150 && PositionMm.X <= 1150 && PositionMm.Z >= -1000 && PositionMm.Z <= -550) || (PositionMm.X >= -1150 && PositionMm.X <= 1150 && PositionMm.Z >= 550 && PositionMm.Z <= 1000)) //区域5
-                flag = 5;
-
-            else if (PositionMm.X >= 940 && PositionMm.X <= 1150 && PositionMm.Z >= -500 && PositionMm.Z <= 500) //区域6
-                flag = 6;
-
-            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= -500 && PositionMm.Z <= 500) //区域7
-                flag = 7;
-
-            else if (PositionMm.X >= -1500 && PositionMm.X <= -1150 && PositionMm.Z >= 550 && PositionMm.Z <= 1000) //区域8
-                flag = 8;
-
-            else if (PositionMm.X >= 1150 && PositionMm.X <= 1500 && PositionMm.Z >= 500 && PositionMm.Z <= 1000) //区域9
-                flag = 9;
-
-            return flag;
-        }
-        #endregion
-        #region 在区域中找出高分球
-        public int Find3Ball(Ball[] ballGroup)//可能死循环
-        {
-            if (Field(ballGroup[0].PositionMm) == 5)
-                return 0;
-            if (Field(ballGroup[1].PositionMm) == 5)
-                return 1;
-            if (Field(ballGroup[2].PositionMm) == 5)
-                return 2;
-            if (Field(ballGroup[0].PositionMm) == 2)
-                return 0;
-            if (Field(ballGroup[1].PositionMm) == 2)
-                return 1;
-            if (Field(ballGroup[2].PositionMm) == 2)
-                return 2;
-            if (Field(ballGroup[0].PositionMm) == 8)
-                return 0;
-            if (Field(ballGroup[1].PositionMm) == 8)
-                return 1;
-            if (Field(ballGroup[2].PositionMm) == 8)
-                return 2;
-            if (Field(ballGroup[0].PositionMm) == 6)
-                return 0;
-            if (Field(ballGroup[1].PositionMm) == 6)
-                return 1;
-            if (Field(ballGroup[2].PositionMm) == 6)
-                return 2;
-            if (Field(ballGroup[0].PositionMm) == 7)
-                return 0;
-            if (Field(ballGroup[1].PositionMm) == 7)
-                return 1;
-            if (Field(ballGroup[2].PositionMm) == 7)
-                return 2;
-            return 10;
-        }
-        public int Find2Ball(Ball[] ballGroup)
-        #endregion
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -126,24 +55,63 @@ namespace URWPGSim2D.Strategy
             {// 根据决策类当前对象对应的仿真使命参与队伍仿真机器鱼的数量分配决策数组空间
                 decisions = new Decision[mission.CommonPara.FishCntPerTeam];
             }
-            Ball[] ballGroup = new Ball[9];
-            for (int i = 1; i < 9; i++)
-                ballGroup[i] = mission.EnvRef.Balls[i];
-            RoboFish myFish1 = mission.TeamsRef[teamId].Fishes[0];
-            RoboFish myFish2 = mission.TeamsRef[teamId].Fishes[1];
-            int b0_l = Convert.ToInt32(mission.HtMissionVariables["Ball_0_Left_Status"]); //判断球是否已经得分的状态量，1为得分，0为没得分
-            int b1_l = Convert.ToInt32(mission.HtMissionVariables["Ball_1_Left_Status"]);
-            int b2_l = Convert.ToInt32(mission.HtMissionVariables["Ball_2_Left_Status"]);
-            int b3_l = Convert.ToInt32(mission.HtMissionVariables["Ball_3_Left_Status"]);
-            int b4_l = Convert.ToInt32(mission.HtMissionVariables["Ball_4_Left_Status"]);
-            int b5_l = Convert.ToInt32(mission.HtMissionVariables["Ball_5_Left_Status"]);
-            int b6_l = Convert.ToInt32(mission.HtMissionVariables["Ball_6_Left_Status"]);
-            int b7_l = Convert.ToInt32(mission.HtMissionVariables["Ball_7_Left_Status"]);
-            int b8_l = Convert.ToInt32(mission.HtMissionVariables["Ball_8_Left_Status"]);
 
+            #region 决策计算过程 需要各参赛队伍实现的部分
+            #region 策略编写帮助信息
+            //====================我是华丽的分割线====================//
+            //======================策略编写指南======================//
+            //1.策略编写工作直接目标是给当前队伍决策数组decisions各元素填充决策值
+            //2.决策数据类型包括两个int成员，VCode为速度档位值，TCode为转弯档位值
+            //3.VCode取值范围0-14共15个整数值，每个整数对应一个速度值，速度值整体但非严格递增
+            //有个别档位值对应的速度值低于比它小的档位值对应的速度值，速度值数据来源于实验
+            //4.TCode取值范围0-14共15个整数值，每个整数对应一个角速度值
+            //整数7对应直游，角速度值为0，整数6-0，8-14分别对应左转和右转，偏离7越远，角度速度值越大
+            //5.任意两个速度/转弯档位之间切换，都需要若干个仿真周期，才能达到稳态速度/角速度值
+            //目前运动学计算过程决定稳态速度/角速度值接近但小于目标档位对应的速度/角速度值
+            //6.决策类Strategy的实例在加载完毕后一直存在于内存中，可以自定义私有成员变量保存必要信息
+            //但需要注意的是，保存的信息在中途更换策略时将会丢失
+            //====================我是华丽的分割线====================//
+            //=======策略中可以使用的比赛环境信息和过程信息说明=======//
+            //场地坐标系: 以毫米为单位，矩形场地中心为原点，向右为正X，向下为正Z
+            //            负X轴顺时针转回负X轴角度范围为(-PI,PI)的坐标系，也称为世界坐标系
+            //mission.CommonPara: 当前仿真使命公共参数
+            //mission.CommonPara.FishCntPerTeam: 每支队伍仿真机器鱼数量
+            //mission.CommonPara.MsPerCycle: 仿真周期毫秒数
+            //mission.CommonPara.RemainingCycles: 当前剩余仿真周期数
+            //mission.CommonPara.TeamCount: 当前仿真使命参与队伍数量
+            //mission.CommonPara.TotalSeconds: 当前仿真使命运行时间秒数
+            //mission.EnvRef.Balls: 
+            //当前仿真使命涉及到的仿真水球列表，列表元素的成员意义参见URWPGSim2D.Common.Ball类定义中的注释
+            //mission.EnvRef.FieldInfo: 
+            //当前仿真使命涉及到的仿真场地，各成员意义参见URWPGSim2D.Common.Field类定义中的注释
+            //mission.EnvRef.ObstaclesRect: 
+            //当前仿真使命涉及到的方形障碍物列表，列表元素的成员意义参见URWPGSim2D.Common.RectangularObstacle类定义中的注释
+            //mission.EnvRef.ObstaclesRound:
+            //当前仿真使命涉及到的圆形障碍物列表，列表元素的成员意义参见URWPGSim2D.Common.RoundedObstacle类定义中的注释
+            //mission.TeamsRef[teamId]:
+            //决策类当前对象对应的仿真使命参与队伍（当前队伍）
+            //mission.TeamsRef[teamId].Para:
+            //当前队伍公共参数，各成员意义参见URWPGSim2D.Common.TeamCommonPara类定义中的注释
+            //mission.TeamsRef[teamId].Fishes:
+            //当前队伍仿真机器鱼列表，列表元素的成员意义参见URWPGSim2D.Common.RoboFish类定义中的注释
+            //mission.TeamsRef[teamId].Fishes[i].PositionMm和PolygonVertices[0],BodyDirectionRad,VelocityMmPs,
+            //                                   AngularVelocityRadPs,Tactic:
+            //当前队伍第i条仿真机器鱼鱼体矩形中心和鱼头顶点在场地坐标系中的位置（用到X坐标和Z坐标），鱼体方向，速度值，
+            //                                   角速度值，决策值
+            //====================我是华丽的分割线====================//
+            //========================典型循环========================//
+            //for (int i = 0; i < mission.CommonPara.FishCntPerTeam; i++)
+            //{
+            //  decisions[i].VCode = 0; // 静止
+            //  decisions[i].TCode = 7; // 直游
+            //}
+            //====================我是华丽的分割线====================//
+            #endregion
+            //请从这里开始编写代码
 
+            #endregion
 
-
+        
             return decisions;
         }
     }
