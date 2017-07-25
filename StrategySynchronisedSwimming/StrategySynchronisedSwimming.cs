@@ -157,41 +157,41 @@ namespace URWPGSim2D.Strategy
                 case 0:
                     if (GetVectorDistance(targetePoint, fish.PositionMm) > 300)
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 50)
+                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
                         Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 5f, 60f, 100, ref timeForPoseToPose[noOfFish]);
                     }
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 10)
+                    else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    //if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
-                    //    flag[noOfFish] = 0;
-                    //else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
-                    //{
-                    //    decisions.TCode = 0;
-                    //    decisions.VCode = 1;
-                    //}
-                    //else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
-                    //{
-                    //    decisions.TCode = 15;
-                    //    decisions.VCode = 1;
-                    //}
-                    //else
-                    //{
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
+                        flag[noOfFish] = 0;
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
+                    {
+                        decisions.TCode = 0;
+                        decisions.VCode = 1;
+                    }
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
+                    {
+                        decisions.TCode = 15;
+                        decisions.VCode = 1;
+                    }
+                    else
+                    {
                         flag[noOfFish] = 2;
                         StopFish(ref decisions, noOfFish);
-                    //}
+                    }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 100)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         flag[noOfFish] = 0;
-                    //else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
-                    //{
-                    //    flag[noOfFish] = 1;
-                    //}
+                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
+                    {
+                        flag[noOfFish] = 1;
+                    }
                     else
                     {
                         StopFish(ref decisions, noOfFish);
