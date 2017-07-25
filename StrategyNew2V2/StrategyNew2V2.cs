@@ -47,8 +47,8 @@ namespace URWPGSim2D.Strategy
             if (deltaAngle > Math.PI) deltaAngle -= (float)(2 * Math.PI);
             if (deltaAngle > Math.PI) deltaAngle += (float)(2 * Math.PI);
 
-            if (deltaAngle > 0.2) return 1;//a在b右边
-            else if (deltaAngle < -0.2) return -1; //a在b左边
+            if (deltaAngle > 0.3) return 1;//a在b右边
+            else if (deltaAngle < -0.3) return -1; //a在b左边
             else return 0;
         }
         public float CalAngle(Vector3 presentPoint,Vector3 destPoint)
@@ -150,8 +150,8 @@ namespace URWPGSim2D.Strategy
                         {
                             targetDirection = -(float)Math.PI * 0.61f;
                             targetPoint = new Vector3(ball.X - 50, 0, ball.Z - 25);
-                            if (GetVectorDistance(fishLocation, ball) > 80 || IsDirectionRight(fishDirection, targetDirection) != 0) 
-                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
+                            if (GetVectorDistance(fishLocation, ball) > 90 || IsDirectionRight(fishDirection, targetDirection) != 0) 
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 180, 5, 3, 15, 100, true);
                             else
                             {
                                 decision.TCode = 15;
@@ -162,8 +162,8 @@ namespace URWPGSim2D.Strategy
                         {
                             targetDirection = (float)Math.PI * 0.61f;
                             targetPoint = new Vector3(ball.X - 50, 0, ball.Z + 25);
-                            if (GetVectorDistance(fishLocation, ball) > 80 || IsDirectionRight(fishDirection, targetDirection) != 0)
-                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
+                            if (GetVectorDistance(fishLocation, ball) > 90 || IsDirectionRight(fishDirection, targetDirection) != 0)
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 180, 5, 3, 15, 100, true);
                             else
                             {
                                 decision.TCode = 0;
