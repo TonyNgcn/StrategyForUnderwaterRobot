@@ -403,7 +403,8 @@ namespace URWPGSim2D.Strategy
             {
                 startRoadflag[0] = 2;
                 StopFish(ref decisions[3], 4);
-                complete = true;
+                if (AllEqual(startRoadflag, 2, 2, 3) && AllEqual(startRoadflag, 2, 5, 10))
+                    complete = true;
             }
             #endregion
             #region 定住结束
