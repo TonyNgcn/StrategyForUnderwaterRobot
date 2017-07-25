@@ -65,12 +65,12 @@ namespace URWPGSim2D.Strategy
         }
         public static int IsDirectionRight(float a, float b)
         {
-            if (a > Math.PI) a -= (float)(2 * Math.PI);
-            if (b > Math.PI) b -= (float)(2 * Math.PI);
-            if (a < -Math.PI) a += (float)(2 * Math.PI);
-            if (b < -Math.PI) b += (float)(2 * Math.PI);
-            if (a - b > 0.15) return 1;//a在b右边
-            else if (a - b < -0.15) return -1; //a在b左边
+            float deltaAngle = a - b;
+            if (deltaAngle > Math.PI) deltaAngle -= (float)(2 * Math.PI);
+            if (deltaAngle > Math.PI) deltaAngle += (float)(2 * Math.PI);
+
+            if (deltaAngle > 0.15) return 1;//a在b右边
+            else if (deltaAngle < -0.15) return -1; //a在b左边
             else return 0;
         }
         public static bool AllEqual(int[] group, int value, int start, int end)//核对group数组从start到end元素与value相等
@@ -155,19 +155,19 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 300)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 350)
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
+                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 120)
                     {
                         Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 5f, 60f, 100, ref timeForPoseToPose[noOfFish]);
                     }
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
+                    else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 120)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
@@ -186,7 +186,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -307,60 +307,9 @@ namespace URWPGSim2D.Strategy
                     break;
             }
         }
-        public static void DribbleFishToPoint(ref Decision decisions, RoboFish fish, xna.Vector3 targetePoint, float targetDirection, int noOfFish, int[] flag)
-        {
-            switch (flag[noOfFish])
-            {
-                case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 100)
-                    {
-                        Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 5,10 , 150, 14, 13, 5, 100, true);
-                    }
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) < 100)
-                    {
-                        flag[noOfFish] = 1;
-                    }
-                    break;
-                case 1:
-                    if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
-                    {
-                        decisions.TCode = 0;
-                        decisions.VCode = 1;
-                    }
-                    else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) > 0)
-                    {
-                        decisions.TCode = 15;
-                        decisions.VCode = 1;
-                    }
-                    else
-                    {
-                        flag[noOfFish] = 2;
-                        StopFish(ref decisions, noOfFish);
-                    }
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
-                    break;
-                case 2:
-                    if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
-                    {
-                        flag[noOfFish] = 1;
-                    }
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
-                        flag[noOfFish] = 0;
-                    else
-                    {
-                        StopFish(ref decisions, noOfFish);
-                    }
-                    break;
-                default:
-                    StopFish(ref decisions, noOfFish);
-                    break;
-
-            }
-        }
         public static int completeCircle = 0;
         Decision[] preDecisions = null;
-        private static int flag = 1;//主函数标志值
+        private static int flag = 3;//主函数标志值
         private static int timeflag = 0;
         //以下声明量为标志量，通常情况下，2-10置0表示目标要调用PoseToPose或driible去目标点，1表示已到目标点（除前两个外）,2表示方向也正确
         private static int[] timeForPoseToPose = new int[11];
