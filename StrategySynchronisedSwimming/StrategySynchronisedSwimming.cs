@@ -103,19 +103,19 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 300)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 250)
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 100)
+                    else if (GetVectorDistance(targetePoint, fish.PositionMm) > 130)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 3f, 20f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 5f, 8f, 100, ref timeForPoseToPose[noOfFish]);
                     }
-                    else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 100)
+                    else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 130)
                     {
                         flag[noOfFish] = 1;
                     }
                     break;
                 case 1:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180)
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) < 0)
                     {
@@ -134,7 +134,7 @@ namespace URWPGSim2D.Strategy
                     }
                     break;
                 case 2:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 150) 
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 180) 
                         flag[noOfFish] = 0;
                     else if (IsDirectionRight(targetDirection, fish.BodyDirectionRad) != 0)
                     {
@@ -155,7 +155,7 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 350)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 250)
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
                     else if (GetVectorDistance(targetePoint, fish.PositionMm) > 120)
                     {
@@ -207,7 +207,7 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 300)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
                     else if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
@@ -259,7 +259,7 @@ namespace URWPGSim2D.Strategy
             switch (flag[noOfFish])
             {
                 case 0:
-                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 300)
+                    if (GetVectorDistance(targetePoint, fish.PositionMm) > 200)
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
                     else if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
@@ -454,7 +454,7 @@ namespace URWPGSim2D.Strategy
             float HD8 = 0;
             float HD9 = 0;
             float HD10 = (float)-1.5708;
-            float HD22 = 0;
+            float HD22 = (float)-0.7854;
             float HD23 = (float)0.4;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
