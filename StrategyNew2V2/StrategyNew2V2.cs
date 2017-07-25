@@ -7,6 +7,7 @@ using xna = Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework;
 using URWPGSim2D.Common;
 using URWPGSim2D.StrategyLoader;
+using URWPGSim2D.StrategyHelper;
 
 namespace URWPGSim2D.Strategy
 {
@@ -38,9 +39,141 @@ namespace URWPGSim2D.Strategy
         /// <returns>队伍名称字符串</returns>
         public string GetTeamName()
         {
-            return "抢球博弈 Test Team";
+            return "Team First";
         }
+        public int IsDirectionRight(float a, float b)
+        {
+            float deltaAngle = a - b;
+            if (deltaAngle > Math.PI) deltaAngle -= (float)(2 * Math.PI);
+            if (deltaAngle > Math.PI) deltaAngle += (float)(2 * Math.PI);
 
+            if (deltaAngle > 0.2) return 1;//a在b右边
+            else if (deltaAngle < -0.2) return -1; //a在b左边
+            else return 0;
+        }
+        public float CalAngle(Vector3 presentPoint,Vector3 destPoint)
+        {
+            float angle;
+            angle = Helpers.GetAngleDegree(destPoint - presentPoint);
+            angle = angle / 180 * (float)Math.PI;
+            if (angle > Math.PI) angle -= (float)(2 * Math.PI);
+            if (angle > Math.PI) angle += (float)(2 * Math.PI);
+            return angle;
+        }
+        public Vector3 CalPointOnBall(Vector3 ball,float targetDirection)
+        {
+            double x = ball.X - Math.Cos(targetDirection) *80;
+            double z = ball.Z - Math.Sin(targetDirection) *80;
+            Vector3 point = new Vector3((float)x, 0, (float)z);
+            return point;
+        }
+        public float GetVectorDistance(xna.Vector3 a, xna.Vector3 b)
+        {
+            return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
+        }
+        public void OneFishGetScore(RoboFish fish,int leftOrRight,Vector3 ball,ref Decision decision)//leftOrRight参数：1为left，2为right
+        {
+            Vector3 fishLocation = fish.PositionMm;
+            float fishDirection = fish.BodyDirectionRad;
+            Vector3 targetPoint;
+            float targetDirection;
+            if (leftOrRight == 1)//自己球门在左边
+            {
+                Vector3 upPoint = new Vector3(-1000, 0, -500);
+                Vector3 bottomPoint = new Vector3(-1000, 0, 500);
+                Vector3 upTempPoint = new Vector3(-1300, 0, -700);
+                Vector3 bottomTempPoint = new Vector3(-1300, 0, 700);
+                if (ball.X > -1000) //球在门外
+                {
+                    if (ball.Z > 0)//距离上面的点近一点
+                    {
+                        targetDirection = CalAngle(ball, upTempPoint);
+                    }
+                    else
+                    {
+                        targetDirection = CalAngle(ball, bottomTempPoint);
+                    }
+                    targetPoint = CalPointOnBall(ball, targetDirection);
+                    if (GetVectorDistance(ball, fishLocation) > 150)//快速游到目标点
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
+                    else
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                }
+                else if (ball.X <= 1250)
+                {
+                    if (ball.Z < -300)
+                    {
+                        targetDirection = CalAngle(ball, bottomPoint);
+                        targetPoint = CalPointOnBall(ball, targetDirection);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                    }
+                    else if (ball.Z > 300)
+                    {
+                        targetDirection = CalAngle(ball, upPoint);
+                        targetPoint = CalPointOnBall(ball, targetDirection);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                    }
+                    else
+                    {
+                        if (fishDirection < 0)
+                        {
+                            targetDirection = CalAngle(ball, upPoint);
+                            targetPoint = CalPointOnBall(ball, targetDirection);
+                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 7, 5, 15, 100, true);
+                        }
+                        else
+                        {
+                            targetDirection = CalAngle(ball, bottomPoint);
+                            targetPoint = CalPointOnBall(ball, targetDirection);
+                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 7, 5, 15, 100, true);
+                        }
+                    }
+
+                }
+                else if (ball.X <= -1000 && ball.X > -1250) 
+                {
+                    if (ball.Z < -500)//卡在球门上侧的情况
+                    {
+                        targetDirection = CalAngle(ball, upTempPoint);
+                        targetPoint = CalPointOnBall(ball, targetDirection);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                    }
+                    else if (ball.Z > 500)//卡在球门上侧的情况
+                    {
+                        targetDirection = CalAngle(ball, bottomTempPoint);
+                        targetPoint = CalPointOnBall(ball, targetDirection);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                    }
+                    else//球门区域内
+                    {
+                        if (fishLocation.Z > ball.Z + 60)//鱼在球下面
+                        {
+                            targetDirection = -(float)Math.PI * 0.61f;
+                            targetPoint = new Vector3(ball.X - 50, 0, ball.Z - 20);
+                            if (GetVectorDistance(fishLocation, targetPoint) > 50 && IsDirectionRight(fishDirection, targetDirection) != 0) 
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                            else
+                            {
+                                decision.TCode = 12;
+                                decision.VCode = 1;
+                            }
+                        }
+                        else//鱼在球上面
+                        {
+                            targetDirection = (float)Math.PI * 0.61f;
+                            targetPoint = new Vector3(ball.X - 50, 0, ball.Z + 20);
+                            if (GetVectorDistance(fishLocation, targetPoint) > 50 && IsDirectionRight(fishDirection, targetDirection) != 0)
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 8, 6, 15, 100, true);
+                            else
+                            {
+                                decision.TCode = 3;
+                                decision.VCode = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -55,61 +188,9 @@ namespace URWPGSim2D.Strategy
             {// 根据决策类当前对象对应的仿真使命参与队伍仿真机器鱼的数量分配决策数组空间
                 decisions = new Decision[mission.CommonPara.FishCntPerTeam];
             }
-
-            #region 决策计算过程 需要各参赛队伍实现的部分
-            #region 策略编写帮助信息
-            //====================我是华丽的分割线====================//
-            //======================策略编写指南======================//
-            //1.策略编写工作直接目标是给当前队伍决策数组decisions各元素填充决策值
-            //2.决策数据类型包括两个int成员，VCode为速度档位值，TCode为转弯档位值
-            //3.VCode取值范围0-14共15个整数值，每个整数对应一个速度值，速度值整体但非严格递增
-            //有个别档位值对应的速度值低于比它小的档位值对应的速度值，速度值数据来源于实验
-            //4.TCode取值范围0-14共15个整数值，每个整数对应一个角速度值
-            //整数7对应直游，角速度值为0，整数6-0，8-14分别对应左转和右转，偏离7越远，角度速度值越大
-            //5.任意两个速度/转弯档位之间切换，都需要若干个仿真周期，才能达到稳态速度/角速度值
-            //目前运动学计算过程决定稳态速度/角速度值接近但小于目标档位对应的速度/角速度值
-            //6.决策类Strategy的实例在加载完毕后一直存在于内存中，可以自定义私有成员变量保存必要信息
-            //但需要注意的是，保存的信息在中途更换策略时将会丢失
-            //====================我是华丽的分割线====================//
-            //=======策略中可以使用的比赛环境信息和过程信息说明=======//
-            //场地坐标系: 以毫米为单位，矩形场地中心为原点，向右为正X，向下为正Z
-            //            负X轴顺时针转回负X轴角度范围为(-PI,PI)的坐标系，也称为世界坐标系
-            //mission.CommonPara: 当前仿真使命公共参数
-            //mission.CommonPara.FishCntPerTeam: 每支队伍仿真机器鱼数量
-            //mission.CommonPara.MsPerCycle: 仿真周期毫秒数
-            //mission.CommonPara.RemainingCycles: 当前剩余仿真周期数
-            //mission.CommonPara.TeamCount: 当前仿真使命参与队伍数量
-            //mission.CommonPara.TotalSeconds: 当前仿真使命运行时间秒数
-            //mission.EnvRef.Balls: 
-            //当前仿真使命涉及到的仿真水球列表，列表元素的成员意义参见URWPGSim2D.Common.Ball类定义中的注释
-            //mission.EnvRef.FieldInfo: 
-            //当前仿真使命涉及到的仿真场地，各成员意义参见URWPGSim2D.Common.Field类定义中的注释
-            //mission.EnvRef.ObstaclesRect: 
-            //当前仿真使命涉及到的方形障碍物列表，列表元素的成员意义参见URWPGSim2D.Common.RectangularObstacle类定义中的注释
-            //mission.EnvRef.ObstaclesRound:
-            //当前仿真使命涉及到的圆形障碍物列表，列表元素的成员意义参见URWPGSim2D.Common.RoundedObstacle类定义中的注释
-            //mission.TeamsRef[teamId]:
-            //决策类当前对象对应的仿真使命参与队伍（当前队伍）
-            //mission.TeamsRef[teamId].Para:
-            //当前队伍公共参数，各成员意义参见URWPGSim2D.Common.TeamCommonPara类定义中的注释
-            //mission.TeamsRef[teamId].Fishes:
-            //当前队伍仿真机器鱼列表，列表元素的成员意义参见URWPGSim2D.Common.RoboFish类定义中的注释
-            //mission.TeamsRef[teamId].Fishes[i].PositionMm和PolygonVertices[0],BodyDirectionRad,VelocityMmPs,
-            //                                   AngularVelocityRadPs,Tactic:
-            //当前队伍第i条仿真机器鱼鱼体矩形中心和鱼头顶点在场地坐标系中的位置（用到X坐标和Z坐标），鱼体方向，速度值，
-            //                                   角速度值，决策值
-            //====================我是华丽的分割线====================//
-            //========================典型循环========================//
-            //for (int i = 0; i < mission.CommonPara.FishCntPerTeam; i++)
-            //{
-            //  decisions[i].VCode = 0; // 静止
-            //  decisions[i].TCode = 7; // 直游
-            //}
-            //====================我是华丽的分割线====================//
-            #endregion
-            //请从这里开始编写代码
-
-            #endregion
+            RoboFish fish1 = mission.TeamsRef[teamId].Fishes[0];
+            Vector3 ball1 = mission.EnvRef.Balls[0].PositionMm;
+            OneFishGetScore(fish1, 1, ball1, ref decisions[0]);
 
         
             return decisions;
