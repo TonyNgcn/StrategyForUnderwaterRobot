@@ -463,7 +463,8 @@ namespace URWPGSim2D.Strategy
             float HD8 = 0;
             float HD9 = 0;
             float HD10 = (float)-1.5708;
-            float HD22 = (float)-0.7854;
+            //float HD22 = (float)-0.7854;
+            float HD22 = (float)-0.5236;
             float HD23 = (float)0.4;
             #endregion
             #region 一堆鱼移动到目标点和目标角度

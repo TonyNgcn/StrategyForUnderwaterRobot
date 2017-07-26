@@ -150,8 +150,8 @@ namespace URWPGSim2D.Strategy
                         {
                             targetDirection = -(float)Math.PI * 0.61f;
                             targetPoint = new Vector3(ball.X - 60, 0, ball.Z - 30);
-                            if (GetVectorDistance(fishLocation, ball) > 100 )//|| IsDirectionRight(fishDirection, targetDirection) != 0) 
-                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 200, 5, 3, 15, 100, true);
+                            if (GetVectorDistance(fishLocation, ball) > 120 && IsDirectionRight(fishDirection, targetDirection) != 0) 
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
                             else
                             {
                                 decision.TCode = 15;
@@ -162,8 +162,8 @@ namespace URWPGSim2D.Strategy
                         {
                             targetDirection = (float)Math.PI * 0.61f;
                             targetPoint = new Vector3(ball.X - 60, 0, ball.Z + 30);
-                            if (GetVectorDistance(fishLocation, ball) > 100 )//|| IsDirectionRight(fishDirection, targetDirection) != 0)
-                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 200, 5, 3, 15, 100, true);
+                            if (GetVectorDistance(fishLocation, ball) > 120  && IsDirectionRight(fishDirection, targetDirection) != 0)
+                                Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
                             else
                             {
                                 decision.TCode = 0;
