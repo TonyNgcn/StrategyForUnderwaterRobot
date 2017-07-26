@@ -47,23 +47,23 @@ namespace URWPGSim2D.Strategy
             if (deltaAngle > Math.PI) deltaAngle -= (float)(2 * Math.PI);
             if (deltaAngle > Math.PI) deltaAngle += (float)(2 * Math.PI);
 
-            if (deltaAngle > 0.3) return 1;//a在b右边
-            else if (deltaAngle < -0.3) return -1; //a在b左边
+            if (deltaAngle > 1.3) return 1;//a在b右边
+            else if (deltaAngle < -1.3) return -1; //a在b左边
             else return 0;
         }
         public float CalAngle(Vector3 presentPoint,Vector3 destPoint)
         {
             float angle;
-            angle = Helpers.GetAngleDegree(destPoint - presentPoint);
-            angle = angle / 180 * (float)Math.PI;
+            angle =MathHelper.ToRadians( Helpers.GetAngleDegree(destPoint - presentPoint));
+
             if (angle > Math.PI) angle -= (float)(2 * Math.PI);
             if (angle > Math.PI) angle += (float)(2 * Math.PI);
             return angle;
         }
         public Vector3 CalPointOnBall(Vector3 ball,float targetDirection)
         {
-            double x = ball.X - Math.Cos(targetDirection) *65;
-            double z = ball.Z - Math.Sin(targetDirection) *70;
+            double x = ball.X - Math.Cos(targetDirection) *58;
+            double z = ball.Z - Math.Sin(targetDirection) *58;
             Vector3 point = new Vector3((float)x, 0, (float)z);
             return point;
         }
@@ -75,6 +75,8 @@ namespace URWPGSim2D.Strategy
         {
             Vector3 fishLocation = fish.PositionMm;
             float fishDirection = fish.BodyDirectionRad;
+            Vector3 fishTailLocation = (fish.PolygonVertices[3]+fish.PolygonVertices[4])/2;
+            Vector3 fishMiddleLocation = (fish.PolygonVertices[0] + fishTailLocation) / 2;
             Vector3 targetPoint;
             float targetDirection;
             if (leftOrRight == 1)//自己球门在左边
@@ -95,9 +97,9 @@ namespace URWPGSim2D.Strategy
                     }
                     targetPoint = CalPointOnBall(ball, targetDirection);
                     if (GetVectorDistance(ball, fishLocation) > 150)//快速游到目标点
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 20f, 30f, 400, 14, 8, 15, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 5f, 8f, 400, 14, 13, 15, 100, true);
                     else
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 3f, 4f, 80, 5, 3, 10, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2, 3, 200, 14, 13, 15, 100, true);
                 }
                 else if (ball.X <= -1240)
                 {
@@ -105,13 +107,13 @@ namespace URWPGSim2D.Strategy
                     {
                         targetDirection = CalAngle(ball, bottomPoint);
                         targetPoint = CalPointOnBall(ball, targetDirection);
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 3f, 6f, 80, 5, 3, 10, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 5, 10, 200, 10, 8, 15, 100, true);
                     }
                     else if (ball.Z > 300)
                     {
                         targetDirection = CalAngle(ball, upPoint);
                         targetPoint = CalPointOnBall(ball, targetDirection);
-                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 10, 100, true);
+                        Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 5, 10, 200, 10, 8, 15, 100, true);
                     }
                     else
                     {
@@ -119,13 +121,13 @@ namespace URWPGSim2D.Strategy
                         {
                             targetDirection = CalAngle(ball, upPoint);
                             targetPoint = CalPointOnBall(ball, targetDirection);
-                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
+                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 5, 10, 200, 10, 8, 15, 100, true);
                         }
                         else
                         {
                             targetDirection = CalAngle(ball, bottomPoint);
                             targetPoint = CalPointOnBall(ball, targetDirection);
-                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 3f, 80, 5, 3, 15, 100, true);
+                            Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 5, 10, 200, 10, 8, 15, 100, true);
                         }
                     }
 
@@ -146,28 +148,28 @@ namespace URWPGSim2D.Strategy
                     }
                     else//球门区域内
                     {
-                        if (fishLocation.Z > ball.Z) //鱼在球下面
+                        if (fishMiddleLocation.Z > ball.Z) //鱼在球下面
                         {
-                            targetDirection = -(float)Math.PI * 0.61f;
-                            targetPoint = new Vector3(ball.X - 60, 0, ball.Z - 30);
-                            if (GetVectorDistance(fishLocation, ball) > 120 && IsDirectionRight(fishDirection, targetDirection) != 0) 
+                            targetDirection = 0;
+                            targetPoint = new Vector3(-1010, 0, ball.Z + 80);
+                            if (GetVectorDistance(fishLocation, ball) > 180 || IsDirectionRight(fishDirection, targetDirection) != 0)
                                 Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
                             else
                             {
                                 decision.TCode = 15;
-                                decision.VCode = 1;
+                                decision.VCode = 3;
                             }
                         }
                         else//鱼在球上面
                         {
-                            targetDirection = (float)Math.PI * 0.61f;
-                            targetPoint = new Vector3(ball.X - 60, 0, ball.Z + 30);
-                            if (GetVectorDistance(fishLocation, ball) > 120  && IsDirectionRight(fishDirection, targetDirection) != 0)
+                            targetDirection = 0;
+                            targetPoint = new Vector3(-1010, 0, ball.Z - 80);
+                            if (GetVectorDistance(fishLocation, ball) > 180 || IsDirectionRight(fishDirection, targetDirection) != 0)
                                 Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
                             else
                             {
                                 decision.TCode = 0;
-                                decision.VCode = 1;
+                                decision.VCode = 3;
                             }
                         }
                     }
