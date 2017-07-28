@@ -211,7 +211,7 @@ namespace URWPGSim2D.Strategy
                         Helpers.Dribble(ref decisions, fish, targetePoint, targetDirection, 20f, 30f, 200, 14, 12, 15, 100, true);
                     else if (GetVectorDistance(targetePoint, fish.PositionMm) > 150)
                     {
-                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 30f, 50f, 100, ref timeForPoseToPose[noOfFish]);
+                        Helpers.PoseToPose(ref decisions, fish, targetePoint, targetDirection, 15f, 60f, 100, ref timeForPoseToPose[noOfFish]);
                     }
                     else if (GetVectorDistance(targetePoint, fish.PositionMm) <= 150)
                     {
@@ -404,8 +404,7 @@ namespace URWPGSim2D.Strategy
             {
                 startRoadflag[0] = 2;
                 StopFish(ref decisions[3], 4);
-                if (AllEqual(startRoadflag, 2, 2, 3) && AllEqual(startRoadflag, 2, 5, 10))
-                    complete = true;
+                complete = true;
             }
             #endregion
             #region 进入下一函数
@@ -769,7 +768,7 @@ namespace URWPGSim2D.Strategy
             if (complete)
             {
                 timeflag++;
-                if (timeflag >= 40)//等待4s
+                if (timeflag >= 20)//等待2s
                 {
                     for (int i = 0; i < 11; i++)
                         timeForPoseToPose[i] = 0;
@@ -884,23 +883,23 @@ namespace URWPGSim2D.Strategy
             #endregion
             #region 构成与黄鱼互动的目标角度
             float SFD2 = (float)1.0472;
-            float SFD3 = (float)0;
+            float SFD3 = 0;
             float SFD4 = (float)-1.0472;
             float SFD5 = (float)1.0472;
             float SFD6 = (float)-1.0472;
             float SFD7 = (float)1.0472;
-            float SFD8 = (float)0;
+            float SFD8 = 0;
             float SFD10 = (float)-1.0472;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            FishToPoint(ref decisions[1], fish2, smileface2, SFD2, 2, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[2], fish3, smileface3, SFD3, 3, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[3], fish4, smileface4, SFD4, 4, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[4], fish5, smileface5, SFD5, 5, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[5], fish6, smileface6, SFD6, 6, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[6], fish7, smileface7, SFD7, 7, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[7], fish8, smileface8, SFD8, 8, ref timeForPoseToPose, smileFaceflag);
-            FishToPoint(ref decisions[9], fish10, smileface10, SFD10, 10, ref timeForPoseToPose, smileFaceflag);
+            FishToPointQuick(ref decisions[1], fish2, smileface2, SFD2, 2, ref timeForPoseToPose, smileFaceflag);
+            FishToPointLine(ref decisions[2], fish3, smileface3, SFD3, 3, ref timeForPoseToPose, smileFaceflag);
+            FishToPointQuick(ref decisions[3], fish4, smileface4, SFD4, 4, ref timeForPoseToPose, smileFaceflag);
+            FishToPointQuick(ref decisions[4], fish5, smileface5, SFD5, 5, ref timeForPoseToPose, smileFaceflag);
+            FishToPointQuick(ref decisions[5], fish6, smileface6, SFD6, 6, ref timeForPoseToPose, smileFaceflag);
+            FishToPointQuick(ref decisions[6], fish7, smileface7, SFD7, 7, ref timeForPoseToPose, smileFaceflag);
+            FishToPointLine(ref decisions[7], fish8, smileface8, SFD8, 8, ref timeForPoseToPose, smileFaceflag);
+            FishToPointQuick(ref decisions[9], fish10, smileface10, SFD10, 10, ref timeForPoseToPose, smileFaceflag);
             //FishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
             Helpers.Dribble(ref decisions[8], fish9, fish1.PolygonVertices[3], CorrectRad(fish1.BodyDirectionRad - (float)1.0472), 30f, 20f, 100f, 14, 12, 15, 100, false);
             //float dir3 = xna.MathHelper.ToRadians(Helpers.GetAngleDegree(center - fish1.PositionMm));
