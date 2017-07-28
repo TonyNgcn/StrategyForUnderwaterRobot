@@ -328,6 +328,7 @@ namespace URWPGSim2D.Strategy
         private static int[] playflag = new int[11];
         private static int[] circleflag = new int[11];
         private static int[] oneHeartflag = new int[11];
+        private static int[] smileFaceflag = new int[11];
         /// <summary>
         /// 获取当前仿真使命（比赛项目）当前队伍所有仿真机器鱼的决策数据构成的数组
         /// </summary>
@@ -407,12 +408,17 @@ namespace URWPGSim2D.Strategy
                     complete = true;
             }
             #endregion
-            #region 定住结束
+            #region 进入下一函数
             if (complete)
             {
-                for (int i = 2; i <= 10; i++)
+                timeflag++;
+                if (timeflag >= 30)//等待3s
                 {
-                    StopFish(ref decisions[i - 1], i);
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    timeflag = 0;
+                    flag++;
+                    complete = false;
                 }
             }
             #endregion
@@ -463,7 +469,6 @@ namespace URWPGSim2D.Strategy
             float HD8 = 0;
             float HD9 = 0;
             float HD10 = (float)-1.5708;
-            //float HD22 = (float)-0.7854;
             float HD22 = (float)-0.5236;
             float HD23 = (float)0.4;
             #endregion
@@ -848,6 +853,80 @@ namespace URWPGSim2D.Strategy
             #endregion
         }
         #endregion
+        #region 笑脸
+        public static void SmileFace(ref Mission mission, int teamId, ref Decision[] decisions)
+        {
+            #region 声明变量
+            int msPerCycle = mission.CommonPara.MsPerCycle;//仿真周期毫秒数
+            #region 一堆鱼
+            RoboFish fish1 = mission.TeamsRef[teamId].Fishes[0];
+            RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
+            RoboFish fish3 = mission.TeamsRef[teamId].Fishes[2];
+            RoboFish fish4 = mission.TeamsRef[teamId].Fishes[3];
+            RoboFish fish5 = mission.TeamsRef[teamId].Fishes[4];
+            RoboFish fish6 = mission.TeamsRef[teamId].Fishes[5];
+            RoboFish fish7 = mission.TeamsRef[teamId].Fishes[6];
+            RoboFish fish8 = mission.TeamsRef[teamId].Fishes[7];
+            RoboFish fish9 = mission.TeamsRef[teamId].Fishes[8];
+            RoboFish fish10 = mission.TeamsRef[teamId].Fishes[9];
+            #endregion
+            #endregion
+            #region 构成笑脸的目标点
+            xna.Vector3 smileface2 = new xna.Vector3(-829, 0, -486);
+            xna.Vector3 smileface3 = new xna.Vector3(-195, 0, 729);
+            xna.Vector3 smileface4 = new xna.Vector3(939, 0, -656);
+            xna.Vector3 smileface5 = new xna.Vector3(1293, 0, -479);
+            xna.Vector3 smileface6 = new xna.Vector3(-1168, 0, -711);
+            xna.Vector3 smileface7 = new xna.Vector3(-656, 0, 501);
+            xna.Vector3 smileface8 = new xna.Vector3(368, 0, 733);
+            xna.Vector3 smileface10 = new xna.Vector3(759, 0, 379);
+            xna.Vector3 center = new xna.Vector3(0, 0, 0);
+            #endregion
+            #region 构成与黄鱼互动的目标角度
+            float SFD2 = (float)1.0472;
+            float SFD3 = (float)0;
+            float SFD4 = (float)-1.0472;
+            float SFD5 = (float)1.0472;
+            float SFD6 = (float)-1.0472;
+            float SFD7 = (float)1.0472;
+            float SFD8 = (float)0;
+            float SFD10 = (float)-1.0472;
+            #endregion
+            #region 一堆鱼移动到目标点和目标角度
+            FishToPoint(ref decisions[1], fish2, smileface2, SFD2, 2, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[2], fish3, smileface3, SFD3, 3, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[3], fish4, smileface4, SFD4, 4, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[4], fish5, smileface5, SFD5, 5, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[5], fish6, smileface6, SFD6, 6, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[6], fish7, smileface7, SFD7, 7, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[7], fish8, smileface8, SFD8, 8, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[9], fish10, smileface10, SFD10, 10, ref timeForPoseToPose, smileFaceflag);
+            //FishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
+            Helpers.Dribble(ref decisions[8], fish9, fish1.PolygonVertices[3], CorrectRad(fish1.BodyDirectionRad - (float)1.0472), 30f, 20f, 100f, 14, 12, 15, 100, false);
+            //float dir3 = xna.MathHelper.ToRadians(Helpers.GetAngleDegree(center - fish1.PositionMm));
+            //Helpers.Dribble(ref decisions[1], fish2, fish1.PolygonVertices[0], dir3, 15, 30, 150, 14, 13, 15, 100, true);
+            #endregion
+            #region 到指定位置，进入下一函数
+            if (AllEqual(smileFaceflag, 2, 3, 10))
+            {
+                complete = true;
+            }
+            if (complete)
+            {
+                timeflag++;
+                if (timeflag >= 40)//等待4s
+                {
+                    for (int i = 0; i < 11; i++)
+                        timeForPoseToPose[i] = 0;
+                    timeflag = 0;
+                    flag++;
+                    complete = false;
+                }
+            }
+            #endregion
+        }
+        #endregion
+
         public Decision[] GetDecision(Mission mission, int teamId)
         {
             // 决策类当前对象第一次调用GetDecision时Decision数组引用为null
@@ -928,6 +1007,16 @@ namespace URWPGSim2D.Strategy
             if (flag == 6)
                 StartRoad(ref mission, teamId, ref decisions);
 
+            if (flag == 7)
+                SmileFace(ref mission, teamId, ref decisions);
+
+            if(flag==8)
+            {
+                for (int i = 2; i <= 10; i++)
+                {
+                    StopFish(ref decisions[i - 1], i);
+                }
+            }
             return decisions;
         }
     }

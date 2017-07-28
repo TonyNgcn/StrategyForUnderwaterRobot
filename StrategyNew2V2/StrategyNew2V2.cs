@@ -67,6 +67,13 @@ namespace URWPGSim2D.Strategy
             Vector3 point = new Vector3((float)x, 0, (float)z);
             return point;
         }
+        public Vector3 CalPointOnBallR(Vector3 ball, float targetDirection)
+        {
+            double x = ball.X + Math.Cos(targetDirection) * 58;
+            double z = ball.Z - Math.Sin(targetDirection) * 58;
+            Vector3 point = new Vector3((float)x, 0, (float)z);
+            return point;
+        }
         public float GetVectorDistance(xna.Vector3 a, xna.Vector3 b)
         {
             return (float)Math.Sqrt((Math.Pow((a.X - b.X), 2d) + Math.Pow((a.Z - b.Z), 2d)));
@@ -195,7 +202,7 @@ namespace URWPGSim2D.Strategy
                                 Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
                             else
                             {
-                                decision.TCode = 15;
+                                decision.TCode = 14;
                                 decision.VCode = 3;
                             }
                         }
@@ -220,7 +227,7 @@ namespace URWPGSim2D.Strategy
                 Vector3 bottomPoint = new Vector3(1000, 0, 500);
                 Vector3 upTempPoint = new Vector3(1350, 0, -750);
                 Vector3 bottomTempPoint = new Vector3(1350, 0, 750);
-                if (ball.X >1000) //球在门外
+                if (ball.X < 1000) //球在门外
                 {
                     if (ball.Z > 0)//距离上面的点近一点
                     {
@@ -240,7 +247,7 @@ namespace URWPGSim2D.Strategy
                 {
                     if (ball.Z < -500)//右上角
                     {
-                        targetDirection = (float)3.1415;
+                        targetDirection = 0;
                         targetPoint = new Vector3(1500, 0, ball.Z - 80);
                         if (GetVectorDistance(fishLocation, ball) > 180 || IsDirectionRight(fishDirection, targetDirection) != 0)
                             Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
@@ -252,7 +259,7 @@ namespace URWPGSim2D.Strategy
                     }
                     else if (ball.Z > 500)//右下角
                     {
-                        targetDirection = (float)3.1415;
+                        targetDirection = 0;
                         targetPoint = new Vector3(1500, 0, ball.Z + 80);
                         if (GetVectorDistance(fishLocation, ball) > 180 || IsDirectionRight(fishDirection, targetDirection) != 0)
                             Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
@@ -262,7 +269,7 @@ namespace URWPGSim2D.Strategy
                             decision.VCode = 3;
                         }
                     }
-                    else//右边中间区域（除球门内）
+                    else//左边中间区域（除球门内）
                     {
                         if (fishDirection < 0)
                         {
@@ -307,7 +314,7 @@ namespace URWPGSim2D.Strategy
                     }
                     else//球门区域内
                     {
-                        //死角位置
+                        //差死角位置
                         if (ball.Z > 400)
                         {
                             targetDirection = CalAngle(ball, upPoint);
@@ -322,7 +329,7 @@ namespace URWPGSim2D.Strategy
                             Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 5, 10, 200, 10, 8, 15, 100, true);
 
                         }
-                        else if (fishMiddleLocation.Z > ball.Z) //鱼在球下面
+                        if (fishMiddleLocation.Z > ball.Z) //鱼在球下面
                         {
                             targetDirection = (float)3.1415;
                             targetPoint = new Vector3(1010, 0, ball.Z + 80);
@@ -336,13 +343,13 @@ namespace URWPGSim2D.Strategy
                         }
                         else//鱼在球上面
                         {
-                            targetDirection = 0;
+                            targetDirection = (float)3.1415;
                             targetPoint = new Vector3(1010, 0, ball.Z - 80);
                             if (GetVectorDistance(fishLocation, ball) > 180 || IsDirectionRight(fishDirection, targetDirection) != 0)
                                 Helpers.Dribble(ref decision, fish, targetPoint, targetDirection, 2f, 5f, 100, 5, 3, 15, 100, true);
                             else
                             {
-                                decision.TCode = 15;
+                                decision.TCode = 14;
                                 decision.VCode = 3;
                             }
                         }
@@ -366,9 +373,12 @@ namespace URWPGSim2D.Strategy
             }
             RoboFish fish1 = mission.TeamsRef[teamId].Fishes[0];
             Vector3 ball1 = mission.EnvRef.Balls[0].PositionMm;
+            RoboFish fish2 = mission.TeamsRef[teamId].Fishes[1];
+            Vector3 ball2 = mission.EnvRef.Balls[1].PositionMm;
             OneFishGetScore(fish1, 1, ball1, ref decisions[0]);
+            OneFishGetScore(fish2, 2, ball2, ref decisions[1]);
             //Fish1.Dingqiu(mission, teamId, ref decisions);
-        
+
             return decisions;
         }
     }
