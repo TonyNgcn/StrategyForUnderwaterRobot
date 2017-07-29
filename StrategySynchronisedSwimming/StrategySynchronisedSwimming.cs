@@ -484,7 +484,7 @@ namespace URWPGSim2D.Strategy
             FishToPoint(ref decisions[9], fish10, hill10, HD10, 10, ref timeForPoseToPose, hillflag);
             #endregion
             #region 山字第二阶段
-            if (hillflag[0] == 0 && AllEqual(hillflag, 2, 3, 10) && hillflag[2] != 0)   //hillflag[2]只有0、1 、2三种可能性
+            if (hillflag[0] == 0 && AllEqual(hillflag, 1, 3, 10) && hillflag[2] != 0)   //hillflag[2]只有0、1 、2三种可能性
             {
                 hillflag[0] = 1;
                 timeForPoseToPose[2] = 0;
@@ -761,7 +761,7 @@ namespace URWPGSim2D.Strategy
             //Helpers.Dribble(ref decisions[1], fish2, fish1.PolygonVertices[0], dir3, 15, 30, 150, 14, 13, 15, 100, true);
             #endregion
             #region 到指定位置，进入下一函数
-            if (AllEqual(playflag, 2, 3, 10))
+            if (AllEqual(playflag, 1, 3, 10))
             {
                 complete = true;
             }
@@ -871,35 +871,35 @@ namespace URWPGSim2D.Strategy
             #endregion
             #endregion
             #region 构成笑脸的目标点
-            xna.Vector3 smileface2 = new xna.Vector3(-829, 0, -486);
-            xna.Vector3 smileface3 = new xna.Vector3(-195, 0, 729);
-            xna.Vector3 smileface4 = new xna.Vector3(939, 0, -656);
-            xna.Vector3 smileface5 = new xna.Vector3(1293, 0, -479);
-            xna.Vector3 smileface6 = new xna.Vector3(-1168, 0, -711);
-            xna.Vector3 smileface7 = new xna.Vector3(-656, 0, 501);
-            xna.Vector3 smileface8 = new xna.Vector3(368, 0, 733);
-            xna.Vector3 smileface10 = new xna.Vector3(759, 0, 379);
+            xna.Vector3 smileface2 = new xna.Vector3(-480, 0, -330);
+            xna.Vector3 smileface3 = new xna.Vector3(-246, 0, 774);
+            xna.Vector3 smileface4 = new xna.Vector3(816, 0, -588);
+            xna.Vector3 smileface5 = new xna.Vector3(1194, 0, -378);
+            xna.Vector3 smileface6 = new xna.Vector3(-900, 0, -528);
+            xna.Vector3 smileface7 = new xna.Vector3(-563, 0, 337);
+            xna.Vector3 smileface8 = new xna.Vector3(438, 0, 768);
+            xna.Vector3 smileface10 = new xna.Vector3(720, 0, 318);
             xna.Vector3 center = new xna.Vector3(0, 0, 0);
             #endregion
             #region 构成与黄鱼互动的目标角度
-            float SFD2 = (float)1.0472;
-            float SFD3 = 0;
+            float SFD2 = (float)0.7854;
+            float SFD3 = (float)-2.6180;
             float SFD4 = (float)-1.0472;
-            float SFD5 = (float)1.0472;
+            float SFD5 = (float)0.7854;
             float SFD6 = (float)-1.0472;
-            float SFD7 = (float)1.0472;
-            float SFD8 = 0;
-            float SFD10 = (float)-1.0472;
+            float SFD7 = (float)-1.8148;
+            float SFD8 = (float)0.5236;
+            float SFD10 = (float)-1.2217;
             #endregion
             #region 一堆鱼移动到目标点和目标角度
-            FishToPointQuick(ref decisions[1], fish2, smileface2, SFD2, 2, ref timeForPoseToPose, smileFaceflag);
-            FishToPointLine(ref decisions[2], fish3, smileface3, SFD3, 3, ref timeForPoseToPose, smileFaceflag);
-            FishToPointQuick(ref decisions[3], fish4, smileface4, SFD4, 4, ref timeForPoseToPose, smileFaceflag);
-            FishToPointQuick(ref decisions[4], fish5, smileface5, SFD5, 5, ref timeForPoseToPose, smileFaceflag);
-            FishToPointQuick(ref decisions[5], fish6, smileface6, SFD6, 6, ref timeForPoseToPose, smileFaceflag);
-            FishToPointQuick(ref decisions[6], fish7, smileface7, SFD7, 7, ref timeForPoseToPose, smileFaceflag);
-            FishToPointLine(ref decisions[7], fish8, smileface8, SFD8, 8, ref timeForPoseToPose, smileFaceflag);
-            FishToPointQuick(ref decisions[9], fish10, smileface10, SFD10, 10, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[1], fish2, smileface2, SFD2, 2, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[2], fish3, smileface3, SFD3, 3, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[3], fish4, smileface4, SFD4, 4, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[4], fish5, smileface5, SFD5, 5, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[5], fish6, smileface6, SFD6, 6, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[6], fish7, smileface7, SFD7, 7, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[7], fish8, smileface8, SFD8, 8, ref timeForPoseToPose, smileFaceflag);
+            FishToPoint(ref decisions[9], fish10, smileface10, SFD10, 10, ref timeForPoseToPose, smileFaceflag);
             //FishToPoint(ref decisions[1], fish2, fish1.PolygonVertices[4], fish1.BodyDirectionRad - (float)1.309, 2, ref timeForPoseToPose, playflag);
             Helpers.Dribble(ref decisions[8], fish9, fish1.PolygonVertices[3], CorrectRad(fish1.BodyDirectionRad - (float)1.0472), 30f, 20f, 100f, 14, 12, 15, 100, false);
             //float dir3 = xna.MathHelper.ToRadians(Helpers.GetAngleDegree(center - fish1.PositionMm));
